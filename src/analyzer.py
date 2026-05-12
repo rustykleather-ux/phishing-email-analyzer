@@ -80,7 +80,7 @@ def main():
     print("\nRisk Score:", risk_score)
     
     print("\nSuspicious Domain Indicators:")
-    for item in domain_findings
+    for item in domain_findings:
         print("-", item)
 
     sender = extract_sender(email_text)
