@@ -98,7 +98,7 @@ def detect_suspicious_tlds(domains):
         ".info"
     ]
 
-    findings = []
+      findings = []
 
     for domain in domains:
         for tld in suspicious_tlds:
