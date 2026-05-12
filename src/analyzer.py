@@ -113,18 +113,25 @@ def save_to_json(data, filename="../reports/phishing_report.json"):
         json.dump(data, file, indent=4)
 
 def save_to_html(data, filename="../reports/phishing_report.html"):
+
+    risk_class = data.get("risk_rating", "").lower().split()[0]
+
     html = f"""
     <html>
     <head>
         <title>Phishing Email Analysis Report</title>
+
         <style>
             body {{
                 font-family: Arial, sans-serif;
                 margin: 40px;
+                background-color: #f4f4f4;
             }}
+
             h1 {{
                 color: #333;
             }}
+
             .risk {{
                 padding: 15px;
                 font-size: 22px;
@@ -132,68 +139,129 @@ def save_to_html(data, filename="../reports/phishing_report.html"):
                 border-radius: 8px;
                 margin-bottom: 20px;
             }}
+
             .high {{
                 background-color: #ffcccc;
                 color: #990000;
             }}
+
             .medium {{
                 background-color: #fff0b3;
                 color: #8a6d00;
             }}
+
             .low {{
                 background-color: #ccffcc;
                 color: #006600;
             }}
+
             table {{
                 border-collapse: collapse;
                 width: 100%;
+                background-color: white;
                 margin-bottom: 25px;
             }}
+
             th, td {{
                 border: 1px solid #ccc;
                 padding: 10px;
                 text-align: left;
                 vertical-align: top;
             }}
+
             th {{
                 background-color: #f2f2f2;
             }}
+
             ul {{
                 margin-top: 0;
             }}
         </style>
+
     </head>
+
     <body>
+
         <h1>Phishing Email Analysis Report</h1>
 
-        <div class="risk {data.get("risk_rating", "").lower().split()[0]}">
-            Risk Rating: {data.get("risk_rating")} | Score: {data.get("risk_score")}
+        <div class="risk {risk_class}">
+            Risk Rating: {data.get("risk_rating")} |
+            Score: {data.get("risk_score")}
         </div>
 
         <h2>Summary</h2>
+
         <table>
-            <tr><th>Field</th><th>Value</th></tr>
-            <tr><td>Sender</td><td>{data.get("sender")}</td></tr>
-            <tr><td>Risk Score</td><td>{data.get("risk_score")}</td></tr>
-            <tr><td>Risk Rating</td><td>{data.get("risk_rating")}</td></tr>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+
+            <tr>
+                <td>Sender</td>
+                <td>{data.get("sender")}</td>
+            </tr>
+
+            <tr>
+                <td>Risk Score</td>
+                <td>{data.get("risk_score")}</td>
+            </tr>
+
+            <tr>
+                <td>Risk Rating</td>
+                <td>{data.get("risk_rating")}</td>
+            </tr>
         </table>
 
         <h2>Indicators of Compromise</h2>
+
         <table>
-            <tr><th>Category</th><th>Findings</th></tr>
-            <tr><td>Email Domains</td><td>{"<br>".join(data.get("email_domains", []))}</td></tr>
-            <tr><td>Suspicious TLDs</td><td>{"<br>".join(data.get("suspicious_tlds", []))}</td></tr>
-            <tr><td>IP Addresses</td><td>{"<br>".join(data.get("ip_addresses", []))}</td></tr>
-            <tr><td>URLs</td><td>{"<br>".join(data.get("urls", []))}</td></tr>
-            <tr><td>Suspicious Keywords</td><td>{"<br>".join(data.get("keywords", []))}</td></tr>
-            <tr><td>Domain Findings</td><td>{"<br>".join(data.get("domain_findings", []))}</td></tr>
+
+            <tr>
+                <th>Category</th>
+                <th>Findings</th>
+            </tr>
+
+            <tr>
+                <td>Email Domains</td>
+                <td>{"<br>".join(data.get("email_domains", []))}</td>
+            </tr>
+
+            <tr>
+                <td>Suspicious TLDs</td>
+                <td>{"<br>".join(data.get("suspicious_tlds", []))}</td>
+            </tr>
+
+            <tr>
+                <td>IP Addresses</td>
+                <td>{"<br>".join(data.get("ip_addresses", []))}</td>
+            </tr>
+
+            <tr>
+                <td>URLs</td>
+                <td>{"<br>".join(data.get("urls", []))}</td>
+            </tr>
+
+            <tr>
+                <td>Suspicious Keywords</td>
+                <td>{"<br>".join(data.get("keywords", []))}</td>
+            </tr>
+
+            <tr>
+                <td>Domain Findings</td>
+                <td>{"<br>".join(data.get("domain_findings", []))}</td>
+            </tr>
+
         </table>
+
     </body>
     </html>
     """
 
     with open(filename, "w", encoding="utf-8") as file:
         file.write(html)
+
+   
 
 def main():
     email_text = read_email()
