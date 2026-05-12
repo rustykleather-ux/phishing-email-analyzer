@@ -267,3 +267,6 @@ def main():
 
     print("\nRisk Score:", risk_score)
     print("Risk Rating:", rating)
+    
+    if __name__ == "__main__":
+    main()
