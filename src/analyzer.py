@@ -66,6 +66,12 @@ def detect_suspicious_keywords(text):
 
     return findings
 
+def risk_rating(score):
+    if score >= 10:
+        return "HIGH RISK"
+    elif score >= 5:
+        return "MEDIUM RISK"
+    return "LOW RISK"
 
 def main():
     email_text = read_email()
