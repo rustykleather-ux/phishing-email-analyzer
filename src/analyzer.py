@@ -99,7 +99,7 @@ for url in urls:
         print("-", url)
 
 print("\nSuspicious Keywords:")
- for keyword in keywords:
+for keyword in keywords:
         print("-", keyword)
 
 
