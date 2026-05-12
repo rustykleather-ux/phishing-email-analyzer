@@ -1,6 +1,6 @@
 import re
 
-EMAIL_FILE = "samples/phishing_email.txt"
+EMAIL_FILE = "../samples/phishing_email.txt"
 
 
 def read_email():
