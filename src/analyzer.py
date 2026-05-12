@@ -100,8 +100,8 @@ def detect_suspicious_tlds(domains):
 
       findings = []
 
-        for domain in domains:
-        for tld in suspicious_tlds:
+    for domain in domains:
+    for tld in suspicious_tlds:
             if domain.lower().endswith(tld):
                 findings.append(domain)
 
