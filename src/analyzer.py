@@ -73,6 +73,12 @@ def risk_rating(score):
         return "MEDIUM RISK"
     return "LOW RISK"
 
+def extract_ip_addresses(text):
+    return re.findall(
+        r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b',
+        text
+    )
+
 def main():
     email_text = read_email()
 
@@ -91,13 +97,18 @@ def main():
     )
 
     rating = risk_rating(risk_score)
-        
+
+    ip_addresses = extract_ip_addresses(email_text)
 
     print("\n=== PHISHING EMAIL ANALYSIS ===\n")
 
     print("Sender:")
     print(sender)
 
+    print("\nIP Addresses:")
+    for ip in ip_addresses:
+    print("-", ip)
+ 
     print("\nSuspicious URLs:")
     for url in urls:
         print("-", url)
