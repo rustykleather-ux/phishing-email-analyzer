@@ -83,7 +83,7 @@ def main():
     for item in domain_findings:
         print("-", item)
 
-   sender = extract_sender(email_text)
+sender = extract_sender(email_text)
 
 print("\nSender:")
 print(sender)
