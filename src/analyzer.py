@@ -15,12 +15,11 @@ def extract_urls(text):
 
 <<<<<<< Updated upstream
 def extract_sender(text):
-    match = re.search(r'From:\s*(.*), text)
-
+    match = re.search(r'From:\s*(.*)', text)
     if match:
         return match.group(1)
 
-    return "Unknown)
+    return "Unknown"
 =======
 def calculate_risk_score(urls, keywords, domain_findings):
     score = 0
