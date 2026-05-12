@@ -1,1 +1,12 @@
-phisihing emails
+From: support@micr0soft-security.com
+Subject: Urgent Password Reset
+
+Your account has been compromised.
+
+Please verify your password immediately:
+http://secure-microsoft-login.com/reset
+
+Failure to act may result in account suspension.
+
+Thank you,
+Microsoft Security Team
