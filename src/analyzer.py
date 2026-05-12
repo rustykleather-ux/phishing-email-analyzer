@@ -13,7 +13,7 @@ def read_email():
 def extract_urls(text):
     return re.findall(r'https?://[^\s]+', text)
 
-<<<<<<< Updated upstream
+
 def extract_sender(text):
     match = re.search(r'From:\s*(.*)', text)
     if match:
@@ -46,7 +46,6 @@ def detect_suspicious_domain(sender):
             findings.append(pattern)
             
     return findings            
->>>>>>> Stashed changes
 
 def detect_suspicious_keywords(text):
     keywords = [
