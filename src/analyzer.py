@@ -90,7 +90,7 @@ print(sender)
       
     
 urls = extract_urls(email_text)
-    keywords = detect_suspicious_keywords(email_text)
+keywords = detect_suspicious_keywords(email_text)
 
     print("\n=== PHISHING EMAIL ANALYSIS ===\n")
 
