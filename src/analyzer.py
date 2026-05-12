@@ -107,7 +107,7 @@ def main():
 
     print("\nIP Addresses:")
     for ip in ip_addresses:
-    print("-", ip)
+        print("-", ip)
  
     print("\nSuspicious URLs:")
     for url in urls:
