@@ -86,7 +86,7 @@ def main():
     sender = extract_sender(email_text)
 
 print("\nSender")
-      print(sender)
+print(sender)
       
     
     urls = extract_urls(email_text)
