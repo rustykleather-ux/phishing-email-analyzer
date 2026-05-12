@@ -1,0 +1,28 @@
+{
+    "sender": "support@micr0soft-security.com",
+    "email_domains": [
+        "micr0soft-security.com",
+        "security-alert.xyz"
+    ],
+    "suspicious_tlds": [
+        "security-alert.xyz"
+    ],
+    "ip_addresses": [
+        "185.243.115.84"
+    ],
+    "urls": [
+        "http://secure-microsoft-login.com/reset"
+    ],
+    "keywords": [
+        "urgent",
+        "password",
+        "verify",
+        "compromised",
+        "login"
+    ],
+    "domain_findings": [
+        "micr0soft"
+    ],
+    "risk_score": 13,
+    "risk_rating": "HIGH RISK"
+}
