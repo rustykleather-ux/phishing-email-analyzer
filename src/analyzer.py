@@ -117,7 +117,7 @@ def main():
 
     print("\nEmail Domains:")
     for domain in email_domains:
-    print("-", domain)
+        print("-", domain)
  
     print("\nIP Addresses:")
     for ip in ip_addresses:
