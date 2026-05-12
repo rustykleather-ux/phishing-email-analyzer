@@ -79,11 +79,21 @@ def extract_ip_addresses(text):
         text
     )
 
+def extract_email_domains(text):
+    emails = re.findall(
+        r'[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})',
+        text
+    )
+
+    return list(set(emails))
+
 def main():
     email_text = read_email()
 
     sender = extract_sender(email_text)
 
+    email_domains = extract_email_domains(email_text)
+ 
     urls = extract_urls(email_text)
 
     keywords = detect_suspicious_keywords(email_text)
@@ -105,6 +115,10 @@ def main():
     print("Sender:")
     print(sender)
 
+    print("\nEmail Domains:")
+    for domain in email_domains:
+    print("-", domain)
+ 
     print("\nIP Addresses:")
     for ip in ip_addresses:
         print("-", ip)
