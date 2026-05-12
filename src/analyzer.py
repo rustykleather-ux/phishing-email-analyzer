@@ -21,12 +21,13 @@ def extract_sender(text):
 
     return "Unknown"
 
-def calculate_risk_score(urls, keywords, domain_findings):
+def calculate_risk_score(urls, keywords, domain_findings, suspicious_tlds):
     score = 0
     
     score += len(urls) * 2
     score += len(keywords)
     score += len(domain_findings) * 3
+    score += len(suspicious_tlds) * 3
     
     return score
 
@@ -125,6 +126,7 @@ def main():
         urls,
         keywords,
         domain_findings
+        suspicious_tlds
     )
 
     rating = risk_rating(risk_score)
