@@ -1,4 +1,5 @@
 import re
+import json
 
 from pathlib import Path 
 
@@ -107,6 +108,10 @@ def detect_suspicious_tlds(domains):
 
     return findings
    
+   def save_to_json(data, filename="../reports/phishing_report.json"):
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(data, file, indent=4)
+   
 def main():
     email_text = read_email()
 
@@ -130,9 +135,23 @@ def main():
     )
 
     rating = risk_rating(risk_score)
-
+    
     ip_addresses = extract_ip_addresses(email_text)
+    
+    results = {
+    "sender": sender,
+    "email_domains": email_domains,
+    "suspicious_tlds": suspicious_tlds,
+    "ip_addresses": ip_addresses,
+    "urls": urls,
+    "keywords": keywords,
+    "domain_findings": domain_findings,
+    "risk_score": risk_score,
+    "risk_rating": rating
+}
 
+save_to_json(results)
+    
     print("\n=== PHISHING EMAIL ANALYSIS ===\n")
 
     print("Sender:")
