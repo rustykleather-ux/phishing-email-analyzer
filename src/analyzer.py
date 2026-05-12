@@ -1,6 +1,6 @@
 import re
 import json
-
+ 
 from pathlib import Path 
 
 EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
