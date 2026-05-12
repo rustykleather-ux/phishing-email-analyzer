@@ -69,37 +69,39 @@ def detect_suspicious_keywords(text):
 
 def main():
     email_text = read_email()
+
+    sender = extract_sender(email_text)
+
+    urls = extract_urls(email_text)
+
+    keywords = detect_suspicious_keywords(email_text)
+
     domain_findings = detect_suspicious_domain(sender)
-    
-    risk_score = calcualte_risk_score(
+
+    risk_score = calculate_risk_score(
         urls,
         keywords,
         domain_findings
     )
-    
-    print("\nRisk Score:", risk_score)
-    
+
+    print("\n=== PHISHING EMAIL ANALYSIS ===\n")
+
+    print("Sender:")
+    print(sender)
+
+    print("\nSuspicious URLs:")
+    for url in urls:
+        print("-", url)
+
+    print("\nSuspicious Keywords:")
+    for keyword in keywords:
+        print("-", keyword)
+
     print("\nSuspicious Domain Indicators:")
     for item in domain_findings:
         print("-", item)
 
-sender = extract_sender(email_text)
-
-print("\nSender:")
-print(sender)
-    
-urls = extract_urls(email_text)
-keywords = detect_suspicious_keywords(email_text)
-
-print("\n=== PHISHING EMAIL ANALYSIS ===\n")
-
-print("Suspicious URLs:")
-for url in urls:
-        print("-", url)
-
-print("\nSuspicious Keywords:")
-for keyword in keywords:
-        print("-", keyword)
+    print("\nRisk Score:", risk_score)
 
 
 if __name__ == "__main__":
