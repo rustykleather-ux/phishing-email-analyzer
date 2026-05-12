@@ -87,12 +87,33 @@ def extract_email_domains(text):
 
     return list(set(emails))
 
+def detect_suspicious_tlds(domains):
+      suspicious_tlds = [
+        ".ru",
+        ".xyz",
+        ".top",
+        ".zip",
+        ".click",
+        ".info"
+    ]
+
+    findings = []
+
+    for domain in domains:
+        for tld in suspicious_tlds:
+            if domain.lower().endswith(tld):
+                findings.append(domain)
+
+    return findings
+
 def main():
     email_text = read_email()
 
     sender = extract_sender(email_text)
 
     email_domains = extract_email_domains(email_text)
+
+    suspicious_tlds = detect_suspicious_tlds(email_domains)
  
     urls = extract_urls(email_text)
 
@@ -117,6 +138,10 @@ def main():
 
     print("\nEmail Domains:")
     for domain in email_domains:
+        print("-", domain)
+
+     print("\nSuspicious TLDs:")
+    for domain in suspicious_tlds:
         print("-", domain)
  
     print("\nIP Addresses:")
