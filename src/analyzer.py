@@ -81,11 +81,10 @@ def main():
     risk_score = calculate_risk_score(
         urls,
         keywords,
-        domain_findings,
+        domain_findings
 
     rating = risk_rating(risk_score)
-    print("Risk Rating:", rating)
-    )
+        )
 
     print("\n=== PHISHING EMAIL ANALYSIS ===\n")
 
@@ -105,7 +104,7 @@ def main():
         print("-", item)
 
     print("\nRisk Score:", risk_score)
-
+    print("Risk Rating:", rating)
 
 if __name__ == "__main__":
     main()
