@@ -20,7 +20,7 @@ def extract_sender(text):
         return match.group(1)
 
     return "Unknown"
-=======
+
 def calculate_risk_score(urls, keywords, domain_findings):
     score = 0
     
