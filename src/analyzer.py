@@ -13,6 +13,13 @@ def read_email():
 def extract_urls(text):
     return re.findall(r'https?://[^\s]+', text)
 
+def extract_sender(text):
+    match = re.search(r'From:\s*(.*), text)
+
+    if match:
+        return match.group(1)
+
+    return "Unknown)
 
 def detect_suspicious_keywords(text):
     keywords = [
@@ -37,6 +44,12 @@ def detect_suspicious_keywords(text):
 def main():
     email_text = read_email()
 
+    sebder = extract_sebder(email_text)
+
+print("\nSender)
+      print(sender)
+      
+    
     urls = extract_urls(email_text)
     keywords = detect_suspicious_keywords(email_text)
 
