@@ -333,8 +333,9 @@ def main():
     for item in domain_findings:
         print("-", item)
 
-    print("\nRisk Score:", risk_score)
+        print("\nRisk Score:", risk_score)
     print("Risk Rating:", rating)
-    
-    if __name__ == "__main__":
-        main()
+
+
+if __name__ == "__main__":
+    main()
