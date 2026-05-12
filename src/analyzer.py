@@ -89,7 +89,7 @@ def extract_email_domains(text):
     return list(set(emails))
 
 def detect_suspicious_tlds(domains):
-      suspicious_tlds = [
+    suspicious_tlds = [
         ".ru",
         ".xyz",
         ".top",
@@ -98,15 +98,15 @@ def detect_suspicious_tlds(domains):
         ".info"
     ]
 
-      findings = []
+    findings = []
 
     for domain in domains:
-    for tld in suspicious_tlds:
+        for tld in suspicious_tlds:
             if domain.lower().endswith(tld):
                 findings.append(domain)
 
     return findings
-
+   
 def main():
     email_text = read_email()
 
@@ -125,7 +125,7 @@ def main():
     risk_score = calculate_risk_score(
         urls,
         keywords,
-        domain_findings
+        domain_findings,
         suspicious_tlds
     )
 
