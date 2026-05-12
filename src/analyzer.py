@@ -1,6 +1,8 @@
 import re
 
-EMAIL_FILE = "../samples/phishing_email.txt"
+from pathlib import Path
+
+EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
 
 
 def read_email():
