@@ -92,13 +92,13 @@ print(sender)
 urls = extract_urls(email_text)
 keywords = detect_suspicious_keywords(email_text)
 
-    print("\n=== PHISHING EMAIL ANALYSIS ===\n")
+print("\n=== PHISHING EMAIL ANALYSIS ===\n")
 
-    print("Suspicious URLs:")
+print("Suspicious URLs:")
     for url in urls:
         print("-", url)
 
-    print("\nSuspicious Keywords:")
+print("\nSuspicious Keywords:")
     for keyword in keywords:
         print("-", keyword)
 
