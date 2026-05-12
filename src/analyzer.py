@@ -269,4 +269,4 @@ def main():
     print("Risk Rating:", rating)
     
     if __name__ == "__main__":
-main()
+        main()
