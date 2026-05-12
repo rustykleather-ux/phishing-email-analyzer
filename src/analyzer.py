@@ -85,7 +85,7 @@ def main():
     for item in domain_findings
         print("-", item)
 
-    sebder = extract_sebder(email_text)
+    sender = extract_sender(email_text)
 
 print("\nSender)
       print(sender)
