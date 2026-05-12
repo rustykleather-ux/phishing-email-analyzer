@@ -13,6 +13,7 @@ def read_email():
 def extract_urls(text):
     return re.findall(r'https?://[^\s]+', text)
 
+<<<<<<< Updated upstream
 def extract_sender(text):
     match = re.search(r'From:\s*(.*), text)
 
@@ -20,6 +21,33 @@ def extract_sender(text):
         return match.group(1)
 
     return "Unknown)
+=======
+def calculate_risk_score(urls, keywords, domain_findings):
+    score = 0
+    
+    score += len(urls) * 2
+    score += len(keywords)
+    score += len(domain_findings) * 3
+    
+    return score
+
+def detect_suspicious_domain(sender):
+    suspicious_patterns = [
+        "micr0soft",
+        "paypa1",
+        "arnazon",
+        ".ru",
+        ".xyz"
+    ]
+    
+    findings = []
+    
+    for pattern in suspicious_patterns:
+        if pattern.lower() in sender.lower():
+            findings.append(pattern)
+            
+    return findings            
+>>>>>>> Stashed changes
 
 def detect_suspicious_keywords(text):
     keywords = [
@@ -43,6 +71,19 @@ def detect_suspicious_keywords(text):
 
 def main():
     email_text = read_email()
+    domain_findings = detect_suspicious_domain(sender)
+    
+    risk_score = calcualte_risk_score(
+        urls,
+        keywords,
+        domain_findings
+    )
+    
+    print("\nRisk Score:", risk_score)
+    
+    print("\nSuspicious Domain Indicators:")
+    for item in domain_findings
+        print("-", item)
 
     sebder = extract_sebder(email_text)
 
