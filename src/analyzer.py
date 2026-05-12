@@ -83,11 +83,10 @@ def main():
     for item in domain_findings:
         print("-", item)
 
-    sender = extract_sender(email_text)
+   sender = extract_sender(email_text)
 
-print("\nSender")
+print("\nSender:")
 print(sender)
-      
     
 urls = extract_urls(email_text)
 keywords = detect_suspicious_keywords(email_text)
