@@ -82,9 +82,10 @@ def main():
         urls,
         keywords,
         domain_findings
+    )
 
     rating = risk_rating(risk_score)
-        )
+        
 
     print("\n=== PHISHING EMAIL ANALYSIS ===\n")
 
