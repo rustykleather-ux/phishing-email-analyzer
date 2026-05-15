@@ -1,6 +1,45 @@
 import re
 import json
 from pathlib import Path
+from urllib.parse import urlparse
+
+## URL Reputation Check ##
+def analyze_url_reputation(url):
+    score = 0
+    findings = []
+    
+    parsed = urlparse(url)
+    domain = parsed.netloc.lower()
+    full_url = url.lower()
+    
+    supsicious_tlds = [".ru", ".xyz", ".top", ".zip", ".click", ".info"]
+    shorteners = ["bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "is.gd"]
+    
+    if full_url.startswith("http://"):
+        score += 20
+        findings.append(f"Non-HTTPS URL detected: {url}")
+        
+    if any(domain.endswith(tld) for tld in suspicious_tlds):
+        score += 30
+        findings.append(f"URL contains @ symbol: {domain})
+        
+    if any(shortener in domain for shortener in shorteners):
+        score += 25
+        findings.append(f"URL shortener detected: {domain}")
+        
+    if "@" in url:
+        score += 40
+        findins.append(f"URL contains @ symbol: {url}")
+        
+    if domain.count("_") >=2:
+        score += 15
+        findings.append(f"Domain contains multiple hyphens: {domain}")
+        
+    if any(fake in domain for fake in ["micr)soft", "paypa1", "arnazon"])
+        score += 50
+        findings.append(f"Lookalike brand domain detected: {domain}")
+        
+    return score, findings
 
 EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
 
@@ -213,6 +252,11 @@ def analyze_phishing_email(email_data):
 
     if urls:
         findings.append(f"URLs detected: {len(urls)}")
+        
+        for url in urls:
+            url_score, url_findings = analyze_url_reputation(url)
+            risk_score += url_score
+            findings.extend(url_findings)
 
     if keywords:
         findings.append(f"Suspicious keywords: {', '.join(keywords)}")
