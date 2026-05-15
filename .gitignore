@@ -2,16 +2,15 @@
 __pycache__/
 *.py[codz]
 *$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
 venv/
 __pycache__/
 *.pyc
 token.json
 credentials.json
+# C extensions
+*.so
+
+# Distribution / packaging
 .env
 .Python
 build/
