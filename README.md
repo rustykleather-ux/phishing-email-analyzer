@@ -10,6 +10,7 @@ Python-based phishing email analysis tool for extracting indicators of compromis
 - Real-time phishing scoring
 - Gmail API retrieval
 - Attachment detection
+- Attachement Intelligence & Trusted Senders
 - URL analysis
 
 ## Architecture
