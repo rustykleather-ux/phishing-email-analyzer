@@ -1,45 +1,6 @@
 import re
 import json
 from pathlib import Path
-from urllib.parse import urlparse
-
-## URL Reputation Check ##
-def analyze_url_reputation(url):
-    score = 0
-    findings = []
-    
-    parsed = urlparse(url)
-    domain = parsed.netloc.lower()
-    full_url = url.lower()
-    
-    supsicious_tlds = [".ru", ".xyz", ".top", ".zip", ".click", ".info"]
-    shorteners = ["bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "is.gd"]
-    
-    if full_url.startswith("http://"):
-        score += 20
-        findings.append(f"Non-HTTPS URL detected: {url}")
-        
-    if any(domain.endswith(tld) for tld in suspicious_tlds):
-        score += 30
-        findings.append(f"URL contains @ symbol: {domain})
-        
-    if any(shortener in domain for shortener in shorteners):
-        score += 25
-        findings.append(f"URL shortener detected: {domain}")
-        
-    if "@" in url:
-        score += 40
-        findins.append(f"URL contains @ symbol: {url}")
-        
-    if domain.count("_") >=2:
-        score += 15
-        findings.append(f"Domain contains multiple hyphens: {domain}")
-        
-    if any(fake in domain for fake in ["micr)soft", "paypa1", "arnazon"])
-        score += 50
-        findings.append(f"Lookalike brand domain detected: {domain}")
-        
-    return score, findings
 
 EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
 
@@ -55,9 +16,7 @@ def extract_urls(text):
 
 def extract_sender(text):
     match = re.search(r"From:\s*(.*)", text)
-    if match:
-        return match.group(1)
-    return "Unknown"
+    return match.group(1) if match else "Unknown"
 
 
 def calculate_risk_score(urls, keywords, domain_findings, suspicious_tlds):
@@ -70,41 +29,13 @@ def calculate_risk_score(urls, keywords, domain_findings, suspicious_tlds):
 
 
 def detect_suspicious_domain(sender):
-    suspicious_patterns = [
-        "micr0soft",
-        "paypa1",
-        "arnazon",
-        ".ru",
-        ".xyz"
-    ]
-
-    findings = []
-
-    for pattern in suspicious_patterns:
-        if pattern.lower() in sender.lower():
-            findings.append(pattern)
-
-    return findings
+    suspicious_patterns = ["micr0soft", "paypa1", "arnazon", ".ru", ".xyz"]
+    return [p for p in suspicious_patterns if p.lower() in sender.lower()]
 
 
 def detect_suspicious_keywords(text):
-    keywords = [
-        "urgent",
-        "password",
-        "verify",
-        "suspend",
-        "compromised",
-        "click",
-        "login"
-    ]
-
-    findings = []
-
-    for keyword in keywords:
-        if keyword.lower() in text.lower():
-            findings.append(keyword)
-
-    return findings
+    keywords = ["urgent", "password", "verify", "suspend", "compromised", "click", "login"]
+    return [k for k in keywords if k.lower() in text.lower()]
 
 
 def risk_rating(score):
@@ -118,10 +49,7 @@ def risk_rating(score):
 
 
 def extract_ip_addresses(text):
-    return re.findall(
-        r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b",
-        text
-    )
+    return re.findall(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b", text)
 
 
 def extract_email_domains(text):
@@ -129,20 +57,11 @@ def extract_email_domains(text):
         r"[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})",
         text
     )
-
     return list(set(emails))
 
 
 def detect_suspicious_tlds(domains):
-    suspicious_tlds = [
-        ".ru",
-        ".xyz",
-        ".top",
-        ".zip",
-        ".click",
-        ".info"
-    ]
-
+    suspicious_tlds = [".ru", ".xyz", ".top", ".zip", ".click", ".info"]
     findings = []
 
     for domain in domains:
@@ -157,7 +76,6 @@ def analyze_attachment_risk(attachment):
     filename = attachment.get("filename", "")
     mime_type = attachment.get("mime_type", "")
     size = attachment.get("size", 0)
-
     ext = Path(filename.lower()).suffix
 
     score = 0
@@ -168,13 +86,8 @@ def analyze_attachment_risk(attachment):
         ".scr", ".hta", ".jar", ".msi", ".iso", ".img"
     }
 
-    macro_extensions = {
-        ".docm", ".xlsm", ".pptm"
-    }
-
-    archive_extensions = {
-        ".zip", ".rar", ".7z"
-    }
+    macro_extensions = {".docm", ".xlsm", ".pptm"}
+    archive_extensions = {".zip", ".rar", ".7z"}
 
     if ext in dangerous_extensions:
         score += 90
@@ -194,7 +107,7 @@ def analyze_attachment_risk(attachment):
 
     elif ext == ".pdf":
         score += 5
-        findings.append(f"PDF attachment should be reviewed: {filename}")
+        findings.append(f"PDF attachment detected: {filename}")
 
     if filename.lower().count(".") >= 2:
         score += 35
@@ -211,6 +124,36 @@ def analyze_attachment_risk(attachment):
     return score, findings
 
 
+def analyze_email_authentication(auth_results, received_spf):
+    score = 0
+    findings = []
+
+    auth_text = ((auth_results or "") + " " + (received_spf or "")).lower()
+
+    if "spf=fail" in auth_text:
+        score += 40
+        findings.append("SPF authentication failed.")
+    elif "spf=softfail" in auth_text:
+        score += 20
+        findings.append("SPF soft fail detected.")
+    elif "spf=pass" in auth_text:
+        findings.append("SPF passed.")
+
+    if "dkim=fail" in auth_text:
+        score += 40
+        findings.append("DKIM authentication failed.")
+    elif "dkim=pass" in auth_text:
+        findings.append("DKIM passed.")
+
+    if "dmarc=fail" in auth_text:
+        score += 50
+        findings.append("DMARC authentication failed.")
+    elif "dmarc=pass" in auth_text:
+        findings.append("DMARC passed.")
+
+    return score, findings
+
+
 def analyze_phishing_email(email_data):
     email_text = (
         email_data.get("subject", "") + "\n\n" +
@@ -219,17 +162,16 @@ def analyze_phishing_email(email_data):
     )
 
     sender = email_data.get("from", "")
-    
-    trusted_senders = [
-    "iii.com"
-    ]
-    
-    is_trusted_sender = any(
-    trusted_domain in sender.lower()
-    for trusted_domain in trusted_senders
-    )
-
+    auth_results = email_data.get("authentication_results", "")
+    received_spf = email_data.get("received_spf", "")
     attachments = email_data.get("attachments", [])
+
+    trusted_senders = ["iii.com"]
+
+    is_trusted_sender = any(
+        trusted_domain in sender.lower()
+        for trusted_domain in trusted_senders
+    )
 
     email_domains = extract_email_domains(email_text)
     suspicious_tlds = detect_suspicious_tlds(email_domains)
@@ -247,16 +189,19 @@ def analyze_phishing_email(email_data):
 
     findings = []
 
+    auth_score, auth_findings = analyze_email_authentication(
+        auth_results,
+        received_spf
+    )
+
+    risk_score += auth_score
+    findings.extend(auth_findings)
+
     findings.append(f"Sender: {sender}")
     findings.append(f"Subject: {email_data.get('subject', '')}")
 
     if urls:
         findings.append(f"URLs detected: {len(urls)}")
-        
-        for url in urls:
-            url_score, url_findings = analyze_url_reputation(url)
-            risk_score += url_score
-            findings.extend(url_findings)
 
     if keywords:
         findings.append(f"Suspicious keywords: {', '.join(keywords)}")
@@ -277,7 +222,7 @@ def analyze_phishing_email(email_data):
         attachment_score, attachment_findings = analyze_attachment_risk(attachment)
         risk_score += attachment_score
         findings.extend(attachment_findings)
-        
+
     if is_trusted_sender and risk_score < 40:
         findings.append("Sender matches trusted vendor list.")
         risk_score = max(0, risk_score - 10)
@@ -304,45 +249,5 @@ def save_to_json(data, filename="../reports/phishing_report.json"):
         json.dump(data, file, indent=4)
 
 
-def main():
-    email_text = read_email()
-
-    sender = extract_sender(email_text)
-    email_domains = extract_email_domains(email_text)
-    suspicious_tlds = detect_suspicious_tlds(email_domains)
-    urls = extract_urls(email_text)
-    keywords = detect_suspicious_keywords(email_text)
-    domain_findings = detect_suspicious_domain(sender)
-    ip_addresses = extract_ip_addresses(email_text)
-
-    risk_score = calculate_risk_score(
-        urls,
-        keywords,
-        domain_findings,
-        suspicious_tlds
-    )
-
-    rating = risk_rating(risk_score)
-
-    results = {
-        "sender": sender,
-        "email_domains": email_domains,
-        "suspicious_tlds": suspicious_tlds,
-        "ip_addresses": ip_addresses,
-        "urls": urls,
-        "keywords": keywords,
-        "domain_findings": domain_findings,
-        "risk_score": risk_score,
-        "risk_rating": rating
-    }
-
-    save_to_json(results)
-
-    print("\n=== PHISHING EMAIL ANALYSIS ===\n")
-    print("Sender:", sender)
-    print("Risk Score:", risk_score)
-    print("Risk Rating:", rating)
-
-
 if __name__ == "__main__":
-    main()
+    print("This analyzer is meant to be called by main.py through FastAPI.")
