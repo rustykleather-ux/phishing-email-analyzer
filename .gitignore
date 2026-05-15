@@ -7,6 +7,12 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+venv/
+__pycache__/
+*.pyc
+token.json
+credentials.json
+.env
 .Python
 build/
 develop-eggs/
