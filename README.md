@@ -10,8 +10,9 @@ Python-based phishing email analysis tool for extracting indicators of compromis
 - Real-time phishing scoring
 - Gmail API retrieval
 - Attachment detection
-- Attachement Intelligence & Trusted Senders
-- URL analysis
+- Attachement intelligence & trusted senders
+- URL analysis and reputation
+- Email authentication analysis
 
 ## Architecture
 Gmail Add-on → Apps Script → FastAPI → Gmail API → Analyzer
