@@ -1,0 +1,136 @@
+
+Phishing Report Submitted
+
+Reported by: unknown
+Message ID: msg-f:1865540576249073220
+
+Sender: Danielle Folsom <dfolsom@louisburglibrary.org>
+Reply-To: 
+Return-Path: <dfolsom@louisburglibrary.org>
+Subject: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+Date: Mon, 18 May 2026 10:28:40 -0500
+
+Risk Level: Dangerous
+Score: 437
+
+Findings:
+- SPF soft fail detected.
+- DKIM passed.
+- Sender: Danielle Folsom <dfolsom@louisburglibrary.org>
+- Subject: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+- URLs detected: 8
+- VirusTotal malicious detections: 9
+- VirusTotal malicious detections: 10
+- Non-HTTPS URL detected: http://www.louisburglibrary.org
+- VirusTotal URL reputation: no malicious detections.
+- Suspicious keywords: click
+- Email contains 1 attachment(s).
+
+Recommendation:
+Do not click links or open attachments. Report this email to IT.
+
+--- Email Body Preview ---
+---------- Forwarded message ---------
+From: Jessica Finch <inbloomfloraldesign@hotmail.com>
+Date: Sat, May 16, 2026 at 3:58 PM
+Subject: EXCLUSIVE INVITE FROM JESSICA FINCH
+To:
+
+
+
+
+[image: Punchbowl]
+
+You're invited! Please click on the invitation to see more details and to
+RSVP.
+
+MEET & GREET
+Sunday May 24,2026
+12.00pm-3:00pm
+
+[image: MEET & GREET] <https://almarabeaunited.com/ns>
+
+[image: Open your invitation] <https://almarabeaunited.com/ns>
+
+Don't want invitations from this host? Remove yourself
+<https://almarabeaunited.com/ns>.
+If you can't see the above invitation, click here
+<https://almarabeaunited.com/ns>.
+Add mail@mail.punchbowl.com <https://almarabeaunited.com/ns> to your
+address book to ensure you receive all invitations and cards in your inbox
+To learn about our privacy policy, click here
+<https://almarabeaunited.com/one>.
+
+
+
+
+
+
+-- 
+Danielle Folsom - Interlibrary Loan Coordinator
+206 S. Broadway - Louisburg KS 66053 - 913-837-2217
+[image: PCPG Email Signature 2026 .png] <http://www.louisburglibrary.org>
+
+
+<div dir="ltr"><br><br><div class="gmail_quote gmail_quote_container"><div dir="ltr" class="gmail_attr">---------- Forwarded message ---------<br>From: <strong class="gmail_sendername" dir="auto">Jessica Finch</strong> <span dir="auto">&lt;<a href="mailto:inbloomfloraldesign@hotmail.com">inbloomfloraldesign@hotmail.com</a>&gt;</span><br>Date: Sat, May 16, 2026 at 3:58 PM<br>Subject: EXCLUSIVE INVITE FROM JESSICA FINCH<br>To: <br></div><br><br><div class="msg6735800970780834676">
+
+
+
+
+<div dir="ltr">
+<div style="font-family:&quot;Calibri&quot;,&quot;Helvetica&quot;,sans-serif;font-size:12pt;color:rgb(0,0,0)">
+<br>
+</div>
+<div style="direction:ltr;font-family:&quot;Calibri&quot;,&quot;Helvetica&quot;,sans-serif;font-size:12pt;color:rgb(0,0,0)">
+<br>
+</div>
+<table style="direction:ltr;width:540px;max-width:540px;color:rgb(51,51,51);border-collapse:collapse;border-spacing:0px;box-sizing:border-box" align="center" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="direction:ltr" align="center"><span style="font-family:&quot;Calibri&quot;,&quot;Helvetica&quot;,sans-serif;font-size:12pt;color:rgb(0,0,0)"><img alt="Punchbowl" style="width:145px;max-width:681px;margin:0px auto;padding-bottom:20px;display:block" width="145" src="https://ecp.yusercontent.com/mail?url=https%3A%2F%2Fstatic.punchbowl.com%2Fassets%2Flogos%2Fpunchbowl%2Flogo_punchbowl-27b5ac89faa0f8d34acac622e4aa8e6a5fb1cb41010a944e2fe5feabbd3c3034.png&amp;t=1770892949&amp;ymreqid=5e343295-889c-e531-1c17-4d000001a500&amp;sig=Nj3FdqTbnXrJLUWC1WPSdA--~D"></span></td>
+</tr>
+<tr>
+<td style="direction:ltr" align="center">
+<div style="margin:0px auto;padding-top:20px;padding-bottom:20px;border-top:1px solid rgb(204,204,204)">
+<table style="direction:ltr;margin:0px auto;width:540px;border-collapse:collapse;border-spacing:0px;box-sizing:border-box" align="center" cellspacing="0" cellpadding="0" border="0">
+<tbody>
+<tr>
+<td
+
+[Body truncated]
+
+--- Authentication Results ---
+mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=VpsyKFP0;       arc=pass (i=1);       spf=softfail (google.com: domain of transitioning dfolsom@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=dfolsom@louisburglibrary.org;       dara=neutral header.i=@louisburglibrary.org
+
+--- Received-SPF ---
+softfail (google.com: domain of transitioning dfolsom@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+
+--- Raw Headers ---
+Delivered-To: rfolsom@louisburglibrary.org
+Received: by 2002:a05:7108:3752:b0:558:e174:7cd7 with SMTP id z18csp2167176gdg;        Mon, 18 May 2026 08:28:54 -0700 (PDT)
+X-Received: by 2002:a05:6402:358e:b0:674:40c3:f047 with SMTP id 4fb4d7f45d1cf-683bcd9eefbmr8081991a12.12.1779118133872;        Mon, 18 May 2026 08:28:53 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1779118133; cv=pass;        d=google.com; s=arc-20240605;        b=AQ78vrBxEayFcP+n5WQlnBw1/Rr5uzdDcH0wlDJdiZYNtVcCFQQNgOzW/2gniWuEcv         on05YO7eByvQIenQGSNhsnq4u6nBXmyuf+uLVFcHM5USvD8DATwfnNPiCvLjzWk4Hekr         PVefmLgSf86L7Fn4KySs3R93vddTNxD8pWsi2co9dem2rkyOnWgfm6PoznulX6UgQqzS         tGy1orv08dhFuPeRdpegwBaFM4H3A0yuIsUU2OTKmD2WKUt/4wx+ZC08YF0h4/l6FPHi         C1TwzKKQwagZA35wvcKjgZcHGwKVuBj0xHBxvTiQ0fLdDCBBuRGJJRrH7rRt6kUGe9oj         3rjA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :dkim-signature;        bh=9i4fnx3tGG9i5RpFIB7DahwjtYs7ccNm/1nab70+kBY=;        fh=v+6b4c3wQy1G+rYm0PifXImjVmX3uF7ERzgqjodFQ64=;        b=AdcpHZWOGqEClo2P15IrU8jGQr/yn7mDiTrXUREAGg46ENoeugwm8KT5xkfISdtSZo         wDb8Ns8RwhSngOOnBBwEA66PdQMmWILyH9YDvvhXl5cCafMgP8kSfXZejd3MthtogGSN         JVh4jnO+77teBWwsX3hBy7cQ9gP3Z/hcmpSpSrbZmW6tGUnRPWvum6612Hr0T0pXZ3td         G7iW7XUM/Z07sddzj1mpMbk0C1wqNpP5hStBxoUeZVxyCfdWkex0uuWSoi1aqH0thcf6         a3YVff1kRV5x6gDBKU1ltt0NZdtfyBZh76BE9utDOSsChFyK4TdAEMeREKAEnJyknqM3         6o4g==;        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=VpsyKFP0;       arc=pass (i=1);       spf=softfail (google.com: domain of transitioning dfolsom@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=dfolsom@louisburglibrary.org;       dara=neutral header.i=@louisburglibrary.org
+Return-Path: <dfolsom@louisburglibrary.org>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])        by mx.google.com with SMTPS id 4fb4d7f45d1cf-68468a96b07sor1347579a12.6.2026.05.18.08.28.53        for <rfolsom@louisburglibrary.org>        (Google Transport Security);        Mon, 18 May 2026 08:28:53 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning dfolsom@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=VpsyKFP0;       arc=pass (i=1);       spf=softfail (google.com: domain of transitioning dfolsom@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=dfolsom@louisburglibrary.org;       dara=neutral header.i=@louisburglibrary.org
+ARC-Seal: i=1; a=rsa-sha256; t=1779118133; cv=none;        d=google.com; s=arc-20240605;        b=jf4oSgI+jd9Sga0cqXrXFK5vwV/Zyn4Mkp5xlIQsmM7APTbEDHpG/chAKWDOWmbV3z         fRmfW75u0B+0sHkEI6M6SNlBb88Lwh4TGtJn3oVs8ST9rgJagrVJdWUMRxW3Cq4/yuHM         sglzT0O6qCuVdER5QURY0qraz4QaOFY53vV+2Api8SutCGM+Jc4+jSqGuv1TEwy+xB/h         55KXIpo17SSljzh+b5bwuI57IFs8YwQJTFEJJjq9+WE7VmbHhTqsCYGmqkgjRwzrsrsA         BIjYyJHkxS2m1j5Mcx0A/QwL0+WtIwesfTsQshG6K7G96pTjaY/ARlh1bj20VrpK2C8P         Zxlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :dkim-signature;        bh=9i4fnx3tGG9i5RpFIB7DahwjtYs7ccNm/1nab70+kBY=;        fh=v+6b4c3wQy1G+rYm0PifXImjVmX3uF7ERzgqjodFQ64=;        b=BMkijhocM6hN3GUg72KAxih+BEmxn3/mcgMqKVsOuPlT+2Mncl7Phvu966wspqJm5P         tlkNxHq3lFp61TXpbOJPh/St+1jJvwQH4fbcL3Qc5Q79QobP5LPSU+zAV53/QaHt+dqa         nXb5Cfoj0cU0lPHsS+rAdquWO1LcXDTNWklIyvYEnf8rvE4hf/o2ESqJzh0As+NiElT0         +IvkBDy/pDDdqWsyMjXzMsIFK0Vy1xfeT58dHCfq0eFaLDbGIlOF+U5Q6ifiwyHc0HkA         OjPKtNZz6tYiNINDEiIpV6AuvnvP+cZ1gM3UQU+hkiY4nvKk4TlC90wPBphIn02lFJai         hMdw==;        darn=louisburglibrary.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;        d=louisburglibrary.org; s=google; t=1779118133; x=1779722933; darn=louisburglibrary.org;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :from:to:cc:subject:date:message-id:reply-to;        bh=9i4fnx3tGG9i5RpFIB7DahwjtYs7ccNm/1nab70+kBY=;        b=VpsyKFP0CyEq8ZWzNuRqnZfSGZc7AJOIM66q/3mtbJF70LiMaJZoSyghzblCl4uhhX         p6oyYdRPAjklnG88FRgKJiLetiynGqX9M0KhxAWZ5HHLFhVEq4K0U1+r/uf1P7suozcs         +nSCmTTAvarJ2J82jpwP9G2Uo5awbn3rmXvOsgISpQPjxeI7wT91uLmxkhNjAR1sR0mP         xteYZRtNMYkDS5qhkzSYKQxfuIer19HOjePAxfJ3UroTxpp8NI7CXXZ44UD4hR03YPJe         4HNCzgeZZ2hjR+p3ZWOMkH205BYMGoV+c4i5rU9tDRvo5+lw6kNr3Vl9S5a2LNELJ9qv         d5Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;        d=1e100.net; s=20251104; t=1779118133; x=1779722933;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id         :reply-to;        bh=9i4fnx3tGG9i5RpFIB7DahwjtYs7ccNm/1nab70+kBY=;        b=rXtmHjQYckxfOv87TY5T4IKSUT4J1/HcailRz3fS52yUFPVL8+UTIcJT/tIe/azfuy         dvS+j7q/9tMBQe/j7hZljIP9NB42ezjgQJvZIKARmadd5iMmmTn1RW4DKiDeKMMThZU3         wc8YkjHv2SGargRvD7gTHfxsOGoGDSPk1T5+3F6xZyQTDh044IDfS3hFbCSQ0ra0OqXd         3n1Bxtfoxi73jS/dR20PlCXhg0np52F7hMeWYHpZilyy4neyF0ywaKtFvVyQKJ1DBacn         ZgSSFRhwf5SGcSqAk9jwhRl7JFV7n6PKFO9PK+0QvQ8pyDI00Li6Xo/6jxIThbeguGw0         RnrQ==
+X-Gm-Message-State: AOJu0YyvxPT0bpr5VC6rFpFOpC85KDC8P7XyarKtXp8efL+6NJFqKUjt maegc71WkWYn4qWLUuehcj1I5aIFVk3pWwBk1be0AKGN58kZPKp5PrLzXPZQKtNCJsE9GZ70oHh q4E7RlqYu0PHiD2Zqvs6jIKFLmXXJ6afWSO0y61zl/Rr2Lae7IIhA2g==
+X-Gm-Gg: Acq92OEQdX75dE5UC0r5ddo41Ct9pnzRRa109JmtlsDdxWCUwTdXEr5CBpQk26jd8ed YWxnpKEYUrONd79Nh8XhsLWDOIno/qO0I3Cc9USf0oKeoOulqH9yAmAeiaVZnQAJcYhqvJTe+VD 17O3CKxjWX5m0mib4nzC+TeSlMoauSy8Z1v/Xr/FtdO88o1og0AB35fX05TB7RuXIoZqNBTnyYf dFUuDunkhAOn/imZ8jbrsyFh6Jy4CJROcp/wlq5YMBSJA2QOfPd4wrLfLQOvqEsxuxn4tq2xhIk CKRqgQ==
+X-Received: by 2002:a05:6402:13d4:b0:67c:5745:ba25 with SMTP id 4fb4d7f45d1cf-683ba93ae7emr8139291a12.0.1779118132450; Mon, 18 May 2026 08:28:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <BN6PR19MB3347C4669759CBF3CED9CC81A3052@BN6PR19MB3347.namprd19.prod.outlook.com>
+In-Reply-To: <BN6PR19MB3347C4669759CBF3CED9CC81A3052@BN6PR19MB3347.namprd19.prod.outlook.com>
+From: Danielle Folsom <dfolsom@louisburglibrary.org>
+Date: Mon, 18 May 2026 10:28:40 -0500
+X-Gm-Features: AVHnY4IfY_cXj-ZDUxBKsqssT-0A4RpoDoioGP0Av2KseUj7_1p6gAP90U8cQco
+Message-ID: <CANdhGMrBktsFSkwvw_f73qx-U7dr0sUOqCW3vzriq-wM_ra0yw@mail.gmail.com>
+Subject: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+To: Rusty Folsom <rfolsom@louisburglibrary.org>
+Content-Type: multipart/related; boundary="0000000000004cbd720652193851"

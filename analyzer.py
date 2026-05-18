@@ -1,6 +1,9 @@
 import re
 import json
 from pathlib import Path
+from urllib.parse import urlparse
+
+from virustotal_client import check_url_reputation
 
 EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
 
@@ -11,7 +14,15 @@ def read_email():
 
 
 def extract_urls(text):
-    return re.findall(r"https?://[^\s]+", text)
+    urls = re.findall(r"https?://[^\s<>\"]+", text)
+
+    cleaned_urls = []
+
+    for url in urls:
+        url = url.rstrip(".,;:)'\">")
+        cleaned_urls.append(url)
+
+    return list(dict.fromkeys(cleaned_urls))
 
 
 def extract_sender(text):
@@ -34,7 +45,15 @@ def detect_suspicious_domain(sender):
 
 
 def detect_suspicious_keywords(text):
-    keywords = ["urgent", "password", "verify", "suspend", "compromised", "click", "login"]
+    keywords = [
+        "urgent",
+        "password",
+        "verify",
+        "suspend",
+        "compromised",
+        "click",
+        "login"
+    ]
     return [k for k in keywords if k.lower() in text.lower()]
 
 
@@ -70,6 +89,55 @@ def detect_suspicious_tlds(domains):
                 findings.append(domain)
 
     return findings
+
+
+def analyze_url_reputation(url):
+    score = 0
+    findings = []
+
+    parsed = urlparse(url)
+    domain = parsed.netloc.lower()
+    full_url = url.lower()
+
+    ignored_domains = [
+        "ecp.yusercontent.com",
+        "ci3.googleusercontent.com",
+        "static.punchbowl.com",
+        "googleusercontent.com",
+        "gstatic.com"
+    ]
+
+    if any(ignored in domain for ignored in ignored_domains):
+        return 0, []
+
+    suspicious_tlds = [".ru", ".xyz", ".top", ".zip", ".click", ".info"]
+    shorteners = ["bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "is.gd"]
+
+    if full_url.startswith("http://"):
+        score += 20
+        findings.append(f"Non-HTTPS URL detected: {url}")
+
+    if any(domain.endswith(tld) for tld in suspicious_tlds):
+        score += 30
+        findings.append(f"Suspicious URL TLD detected: {domain}")
+
+    if any(shortener == domain for shortener in shorteners):
+        score += 25
+        findings.append(f"URL shortener detected: {domain}")
+
+    if "@" in url:
+        score += 40
+        findings.append(f"URL contains @ symbol: {url}")
+
+    if domain.count("-") >= 2:
+        score += 15
+        findings.append(f"Domain contains multiple hyphens: {domain}")
+
+    if any(fake in domain for fake in ["micr0soft", "paypa1", "arnazon"]):
+        score += 50
+        findings.append(f"Lookalike brand domain detected: {domain}")
+
+    return score, findings
 
 
 def analyze_attachment_risk(attachment):
@@ -166,7 +234,9 @@ def analyze_phishing_email(email_data):
     received_spf = email_data.get("received_spf", "")
     attachments = email_data.get("attachments", [])
 
-    trusted_senders = ["iii.com"]
+    trusted_senders = [
+        "iii.com"
+    ]
 
     is_trusted_sender = any(
         trusted_domain in sender.lower()
@@ -193,7 +263,6 @@ def analyze_phishing_email(email_data):
         auth_results,
         received_spf
     )
-
     risk_score += auth_score
     findings.extend(auth_findings)
 
@@ -202,6 +271,33 @@ def analyze_phishing_email(email_data):
 
     if urls:
         findings.append(f"URLs detected: {len(urls)}")
+
+        for url in urls:
+            local_url_score, local_url_findings = analyze_url_reputation(url)
+            risk_score += local_url_score
+            findings.extend(local_url_findings)
+
+            parsed = urlparse(url)
+            domain = parsed.netloc.lower()
+
+            ignored_vt_domains = [
+                "ecp.yusercontent.com",
+                "ci3.googleusercontent.com",
+                "static.punchbowl.com",
+                "googleusercontent.com",
+                "gstatic.com"
+            ]
+
+            if not any(ignored in domain for ignored in ignored_vt_domains):
+                vt_result = check_url_reputation(url)
+                vt_score = vt_result.get("score", 0)
+                vt_findings = vt_result.get("findings", [])
+
+                risk_score += vt_score
+
+                for vt_finding in vt_findings:
+                    if "no existing report" not in vt_finding.lower():
+                        findings.append(vt_finding)
 
     if keywords:
         findings.append(f"Suspicious keywords: {', '.join(keywords)}")
