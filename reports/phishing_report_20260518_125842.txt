@@ -1,0 +1,132 @@
+
+Phishing Report Submitted
+
+Reported by: unknown
+Message ID: msg-f:1865548899377983527
+
+Sender: Rusty Folsom <rfolsom@louisburglibrary.org>
+Reply-To: 
+Return-Path: 
+Subject: Phishing Report: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+Date: Mon, 18 May 2026 10:41:11 -0700
+
+Risk Level: Medium Risk
+Score: 17
+
+Findings:
+- Sender: Rusty Folsom <rfolsom@louisburglibrary.org>
+- Subject: Phishing Report: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+- URLs detected: 8
+- Suspicious keywords: click
+- IP addresses detected: 209.85.220.41, 209.85.220.41, 209.85.220.41, 209.85.220.41, 209.85.220.41, 05.18.08.28, 209.85.220.41, 209.85.220.41, 209.85.220.41
+
+Recommendation:
+No major phishing indicators found, but continue to use caution.
+
+--- Email Body Preview ---
+
+Phishing Report Submitted
+
+Reported by: unknown
+Message ID: msg-f:1865540576249073220
+
+Sender: Danielle Folsom <dfolsom@louisburglibrary.org>
+Reply-To: 
+Return-Path: <dfolsom@louisburglibrary.org>
+Subject: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+Date: Mon, 18 May 2026 10:28:40 -0500
+
+Risk Level: Suspicious
+Score: 59
+
+Findings:
+- SPF soft fail detected.
+- DKIM passed.
+- Sender: Danielle Folsom <dfolsom@louisburglibrary.org>
+- Subject: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+- URLs detected: 19
+- Suspicious keywords: click
+- Email contains 1 attachment(s).
+
+Recommendation:
+Use caution. Do not open attachments until reviewed.
+
+--- Email Body Preview ---
+---------- Forwarded message ---------
+From: Jessica Finch <inbloomfloraldesign@hotmail.com>
+Date: Sat, May 16, 2026 at 3:58 PM
+Subject: EXCLUSIVE INVITE FROM JESSICA FINCH
+To:
+
+
+
+
+[image: Punchbowl]
+
+You're invited! Please click on the invitation to see more details and to
+RSVP.
+
+MEET & GREET
+Sunday May 24,2026
+12.00pm-3:00pm
+
+[image: MEET & GREET] <https://almarabeaunited.com/ns>
+
+[image: Open your invitation] <https://almarabeaunited.com/ns>
+
+Don't want invitations from this host? Remove yourself
+<https://almarabeaunited.com/ns>.
+If you can't see the above invitation, click here
+<https://almarabeaunited.com/ns>.
+Add mail@mail.punchbowl.com <https://almarabeaunited.com/ns> to your
+address book to ensure you receive all invitations and cards in your inbox
+To learn about our privacy policy, click here
+<https://almarabeaunited.com/one>.
+
+
+
+
+
+
+-- 
+Danielle Folsom - Interlibrary Loan Coordinator
+206 S. Broadway - Louisburg KS 66053 - 913-837-2217
+[image: PCPG Email Signature 2026 .png] <http://www.louisburglibrary.org>
+
+
+<div dir="ltr"><br><br><div class="gmail_quote gmail_quote_container"><div dir="ltr" class="gmail_attr">---------- Forwarded message ---------<br>From: <strong class="gmail_sendername" dir="auto">Jessica Finch</strong> <span dir="auto">&lt;<a href="mailto:inbloomfloraldesign@hotmail.com">inbloomfloraldesign@hotmail.com</a>&gt;</span><br>Date: Sat, May 16, 2026 at 3:58 PM<br>Subject: EXCLUSIVE INVITE FROM JESSICA FINCH<br>To: <br></div><br><br><div class="msg6735800970780834676">
+
+
+
+
+<div dir="ltr">
+<div style="font-family:&quot;Calibri&quot;,&quot;Helvetica&quot;,sans-serif;font-size:12pt;color:rgb(0,0,0)">
+<br>
+</div>
+<div style="direction:ltr;font-family:&quot;Calibri&quot;,&quot;Helvetica&quot;,sans-serif;font-size:12pt;color:rgb(0,0,0)">
+<br>
+</div>
+<table style="direction:ltr;width:540px;max-width:540px;color:rgb(51,51,51);border-collapse:collapse;border-spacing:0px;box-sizing:border-box" align="center" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td style="direction:ltr" align="center"><span style="font-family:&quot;Calibri&quot;,&quot;Helvetica&quot;,sans-serif;font-size:12pt;color:rgb(0,0,0)"><img alt="Punchbowl" style="width:145px;max-width:681px;margin:0px auto;padding-bottom:20px;display:block" width="145" src="https
+
+[Body truncated]
+
+--- Authentication Results ---
+
+
+--- Received-SPF ---
+
+
+--- Raw Headers ---
+Received: from 300145445772 named unknown by gmailapi.google.com with HTTPREST; Mon, 18 May 2026 10:41:11 -0700
+Received: from 300145445772 named unknown by gmailapi.google.com with HTTPREST; Mon, 18 May 2026 10:41:11 -0700
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+to: rfolsom@louisburglibrary.org
+subject: Phishing Report: Fwd: EXCLUSIVE INVITE FROM JESSICA FINCH
+Date: Mon, 18 May 2026 10:41:11 -0700
+Message-Id: <CAAh8rCsROTan0aTY-bS1zON8ynCcuxqNnQT6y7QfpRhBYRf7qg@mail.gmail.com>
+From: Rusty Folsom <rfolsom@louisburglibrary.org>

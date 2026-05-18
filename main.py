@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from datetime import datetime
+from pathlib import Path
 
+from database import save_report
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 
@@ -78,6 +81,16 @@ Recommendation:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     report_file = reports_dir / f"phishing_report_{timestamp}.txt"
     report_file.write_text(report_body, encoding="utf-8")
+
+    save_report(
+    message_id=request.messageId,
+    sender=email_data.get("from", ""),
+    subject=email_data.get("subject", ""),
+    risk_level=results.get("risk_level", ""),
+    score=results.get("score", 0),
+    recommendation=results.get("recommendation", "")
+    
+)
 
     send_report_email(
         to_email="rfolsom@louisburglibrary.org",
