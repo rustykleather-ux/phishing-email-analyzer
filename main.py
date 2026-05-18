@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from gmail_reader import get_gmail_message
+from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 
 app = FastAPI(title="Louisburg Phishing Analyzer")
@@ -21,27 +21,42 @@ def analyze_email(request: AnalyzeRequest):
 
     return results
 
-
 @app.post("/report")
 def report_phishing(request: AnalyzeRequest):
-
     email_data = get_gmail_message(request.messageId)
-
     results = analyze_phishing_email(email_data)
 
-    print("\n=== PHISHING REPORT SUBMITTED ===")
-    print(f"Message ID: {request.messageId}")
-    print(f"Sender: {email_data.get('from', '')}")
-    print(f"Subject: {email_data.get('subject', '')}")
-    print(f"Risk Level: {results.get('risk_level')}")
-    print(f"Score: {results.get('score')}")
+    findings_text = "\n".join(
+        f"- {finding}" for finding in results.get("findings", [])
+    )
 
-    print("Findings:")
+    report_body = f"""
+Phishing Report Submitted
 
-    for finding in results.get("findings", []):
-        print(f"- {finding}")
+Reported by: {request.userEmail}
+Message ID: {request.messageId}
+
+Sender: {email_data.get("from", "")}
+Subject: {email_data.get("subject", "")}
+Date: {email_data.get("date", "")}
+
+Risk Level: {results.get("risk_level")}
+Score: {results.get("score")}
+
+Findings:
+{findings_text}
+
+Recommendation:
+{results.get("recommendation")}
+"""
+
+    send_report_email(
+        to_email="rfolsom@louisburglibrary.org",
+        subject=f"Phishing Report: {email_data.get('subject', '')}",
+        body=report_body
+    )
 
     return {
         "status": "reported",
-        "message": "Phishing report received."
-    }
+        "message": "Phishing report emailed to IT."
+        }
