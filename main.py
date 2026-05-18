@@ -20,7 +20,7 @@ def analyze_email(request: AnalyzeRequest):
     results = analyze_phishing_email(email_data)
 
     return results
-
+## Reporting Function ##
 @app.post("/report")
 def report_phishing(request: AnalyzeRequest):
     email_data = get_gmail_message(request.messageId)
@@ -30,7 +30,49 @@ def report_phishing(request: AnalyzeRequest):
         f"- {finding}" for finding in results.get("findings", [])
     )
 
-    report_body = f"""
+    raw_headers_text = "\n".join(
+    f"{header.get('name', '')}: {header.get('value', '')}"
+    for header in email_data.get("raw_headers", [])
+)
+
+email_body_preview = email_data.get("body", "")
+
+if len(email_body_preview) > 3000:
+    email_body_preview = email_body_preview[:3000] + "\n\n[Body truncated]"
+
+report_body = f"""
+Phishing Report Submitted
+
+Reported by: {request.userEmail}
+Message ID: {request.messageId}
+
+Sender: {email_data.get("from", "")}
+Reply-To: {email_data.get("reply_to", "")}
+Return-Path: {email_data.get("return_path", "")}
+Subject: {email_data.get("subject", "")}
+Date: {email_data.get("date", "")}
+
+Risk Level: {results.get("risk_level")}
+Score: {results.get("score")}
+
+Findings:
+{findings_text}
+
+Recommendation:
+{results.get("recommendation")}
+
+--- Email Body Preview ---
+{email_body_preview}
+
+--- Authentication Results ---
+{email_data.get("authentication_results", "")}
+
+--- Received-SPF ---
+{email_data.get("received_spf", "")}
+
+--- Raw Headers ---
+{raw_headers_text}
+"""
 Phishing Report Submitted
 
 Reported by: {request.userEmail}
