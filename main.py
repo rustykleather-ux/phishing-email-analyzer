@@ -72,6 +72,13 @@ Recommendation:
 {raw_headers_text}
 """
 
+    reports_dir = Path("reports")
+    reports_dir.mkdir(exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    report_file = reports_dir / f"phishing_report_{timestamp}.txt"
+    report_file.write_text(report_body, encoding="utf-8")
+
     send_report_email(
         to_email="rfolsom@louisburglibrary.org",
         subject=f"Phishing Report: {email_data.get('subject', '')}",
