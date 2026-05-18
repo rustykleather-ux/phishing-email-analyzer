@@ -5,10 +5,12 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from email.mime.text import MIMEText
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
-
-
+SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send"
+]
 def get_gmail_service():
     creds = None
 
@@ -66,6 +68,27 @@ def walk_parts(part, bodies, attachments):
 
     for child in part.get("parts", []):
         walk_parts(child, bodies, attachments)
+
+##Email Report To IT##
+
+def send_report_email(to_email, subject, body):
+    service = get_gmail_service()
+
+    message = MIMEText(body)
+    message["to"] = to_email
+    message["subject"] = subject
+
+    raw_message = base64.urlsafe_b64encode(
+        message.as_bytes()
+    ).decode("utf-8")
+
+    sent_message = service.users().messages().send(
+        userId="me",
+        body={"raw": raw_message}
+    ).execute()
+
+    return sent_message
+
 
 
 def get_gmail_message(message_id):
