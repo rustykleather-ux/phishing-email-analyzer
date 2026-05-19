@@ -24,19 +24,17 @@ def analyze_email(request: AnalyzeRequest):
     results = analyze_phishing_email(email_data) or {}
     return results
 
-
 @app.post("/report")
 def report_phishing(request: AnalyzeRequest):
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
 
     results = analyze_phishing_email(email_data)
-    if results is None:
-        results = {}
 
     findings_text = "\n".join(
         f"- {finding}" for finding in results.get("findings", [])
     )
+
     raw_headers_text = "\n".join(
         f"{header.get('name', '')}: {header.get('value', '')}"
         for header in email_data.get("raw_headers", [])
@@ -45,7 +43,9 @@ def report_phishing(request: AnalyzeRequest):
     email_body_preview = email_data.get("body", "")
 
     if len(email_body_preview) > 3000:
-        email_body_preview = email_body_preview[:3000] + "\n\n[Body truncated]"
+        email_body_preview = (
+            email_body_preview[:3000] + "\n\n[Body truncated]"
+        )
 
     report_body = f"""
 Phishing Report Submitted
@@ -85,26 +85,32 @@ Recommendation:
     reports_dir.mkdir(exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     report_file = reports_dir / f"phishing_report_{timestamp}.txt"
-    report_file.write_text(report_body, encoding="utf-8")
+
+    report_file.write_text(
+        report_body,
+        encoding="utf-8"
+    )
 
     save_report(
-    message_id=request.messageId,
-    sender=email_data.get("from", ""),
-    subject=email_data.get("subject", ""),
-    risk_level=results.get("risk_level", ""),
-    score=results.get("score", 0),
-    recommendation=results.get("recommendation", "")
-    
-)
+        message_id=request.messageId,
+        sender=email_data.get("from", ""),
+        subject=email_data.get("subject", ""),
+        risk_level=results.get("risk_level", ""),
+        score=results.get("score", 0),
+        recommendation=results.get("recommendation", "")
+    )
 
-    send_report_email()
-    to_email="rfolsom@louisburglibrary.org",
-    subject=f"Phishing Report: {email_data.get('subject', '')}",
+    send_report_email(
+        to_email="rfolsom@louisburglibrary.org",
+        subject=f"Phishing Report: {email_data.get('subject', '')}",
+        body=report_body
+    )
+
     return {
         "status": "reported",
         "message": "Phishing report emailed to IT."
-    
     }
 
 

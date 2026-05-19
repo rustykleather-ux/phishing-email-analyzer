@@ -1,0 +1,192 @@
+
+Phishing Report Submitted
+
+Reported by: unknown
+Message ID: msg-f:1865627442216511544
+
+Sender: TechSoup Customer Service <notify-noreply@techsoup.org>
+Reply-To: 
+Return-Path: <notify-noreply@techsoup.org>
+Subject: Confirmation of Request Number 4526654
+Date: Tue, 19 May 2026 14:29:28 +0000
+
+Risk Level: Dangerous
+Score: 92
+
+Findings:
+- SPF passed.
+- DKIM passed.
+- DMARC passed.
+- Sender: TechSoup Customer Service <notify-noreply@techsoup.org>
+- Subject: Confirmation of Request Number 4526654
+- URLs detected: 26
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- Non-HTTPS URL detected: http://www.techsoup.org/norton/?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+- Non-HTTPS URL detected: http://www.techsoup.org/norton/?utm_source=marketing&amp;utm_medium=email&amp;utm_content=cc_order&amp;utm_campaign=onyx
+- VirusTotal lookup failed: HTTP 429
+- VirusTotal lookup failed: HTTP 429
+
+Recommendation:
+Do not click links or open attachments. Report this email to IT.
+
+--- Email Body Preview ---
+We're processing your request.
+[TechSoup Logo]<https://www.techsoup.org/>
+
+(Do not reply to this email. We make it easy to get help<https://www.techsoup.org/about-us/contact-us?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx>.)
+
+Thanks for Placing a Request Through TechSoup
+
+
+Hi, Louisburg Public Library,
+
+
+We'll finish processing your request within three business days.
+
+
+Please note that your organization’s nonprofits status must be verified by TechSoup before requests can be processed.
+
+Payment
+
+
+A temporary Authorization Hold is placed on your credit card that can look like a charge from TechSoup. This Authorization Hold will be replaced with a charge when your request is successfully processed.
+
+Obtaining Your Items
+
+
+Once your request is successfully processed, you'll receive an email with instructions about how to obtain your requested items. You can always find your Fulfillment Emails<https://www.techsoup.org/FullfillmentMessages?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx> within your account.
+
+Manage Your Request
+
+
+To view this request’s status, edit payment, or cancel the request, find request #4526654 in the request history<https://www.techsoup.org/OrderHistory?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx> in your account. Requests can be canceled until fully processed.
+
+
+Items Requested
+
+          Title: Tableau Desktop and Tableau Prep Builder, 2-Year Subscription
+          Quantity: 1
+          Item Price: $74.00
+
+Sales tax: $0.00
+Shipping: $0.00 (Ground)
+Total: $74.00
+
+
+Request Details
+Your request number: 4526654
+Requested on: 5/19/2026 7:29:11 AM
+Requested by: Rusty Folsom
+Louisburg Public Library
+206 S. Broadway
+
+Louisburg, KS 66053
+
+
+
+Have questions? Check out TechSoup Support<https://support.techsoup.org/?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx> or contact us.<https://www.techsoup.org/about-us/contact-us?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx>
+
+
+For more nonprofit tips and tricks join our community<https://forums.techsoup.org/?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx> or find us on Facebook<https://www.facebook.com/TechSoupGlobal>.
+
+
+        [Microsoft for Nonprofits] <https://www.techsoup.org/microsoft/?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx>
+
+Microsoft for Nonprofits
+
+Significant savings on Office, Windows, Microsoft cloud offers, and more.
+
+
+        TAKE A LOOK<https://www.techsoup.org/microsoft/?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx>
+
+
+
+        [Adobe Creative Cloud and Document Cloud] <https://www.techsoup.org/adobe/?utm_source=marketing&utm_medium=email&utm_content=cc_order&utm_campaign=onyx>
+
+Adobe Creative Cloud and Document Cloud
+
+Professional-grade creative and docu
+
+[Body truncated]
+
+--- Authentication Results ---
+mx.google.com;       dkim=pass header.i=@TechSoupGlobal.onmicrosoft.com header.s=selector2-TechSoupGlobal-onmicrosoft-com header.b=osb9488b;       arc=pass (i=1 spf=pass spfdomain=techsoup.org dkim=pass dkdomain=techsoup.org dmarc=pass fromdomain=techsoup.org);       spf=pass (google.com: domain of notify-noreply@techsoup.org designates 2a01:111:f403:c112::5 as permitted sender) smtp.mailfrom=notify-noreply@techsoup.org;       dmarc=pass (p=QUARANTINE sp=NONE dis=NONE) header.from=techsoup.org
+
+--- Received-SPF ---
+pass (google.com: domain of notify-noreply@techsoup.org designates 2a01:111:f403:c112::5 as permitted sender) client-ip=2a01:111:f403:c112::5;
+
+--- Raw Headers ---
+Delivered-To: rfolsom@louisburglibrary.org
+Received: by 2002:a05:7108:3752:b0:558:e174:7cd7 with SMTP id z18csp2821270gdg;        Tue, 19 May 2026 07:29:35 -0700 (PDT)
+X-Received: by 2002:a05:690c:dd3:b0:7b8:926e:3f0d with SMTP id 00721157ae682-7c95c6f6efbmr208144907b3.26.1779200975514;        Tue, 19 May 2026 07:29:35 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1779200975; cv=pass;        d=google.com; s=arc-20240605;        b=C58KMqvrvCRX8fIllkVhJdR8k7lBOmE1+d9iOPO5gq31sOREbnOguZWM20OLX3sZZS         z6VaQNOLG7DQDuI10e66KThoX2xWsTpKGcNR+vcNdzSIWsTaRlve+d6u50yabxyVAOCo         kD8LL4bxBdSuZy3gsVgsNNIwilltRqd4vMKVxa2hOY/yr0XD4u97ZNshi5K5WTIgK/O4         M7EOf7DCuBEyPjjs5EoCp6sTvl8Y0vKW5tmH/L4bC2kU3E1Ee5bwDw5tKKZb+FGWkVMx         JYIcfAfsi8mJc7ulZaJWLibJ+BcJBRCIUzsl4KDHDCT03QSmChJQfRBKH0tRfcmfeFoE         b9dg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;        h=mime-version:content-language:accept-language:message-id:date         :thread-index:thread-topic:subject:cc:to:from:dkim-signature;        bh=PBPBOCGbPRbfubo2sLhTC/5olzQnqfAWeSAHeu0xkpM=;        fh=oVuknoWsvqZ8I6x7Ji20dtvIVJazshgjXhl1XzDr2CQ=;        b=ebKxDHf13FQQ/HpJQXRqebXOLPBS5poAM75zK0A/4wPb3M/PaqAZ9Kw75DlI9BTIEt         VewsYgr+oAUXY3kkbDZLDqE6qfRJa5QPzIkH16XW74d/1yJK3KCV9a5OGSadDSxX8zH0         AEyoel6JguBOJcxhkdGqUfcEx0A4WVQPzIQkdCGybjozQso+6S9zVB+HdlkpYdXIfTmG         E9BfT+frt4ZOnvsWKFwGkNKRMkpkupus5ul74PPlhA/IVaL7UJ6tpfKtBHQShCrCjUO1         nIh+ooZ9eoX6bApq0Gnk9bty2qKj/y4f9FA8A+eeobVyl8yeH2CXPj4jSONW70k0elcU         ZYmg==;        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;       dkim=pass header.i=@TechSoupGlobal.onmicrosoft.com header.s=selector2-TechSoupGlobal-onmicrosoft-com header.b=osb9488b;       arc=pass (i=1 spf=pass spfdomain=techsoup.org dkim=pass dkdomain=techsoup.org dmarc=pass fromdomain=techsoup.org);       spf=pass (google.com: domain of notify-noreply@techsoup.org designates 2a01:111:f403:c112::5 as permitted sender) smtp.mailfrom=notify-noreply@techsoup.org;       dmarc=pass (p=QUARANTINE sp=NONE dis=NONE) header.from=techsoup.org
+Return-Path: <notify-noreply@techsoup.org>
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazlp170100005.outbound.protection.outlook.com. [2a01:111:f403:c112::5])        by mx.google.com with ESMTPS id 00721157ae682-7cc995b89e2si80885177b3.13.2026.05.19.07.29.35        for <rfolsom@louisburglibrary.org>        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);        Tue, 19 May 2026 07:29:35 -0700 (PDT)
+Received-SPF: pass (google.com: domain of notify-noreply@techsoup.org designates 2a01:111:f403:c112::5 as permitted sender) client-ip=2a01:111:f403:c112::5;
+Authentication-Results: mx.google.com;       dkim=pass header.i=@TechSoupGlobal.onmicrosoft.com header.s=selector2-TechSoupGlobal-onmicrosoft-com header.b=osb9488b;       arc=pass (i=1 spf=pass spfdomain=techsoup.org dkim=pass dkdomain=techsoup.org dmarc=pass fromdomain=techsoup.org);       spf=pass (google.com: domain of notify-noreply@techsoup.org designates 2a01:111:f403:c112::5 as permitted sender) smtp.mailfrom=notify-noreply@techsoup.org;       dmarc=pass (p=QUARANTINE sp=NONE dis=NONE) header.from=techsoup.org
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none; b=jV+3OGWdQsdtaDdQnd4ARwenvA9GrM7lZ62zXDWoZ7JvOFbcKpD+gkaiYJdS5RnlBkq8FHRtINxaCIp7LllmaSDboifRv+1yNOfCOMj4eSXC/O969hBodm1x9XxsEZqOnorrJ2B0V4RgWTaMByQjs1fGEL3j59Qjtbkd+30DpFhG7J6TveA7PnIRW8ql6fjHnyGYyEHahPD9LbB4oj6wAs2/oxfJ1/nhLfkJAB0w74934rVJlACUnsxnG1t+Uw0znepRDGTLQK7DxtROCe+eNNzvYLL6Mjwikb+I+zmWzEG0zBN4FIgGlXmZkjDEjIHJOwAaiJpPfGR6/WG0n+CepQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; s=arcselector10001; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1; bh=PBPBOCGbPRbfubo2sLhTC/5olzQnqfAWeSAHeu0xkpM=; b=VsDUEbG6iSskI7VNbBAWQJqh7mcpcHDaNHFevZrW+vz0XMyydir8JYB8AUmK2FL2QdXzE3oY9J7sB8AXnczu4h6z4uP2gpNfDVSOt0HKfh5o2mE66DSnWhaW28qsAEKxSVJEvCbOR5wWXc8zX5IogKgqQKBz0hnNJx7jn1Cd9N5jlEksXeR7xmP4Der1z1FoBbURv1Pk5f0yyry6lK/IqM4vQS5aty/N56VkaurAljUwNWz+Nuu/HMJxbocTpmuFqKfcQQugpwd9Cwhop+Nu2pTsbqZibuqsW4XBBvs43Rs5UXqJvqAv4p9Dcra7ER3McnCsbIwRYQS5aapXi2Is/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass smtp.mailfrom=techsoup.org; dmarc=pass action=none header.from=techsoup.org; dkim=pass header.d=techsoup.org; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=TechSoupGlobal.onmicrosoft.com; s=selector2-TechSoupGlobal-onmicrosoft-com; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=PBPBOCGbPRbfubo2sLhTC/5olzQnqfAWeSAHeu0xkpM=; b=osb9488bEEucB/SN2uy2R9KitNfRP/47ANxkya09GnwstorHZDCYO0qg3jGZWPXyelNd4TgXswCmv4BKGSJMEybDypSDWTm+05cPYsOlYIUbthV4jWW5+vNo7NsUl7CCfMD9wHf1IM5FTm/OcKqn/TenEmNjMT7zCjZtqZVCuTY=
+Received: from MW5PR17MB5987.namprd17.prod.outlook.com (2603:10b6:303:1c7::20) by IA0PR17MB6370.namprd17.prod.outlook.com (2603:10b6:208:434::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Tue, 19 May 2026 14:29:33 +0000
+Received: from MW5PR17MB5987.namprd17.prod.outlook.com ([fe80::dcd0:f683:4927:8b3e]) by MW5PR17MB5987.namprd17.prod.outlook.com ([fe80::dcd0:f683:4927:8b3e%6]) with mapi id 15.21.0048.013; Tue, 19 May 2026 14:29:32 +0000
+From: TechSoup Customer Service <notify-noreply@techsoup.org>
+To: "rfolsom@louisburglibrary.org" <rfolsom@louisburglibrary.org>
+CC: "rfolsom@louisburglibrary.org" <rfolsom@louisburglibrary.org>
+Subject: Confirmation of Request Number 4526654
+Thread-Topic: Confirmation of Request Number 4526654
+Thread-Index: AalWUEu+WE4wkIbbajpNu4bc55vddw==
+Date: Tue, 19 May 2026 14:29:28 +0000
+Message-ID: <FBD1807C5B9C4863A81E7D2D7B7161F91DCE79BDD773@NOTIFY-NOREPLY.TECHSOUP.ORG>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed) header.d=none;dmarc=none action=none header.from=techsoup.org;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW5PR17MB5987:EE_|IA0PR17MB6370:EE_
+x-ms-office365-filtering-correlation-id: 794074b6-0bbd-4c0d-4aa1-08deb5b30b75
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7049299003|376014|69100299015|366016|1800799024|3109299003|3023799003|38070700021|11063799006|13003099007|8096899003|56012099003|18002099003;
+x-microsoft-antispam-message-info: y3ClXWztY+35T+bEGsVwiCpuVVgIMgJ2QhYLqEolautZdmeMb36ZMW1cp8AHl226SsYomoftsXbJieZVJyYGGRCjaNKOO5/s4bb6+gF8nshADCxlkDANplrIkeW5RA0f6raCR20HlW/kRFwneXnfYsh9ks7yr5CkbAXpGpeLk/6ZJU7Y+joyLiiLVCBKXjyUjgKUn2A7D64PG4NdXpdr03GgvXKvbpucWugrS7OPOYzSbeQPQ1RviIhd+rhUY/mhl1nb/ywoF7B7bHkgHC/6jfh24lMpmeoOjITupuq1Dl16YEC+HI65ZX2ObPgc2WmbaHPbFslvIP5YS5ea1AHQGudbA9dMitnXUEWyOZwUdsHRcH3ucNhgl8CCNKwX4VL7xiAae/No4wUJckxNjw42KoLt1Whv6yC7PGdOtfIjIydOtv/Hth9CT3GsOKOvIJWflkZwGVCoSOFmChifsrpVtF68DhXBRGovl9Ig4YUVQ8ppyqmcKOwID6Z0NQFSa9cjCfvYNHNhAPWfQuuZ3+Qo2VVaHUO4qXPeOw0gRq023raBV/w8sHdETFALn5jL5bfamp4bN+O8qCDRyuimeY6xbAWLNbtXi1/d+e5Ky7uu9TU0MVB2M+U9WOnOvZiQ0EdoAJvpLMPMMFZNiqGc1ZG0CiJ72C7c5jYGWo2CcUbMbc8tlSGy9A8G/gIXQmfFaHhW
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR17MB5987.namprd17.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7049299003)(376014)(69100299015)(366016)(1800799024)(3109299003)(3023799003)(38070700021)(11063799006)(13003099007)(8096899003)(56012099003)(18002099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: cEl5V8erPbu7WrLJQprzMajory2BkuL+OqBjmzoo9K/pr3MzIOBRFqjmXBDo4XsWxzTG6cF4+r6wM15ht+24C7TXzA1V9NsTwOOUlO4Y5mE/fQaA/ucv3suxx1bkZWG5iYHAOTtnJqI+tTghgNGYYaa96gQnXGGPu2je+ySx/aGEZ9W/8TMSwVBqZBEf7P6rTPZhQrmv5/lX/71WVzosu2xk/1AIT0NGmJbxkdkbqJVKZCVaKhNn+BrY6cVkxJrTJrMOfeUEwycRPCttns5USFKnJA11A1WFXtwex8q4JC4KoiIH2CSfiLzCEih9Wy4JbLCPgslNB4aAdKs9k96eJqTVUwURDJjXRDtMmGc8bkaSyOwH5UAEzyFS003sg2FVx2V5K0YAmApHsiAxKwSg1iRf9yLr1vTOQy71dHlzNiiYFVrRbJICm9y32l1gD3u5MrKlids2RwCgz4l+HpOYzuMlqQtapk0JmRdkzjE2eZbqesBJZXCmlYffIpeY/Flh/PcZgtNkPLwcZUU1B9jFtwwj/g5AgvJwHONKLI1JoDTZC2E4LCX+c6GMQLcc6hm6gdSx5upBR1Zqpo6hFmBcu7azg5UMDtHR5LnaB6ZZNrea+Ol8H9b37OhTJhuV9YLjiV6bRl73HXMNNCROcDfUaGcLMZbORO5qShx//ft4Oc21+vnHmOxtaqtysnJEj6WAXOaPddqKVID77qHLmvtxPjtbi2lsvDpr8mEeTtLGx29YS9ZJowM714AzzvYdopPGp5XtvMFkHYZEln/MFZb+LHtZ5qD+ZeQLiqbWnTFjg2FgxivONSIjWxY6/6+KZcFdeU74H6vO73/qgXSYp43b4wlx6x81VJ72ZNyBr71/tYOwuMR848Kn46qDAJSQBbrafVtzq63mMDR4GDe0uQZ17E8HsGy7k9VW2CA1ysp9Gv2Xx69RdY7xID79jnd4RibFmdFgBxhLlMhDP3tFWtEkQqvKWTo1mwn/EwDfuUToiLJbjz6O3vFhHGd71CzpW055GYJ7lXBSode7C7UPK9eod9upkwpMiZ3nbNJGVPqpe6LAeFDOG3LnHXporJ9sD+KC7AZR+nowRbv8Z3HQGwc/9jXuqxOAZPW2cLJPKEWjblrG+orayq4tlmrZGVMJvUajNrRj+Ej1sGiADDOPxBzMUfs2lz4FPGrVypMJFYcIDj5AjppaWfdqcVVA77wJICknJrZDQ33sT4Wh49dXANmtQtSlNGuXolFac4CWRCPQf+hxZStkmB5yJtqP0cdCRP7pMfDRkCcDKf3un6Toasxh8UGZ8DpKCkZvIZKZoeOdtX5rCzz72CX2iojgv30bOepFrUVaOCs5HYgYw840deUA2TIVPMRt6yXzAwMKSESM8zgftsVnkelYz1z+V6C6+iK5jS+e62fd52X7Jh05VOD0V+Pcct+yLp6V7chgq5HyDJlP19pX64KKvVkQ/ZJ4Ze0JYgf/9BpgKqr3iFnWz7U9DHSw//pB5DSy2URzLxjf3JwCGX802wGLrtouzeEhnDVkmTZFaqwelWe0zTWGHrHXAUatBLIO/XEc39Z5MRzl513pEcxTLyOPSiQALYcbBIGmcFA3yatONeQmN9RKQaTnQ7b8JX4NkGUZjz0BTgkyLum6/UwDayGt9/g4nx5GCr1anZoVH68si7ztImoYwG/q8c/3RntPkutT2XmwK3MJljvP7YzHpTItE7q3rawL58lVxh2RI1Z4EMtZaa61J/unZCjuYFVK1KoaaP8pQQljKpVpDRg/kQPYo5AAn9FeWPVG
+Content-Type: multipart/alternative; boundary="_000_FBD1807C5B9C4863A81E7D2D7B7161F91DCE79BDD773NOTIFYNOREP_"
+MIME-Version: 1.0
+X-OriginatorOrg: techsoup.org
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR17MB5987.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 794074b6-0bbd-4c0d-4aa1-08deb5b30b75
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2026 14:29:28.7952 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d8ba2331-6b05-4303-9a60-36c58c3e272d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tkMcxrlFVdztTg7eIkTpg64H+U8avzAy/EVqZopn8iGTe89y7fDylffb9+Z8mWT5pM2LEQ0ypHLghlQ9qWBRjCKfY5pY+XOQOE9VLbpYJA27NDNy/dUE6mrk5VrVjt/7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR17MB6370

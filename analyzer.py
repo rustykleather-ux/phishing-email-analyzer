@@ -312,30 +312,30 @@ def analyze_phishing_email(email_data):
     if ip_addresses:
         findings.append(f"IP addresses detected: {', '.join(ip_addresses)}")
 
-    if attachments:
-        findings.append(f"Email contains {len(attachments)} attachment(s).")
+        if attachments:
+            findings.append(f"Email contains {len(attachments)} attachment(s).")
 
     for attachment in attachments:
-     attachment_score, attachment_findings = analyze_attachment_risk(attachment)
-    risk_score += attachment_score
-    findings.extend(attachment_findings)
+        attachment_score, attachment_findings = analyze_attachment_risk(attachment)
+        risk_score += attachment_score
+        findings.extend(attachment_findings)
 
-    attachment_id = attachment.get("attachment_id", "")
-    filename = attachment.get("filename", "")
-    message_id = email_data.get("message_id", "")
+        attachment_id = attachment.get("attachment_id", "")
+        filename = attachment.get("filename", "")
+        message_id = email_data.get("message_id", "")
 
-    if attachment_id and message_id:
-        file_hash = get_attachment_sha256(message_id, attachment_id)
+        if attachment_id and message_id:
+            file_hash = get_attachment_sha256(message_id, attachment_id)
 
-        if file_hash:
-            findings.append(f"Attachment SHA256 for {filename}: {file_hash}")
+            if file_hash:
+                findings.append(f"Attachment SHA256 for {filename}: {file_hash}")
 
-            vt_file_result = check_file_hash_reputation(file_hash)
-            risk_score += vt_file_result.get("score", 0)
+                vt_file_result = check_file_hash_reputation(file_hash)
+                risk_score += vt_file_result.get("score", 0)
 
-            for vt_finding in vt_file_result.get("findings", []):
-                if "no existing report" not in vt_finding.lower():
-                    findings.append(vt_finding)
+                for vt_finding in vt_file_result.get("findings", []):
+                    if "no existing report" not in vt_finding.lower():
+                        findings.append(vt_finding)
 
     if is_trusted_sender and risk_score < 40:
         findings.append("Sender matches trusted vendor list.")
