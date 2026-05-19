@@ -166,10 +166,11 @@ def dashboard():
 
     .card, .chart-card {{
         background: #111827;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.35);
-        border: 1px solid #1f2937;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    border: 1px solid #1f2937;
+    max-height: 400px;
     }}
 
     .card {{
@@ -282,7 +283,11 @@ def dashboard():
                 datasets: [{{
                     data: riskCounts
                 }}]
-            }}
+            }},
+            options: {{
+                responsive: true,
+                maintainAspectRatio: false
+            }},
         }});
 
         new Chart(document.getElementById("senderChart"), {{
