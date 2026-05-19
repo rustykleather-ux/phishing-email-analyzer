@@ -344,26 +344,36 @@ def analyze_phishing_email(email_data):
     risk_level = risk_rating(risk_score)
 
     if risk_score >= 80:
+        risk_level = "Dangerous"
         recommendation = "Do not click links or open attachments. Report this email to IT."
+
     elif risk_score >= 40:
-        recommendation = "Use caution. Do not open attachments until reviewed."
+        risk_level = "Suspicious"
+        recommendation = "This email appears suspicious. Verify the sender before interacting."
+
+    elif risk_score >= 10:
+        risk_level = "Medium Risk"
+        recommendation = "Exercise caution with this email."
+
     else:
+        risk_level = "Low Risk"
         recommendation = "No major phishing indicators found, but continue to use caution."
-        iocs = {
+
+    iocs = {
         "urls": urls,
         "attachments": [
             attachment.get("filename", "")
             for attachment in attachments
         ]
     }
+
     return {
         "risk_level": risk_level,
         "score": risk_score,
-        "findings": findings or ["No major findings."],
+        "findings": findings,
         "recommendation": recommendation,
         "iocs": iocs
     }
-
 
 def save_to_json(data, filename="../reports/phishing_report.json"):
     with open(filename, "w", encoding="utf-8") as file:
