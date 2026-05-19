@@ -146,64 +146,76 @@ def dashboard():
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        body {{
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            margin: 0;
-            padding: 30px;
-        }}
+    body {{
+        font-family: Arial, sans-serif;
+        background-color: #0f172a;
+        color: #e5e7eb;
+        margin: 0;
+        padding: 30px;
+    }}
 
-        h1, h2 {{
-            color: #222;
-        }}
+    h1, h2 {{
+        color: #f8fafc;
+    }}
 
-        .cards {{
-            display: flex;
-            gap: 20px;
-            margin-bottom: 25px;
-        }}
+    .cards {{
+        display: flex;
+        gap: 20px;
+        margin-bottom: 25px;
+    }}
 
-        .card {{
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            flex: 1;
-        }}
+    .card, .chart-card {{
+        background: #111827;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+        border: 1px solid #1f2937;
+    }}
 
-        .charts {{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }}
+    .card {{
+        flex: 1;
+    }}
 
-        .chart-card {{
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }}
+    .charts {{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-bottom: 30px;
+    }}
 
-        table {{
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }}
+    table {{
+        width: 100%;
+        border-collapse: collapse;
+        background: #111827;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+        border: 1px solid #1f2937;
+    }}
 
-        th {{
-            background: #1a73e8;
-            color: white;
-            padding: 12px;
-            text-align: left;
-        }}
+    th {{
+        background: #1e40af;
+        color: white;
+        padding: 12px;
+        text-align: left;
+    }}
 
-        td {{
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }}
-    </style>
+    td {{
+        padding: 12px;
+        border-bottom: 1px solid #1f2937;
+        color: #d1d5db;
+    }}
+
+    tr:hover {{
+        background-color: #1f2937;
+    }}
+
+    ul {{
+        padding-left: 20px;
+    }}
+
+    a {{
+        color: #60a5fa;
+    }}
+</style>
 </head>
 
 <body>
@@ -232,7 +244,9 @@ def dashboard():
     <div class="charts">
         <div class="chart-card">
             <h2>Reports by Risk</h2>
-            <canvas id="riskChart"></canvas>
+            <div style="max-width: 300px; margin: auto;">
+        <canvas id="riskChart"></canvas>
+    </div>
         </div>
 
         <div class="chart-card">
