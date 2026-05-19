@@ -3,7 +3,7 @@ Python-based phishing email analysis tool for extracting indicators of compromis
 
 # Phishing Email Analyzer
 
-## Overview
+## Overview  
 
 ## Workflow
 Gmail Email
@@ -24,6 +24,7 @@ Gmail Email
 - URL analysis and reputation
 - Email authentication analysis
 - Automated phishing report
+- Attachment Hash
 
 ## Architecture
 Gmail Add-on → Apps Script → FastAPI → Gmail API → Analyzer
