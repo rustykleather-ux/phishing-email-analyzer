@@ -349,12 +349,19 @@ def analyze_phishing_email(email_data):
         recommendation = "Use caution. Do not open attachments until reviewed."
     else:
         recommendation = "No major phishing indicators found, but continue to use caution."
-
+        iocs = {
+        "urls": urls,
+        "attachments": [
+            attachment.get("filename", "")
+            for attachment in attachments
+        ]
+    }
     return {
         "risk_level": risk_level,
         "score": risk_score,
         "findings": findings or ["No major findings."],
-        "recommendation": recommendation
+        "recommendation": recommendation,
+        "iocs": iocs
     }
 
 

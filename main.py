@@ -138,13 +138,21 @@ def dashboard():
 
         rows_html += f"""
         <tr class="{row_class}">
-            <td>{report.get("created_at", "")}</td>
-            <td>{risk_level}</td>
-            <td>{score}</td>
-            <td>{report.get("sender", "")}</td>
-            <td>{report.get("subject", "")}</td>
-        </tr>
-        """
+        <td>{report.get("created_at", "")}</td>
+        <td>{risk_level}</td>
+        <td>{score}</td>
+        <td>{report.get("sender", "")}</td>
+        <td>{report.get("subject", "")}</td>
+
+        <td>
+        <button onclick="alert('IOC viewing coming next')">
+            View IOCs
+        </button>
+    </td>
+
+    <td>New</td>
+</tr>
+"""
 
     risk_labels = list(stats.get("by_risk", {}).keys())
     risk_counts = list(stats.get("by_risk", {}).values())
@@ -325,6 +333,8 @@ def dashboard():
             <th>Score</th>
             <th>Sender</th>
             <th>Subject</th>
+            <th>IOCs</th>
+            <th>Status</th>
         </tr>
         {rows_html}
     </table>

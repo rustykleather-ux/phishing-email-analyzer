@@ -20,7 +20,10 @@ def init_db():
             subject TEXT,
             risk_level TEXT,
             score INTEGER,
-            recommendation TEXT
+            recommendation TEXT,
+            status TEXT DEFAULT 'New',
+            analyst_notes TEXT DEFAULT '',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
