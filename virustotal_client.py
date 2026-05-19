@@ -14,6 +14,64 @@ def encode_url_id(url):
     encoded = base64.urlsafe_b64encode(url_bytes).decode("utf-8")
     return encoded.strip("=")
 
+def check_file_hash_reputation(file_hash):
+    if not VT_API_KEY:
+        return {
+            "available": False,
+            "score": 0,
+            "findings": ["VirusTotal API key not configured."]
+        }
+
+    headers = {
+        "x-apikey": VT_API_KEY
+    }
+
+    response = requests.get(
+        f"{VT_BASE_URL}/files/{file_hash}",
+        headers=headers,
+        timeout=15
+    )
+
+    if response.status_code == 404:
+        return {
+            "available": True,
+            "score": 0,
+            "findings": ["VirusTotal has no existing report for attachment hash."]
+        }
+
+    if response.status_code != 200:
+        return {
+            "available": False,
+            "score": 0,
+            "findings": [f"VirusTotal file hash lookup failed: HTTP {response.status_code}"]
+        }
+
+    data = response.json()
+    stats = data.get("data", {}).get("attributes", {}).get("last_analysis_stats", {})
+
+    malicious = stats.get("malicious", 0)
+    suspicious = stats.get("suspicious", 0)
+
+    score = 0
+    findings = []
+
+    if malicious > 0:
+        score += malicious * 20
+        findings.append(f"VirusTotal attachment malicious detections: {malicious}")
+
+    if suspicious > 0:
+        score += suspicious * 10
+        findings.append(f"VirusTotal attachment suspicious detections: {suspicious}")
+
+    if not findings:
+        findings.append("VirusTotal attachment reputation: no malicious detections.")
+
+    return {
+        "available": True,
+        "score": score,
+        "findings": findings
+    }
+
 
 def check_url_reputation(url):
     if not VT_API_KEY:

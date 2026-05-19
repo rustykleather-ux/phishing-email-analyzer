@@ -18,6 +18,8 @@ class AnalyzeRequest(BaseModel):
 @app.post("/analyze")
 def analyze_email(request: AnalyzeRequest):
     email_data = get_gmail_message(request.messageId)
+    email_data["message_id"] = request.messageId
+
     results = analyze_phishing_email(email_data)
     return results
 
@@ -25,7 +27,7 @@ def analyze_email(request: AnalyzeRequest):
 @app.post("/report")
 def report_phishing(request: AnalyzeRequest):
     email_data = get_gmail_message(request.messageId)
-    results = analyze_phishing_email(email_data)
+    email_data["message_id"] = request.messageId
 
     findings_text = "\n".join(
         f"- {finding}" for finding in results.get("findings", [])

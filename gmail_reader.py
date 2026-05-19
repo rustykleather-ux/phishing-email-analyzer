@@ -6,6 +6,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from email.mime.text import MIMEText
+import hashlib
 
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.readonly",
@@ -123,4 +124,32 @@ def get_gmail_message(message_id):
         "body": "\n\n".join(bodies),
         "attachments": attachments,
         "raw_headers": headers
+    
+    def get_attachment_bytes(message_id, attachment_id):
+    service = get_gmail_service()
+
+    attachment = service.users().messages().attachments().get(
+        userId="me",
+        messageId=message_id,
+        id=attachment_id
+    ).execute()
+
+    data = attachment.get("data", "")
+
+    if not data:
+        return b""
+
+    padded = data + "=" * (-len(data) % 4)
+    return base64.urlsafe_b64decode(padded.encode("utf-8"))
+
+
+def get_attachment_sha256(message_id, attachment_id):
+    file_bytes = get_attachment_bytes(message_id, attachment_id)
+
+    if not file_bytes:
+        return ""
+
+    return hashlib.sha256(file_bytes).hexdigest()
+
     }
+

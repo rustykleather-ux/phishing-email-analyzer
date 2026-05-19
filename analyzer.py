@@ -2,7 +2,8 @@ import re
 import json
 from pathlib import Path
 from urllib.parse import urlparse
-
+from gmail_reader import get_attachment_sha256
+from virustotal_client import check_file_hash_reputation
 from virustotal_client import check_url_reputation
 
 EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
@@ -315,9 +316,26 @@ def analyze_phishing_email(email_data):
         findings.append(f"Email contains {len(attachments)} attachment(s).")
 
     for attachment in attachments:
-        attachment_score, attachment_findings = analyze_attachment_risk(attachment)
-        risk_score += attachment_score
-        findings.extend(attachment_findings)
+    attachment_score, attachment_findings = analyze_attachment_risk(attachment)
+    risk_score += attachment_score
+    findings.extend(attachment_findings)
+
+    attachment_id = attachment.get("attachment_id", "")
+    filename = attachment.get("filename", "")
+    message_id = email_data.get("message_id", "")
+
+    if attachment_id and message_id:
+        file_hash = get_attachment_sha256(message_id, attachment_id)
+
+        if file_hash:
+            findings.append(f"Attachment SHA256 for {filename}: {file_hash}")
+
+            vt_file_result = check_file_hash_reputation(file_hash)
+            risk_score += vt_file_result.get("score", 0)
+
+            for vt_finding in vt_file_result.get("findings", []):
+                if "no existing report" not in vt_finding.lower():
+                    findings.append(vt_finding)
 
     if is_trusted_sender and risk_score < 40:
         findings.append("Sender matches trusted vendor list.")
