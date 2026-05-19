@@ -316,7 +316,7 @@ def analyze_phishing_email(email_data):
         findings.append(f"Email contains {len(attachments)} attachment(s).")
 
     for attachment in attachments:
-    attachment_score, attachment_findings = analyze_attachment_risk(attachment)
+     attachment_score, attachment_findings = analyze_attachment_risk(attachment)
     risk_score += attachment_score
     findings.extend(attachment_findings)
 

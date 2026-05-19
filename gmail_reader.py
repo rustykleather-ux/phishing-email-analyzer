@@ -124,8 +124,10 @@ def get_gmail_message(message_id):
         "body": "\n\n".join(bodies),
         "attachments": attachments,
         "raw_headers": headers
-    
-    def get_attachment_bytes(message_id, attachment_id):
+    }
+
+
+def get_attachment_bytes(message_id, attachment_id):
     service = get_gmail_service()
 
     attachment = service.users().messages().attachments().get(
@@ -140,16 +142,20 @@ def get_gmail_message(message_id):
         return b""
 
     padded = data + "=" * (-len(data) % 4)
-    return base64.urlsafe_b64decode(padded.encode("utf-8"))
+
+    return base64.urlsafe_b64decode(
+        padded.encode("utf-8")
+    )
 
 
 def get_attachment_sha256(message_id, attachment_id):
-    file_bytes = get_attachment_bytes(message_id, attachment_id)
+    file_bytes = get_attachment_bytes(
+        message_id,
+        attachment_id
+    )
 
     if not file_bytes:
         return ""
 
     return hashlib.sha256(file_bytes).hexdigest()
-
-    }
 

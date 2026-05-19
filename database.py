@@ -27,6 +27,58 @@ def init_db():
     conn.commit()
     conn.close()
 
+def get_recent_reports(limit=25):
+    init_db()
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM reports
+        ORDER BY created_at DESC
+        LIMIT ?
+    """, (limit,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [dict(row) for row in rows]
+
+
+def get_report_stats():
+    init_db()
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM reports")
+    total_reports = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT risk_level, COUNT(*)
+        FROM reports
+        GROUP BY risk_level
+    """)
+    by_risk = dict(cursor.fetchall())
+
+    cursor.execute("""
+        SELECT sender, COUNT(*) as count
+        FROM reports
+        GROUP BY sender
+        ORDER BY count DESC
+        LIMIT 5
+    """)
+    top_senders = cursor.fetchall()
+
+    conn.close()
+
+    return {
+        "total_reports": total_reports,
+        "by_risk": by_risk,
+        "top_senders": top_senders
+    }
 
 def save_report(message_id, sender, subject, risk_level, score, recommendation):
     init_db()
