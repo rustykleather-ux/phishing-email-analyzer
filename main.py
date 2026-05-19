@@ -122,11 +122,25 @@ def dashboard():
     rows_html = ""
 
     for report in reports:
+        risk_level = report.get("risk_level", "")
+        score = report.get("score", 0)
+
+        row_class = ""
+
+        if risk_level == "Dangerous" or score >= 80:
+            row_class = "danger-row"
+        elif risk_level == "Suspicious" or score >= 40:
+            row_class = "suspicious-row"
+        elif risk_level == "Medium Risk" or score >= 10:
+            row_class = "medium-row"
+        else:
+            row_class = "low-row"
+
         rows_html += f"""
-        <tr>
+        <tr class="{row_class}">
             <td>{report.get("created_at", "")}</td>
-            <td>{report.get("risk_level", "")}</td>
-            <td>{report.get("score", "")}</td>
+            <td>{risk_level}</td>
+            <td>{score}</td>
             <td>{report.get("sender", "")}</td>
             <td>{report.get("subject", "")}</td>
         </tr>
@@ -152,8 +166,31 @@ def dashboard():
         color: #e5e7eb;
         margin: 0;
         padding: 30px;
+{{ }}
+    .danger-row {{
+        background-color: rgba(127, 29, 29, 0.45);
     }}
 
+    .suspicious-row {{
+    background-color: rgba(146, 64, 14, 0.35);
+    }}
+
+    .medium-row {{
+    background-color: rgba(133, 77, 14, 0.25);
+    }}
+
+    .low-row {{
+    background-color: rgba(20, 83, 45, 0.20);
+    }}
+
+    .danger-row:hover,
+    .suspicious-row:hover,
+    .medium-row:hover,
+    .low-row:hover {{
+    background-color: #1f2937;
+    }}
+
+    }}
     h1, h2 {{
         color: #f8fafc;
     }}
@@ -258,8 +295,31 @@ def dashboard():
 
     <h2>Recent Reports</h2>
 
-    <table>
+<div style="margin-bottom: 15px; display: flex; gap: 10px;">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search sender or subject..."
+        onkeyup="filterReports()"
+        style="padding: 10px; width: 300px;"
+    >
+
+    <select
+        id="riskFilter"
+        onchange="filterReports()"
+        style="padding: 10px;"
+    >
+        <option value="">All Risks</option>
+        <option value="Dangerous">Dangerous</option>
+        <option value="Suspicious">Suspicious</option>
+        <option value="Medium Risk">Medium Risk</option>
+        <option value="Low Risk">Low Risk</option>
+    </select>
+</div>
+
+<table id="reportsTable">
         <tr>
+
             <th>Time</th>
             <th>Risk</th>
             <th>Score</th>
