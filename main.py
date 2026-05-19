@@ -132,21 +132,18 @@ def dashboard():
         </tr>
         """
 
-    risk_html = ""
+    risk_labels = list(stats.get("by_risk", {}).keys())
+    risk_counts = list(stats.get("by_risk", {}).values())
 
-    for risk, count in stats.get("by_risk", {}).items():
-        risk_html += f"<li><strong>{risk}</strong>: {count}</li>"
-
-    sender_html = ""
-
-    for sender, count in stats.get("top_senders", []):
-        sender_html += f"<li><strong>{sender}</strong>: {count}</li>"
+    sender_labels = [sender for sender, count in stats.get("top_senders", [])]
+    sender_counts = [count for sender, count in stats.get("top_senders", [])]
 
     html = f"""
 <!DOCTYPE html>
 <html>
 <head>
     <title>Louisburg Phishing Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body {{
@@ -156,7 +153,7 @@ def dashboard():
             padding: 30px;
         }}
 
-        h1 {{
+        h1, h2 {{
             color: #222;
         }}
 
@@ -172,6 +169,20 @@ def dashboard():
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             flex: 1;
+        }}
+
+        .charts {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }}
+
+        .chart-card {{
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }}
 
         table {{
@@ -200,7 +211,6 @@ def dashboard():
     <h1>Louisburg Phishing Dashboard</h1>
 
     <div class="cards">
-
         <div class="card">
             <h2>Total Reports</h2>
             <p style="font-size:32px;">
@@ -209,19 +219,26 @@ def dashboard():
         </div>
 
         <div class="card">
-            <h2>Reports by Risk</h2>
-            <ul>
-                {risk_html}
-            </ul>
+            <h2>Risk Types</h2>
+            <p>{len(risk_labels)}</p>
         </div>
 
         <div class="card">
-            <h2>Top Senders</h2>
-            <ul>
-                {sender_html}
-            </ul>
+            <h2>Top Senders Tracked</h2>
+            <p>{len(sender_labels)}</p>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart-card">
+            <h2>Reports by Risk</h2>
+            <canvas id="riskChart"></canvas>
         </div>
 
+        <div class="chart-card">
+            <h2>Top Senders</h2>
+            <canvas id="senderChart"></canvas>
+        </div>
     </div>
 
     <h2>Recent Reports</h2>
@@ -234,10 +251,47 @@ def dashboard():
             <th>Sender</th>
             <th>Subject</th>
         </tr>
-
         {rows_html}
-
     </table>
+
+    <script>
+        const riskLabels = {risk_labels};
+        const riskCounts = {risk_counts};
+
+        const senderLabels = {sender_labels};
+        const senderCounts = {sender_counts};
+
+        new Chart(document.getElementById("riskChart"), {{
+            type: "pie",
+            data: {{
+                labels: riskLabels,
+                datasets: [{{
+                    data: riskCounts
+                }}]
+            }}
+        }});
+
+        new Chart(document.getElementById("senderChart"), {{
+            type: "bar",
+            data: {{
+                labels: senderLabels,
+                datasets: [{{
+                    label: "Reports",
+                    data: senderCounts
+                }}]
+            }},
+            options: {{
+                scales: {{
+                    y: {{
+                        beginAtZero: true,
+                        ticks: {{
+                            precision: 0
+                        }}
+                    }}
+                }}
+            }}
+        }});
+    </script>
 
 </body>
 </html>
