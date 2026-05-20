@@ -145,10 +145,14 @@ def dashboard():
         <td>{report.get("subject", "")}</td>
 
         <td>
-        <button onclick="alert('IOC viewing coming next')">
-            View IOCs
-        </button>
-    </td>
+    <button onclick="showIocs(
+        `{report.get("subject", "")}`,
+        `{report.get("sender", "")}`,
+        `{report.get("message_id", "")}`
+    )">
+        View IOCs
+    </button>
+</td>
 
     <td>New</td>
 </tr>
@@ -175,6 +179,53 @@ def dashboard():
         margin: 0;
         padding: 30px;
 {{ }}
+    .modal {{
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.75);
+}}
+
+.modal-content {{
+    background-color: #111827;
+    margin: 8% auto;
+    padding: 25px;
+    border: 1px solid #374151;
+    width: 60%;
+    border-radius: 12px;
+    color: #e5e7eb;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}}
+
+.close {{
+    color: #f87171;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}}
+
+.close:hover {{
+    color: #ef4444;
+}}
+
+button {{
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}}
+
+button:hover {{
+    background-color: #1d4ed8;
+}}
     .danger-row {{
         background-color: rgba(127, 29, 29, 0.45);
     }}
@@ -261,6 +312,26 @@ def dashboard():
     a {{
         color: #60a5fa;
     }}
+
+    function showIocs(subject, sender, messageId) {{
+    document.getElementById("iocSubject").innerText = subject;
+    document.getElementById("iocSender").innerText = sender;
+    document.getElementById("iocMessageId").innerText = messageId;
+
+    document.getElementById("iocModal").style.display = "block";
+}}
+
+function closeIocModal() {{
+    document.getElementById("iocModal").style.display = "none";
+}}
+
+window.onclick = function(event) {{
+    const modal = document.getElementById("iocModal");
+
+    if (event.target === modal) {{
+        modal.style.display = "none";
+    }}
+}}
 </style>
 </head>
 
@@ -381,7 +452,23 @@ def dashboard():
             }}
         }});
     </script>
+<div id="iocModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeIocModal()">&times;</span>
+        <h2>IOC Details</h2>
 
+        <p><strong>Subject:</strong> <span id="iocSubject"></span></p>
+        <p><strong>Sender:</strong> <span id="iocSender"></span></p>
+        <p><strong>Message ID:</strong> <span id="iocMessageId"></span></p>
+
+        <hr>
+
+        <p>
+            IOC extraction display is ready. Next we can connect this to stored URLs,
+            attachment names, and hashes from the database.
+        </p>
+    </div>
+</div>
 </body>
 </html>
 """
