@@ -125,8 +125,6 @@ def dashboard():
         risk_level = report.get("risk_level", "")
         score = report.get("score", 0)
 
-        row_class = ""
-
         if risk_level == "Dangerous" or score >= 80:
             row_class = "danger-row"
         elif risk_level == "Suspicious" or score >= 40:
@@ -136,28 +134,28 @@ def dashboard():
         else:
             row_class = "low-row"
 
+        subject = str(report.get("subject", "")).replace('"', '&quot;')
+        sender = str(report.get("sender", "")).replace('"', '&quot;')
+        message_id = str(report.get("message_id", "")).replace('"', '&quot;')
+
         rows_html += f"""
         <tr class="{row_class}">
-        <td>{report.get("created_at", "")}</td>
-        <td>{risk_level}</td>
-        <td>{score}</td>
-        <td>{report.get("sender", "")}</td>
-        <td>{report.get("subject", "")}</td>
-
-    <td>
-    <button
-        onclick="showIocs(this)"
-        data-subject="{report.get("subject", "").replace('"', '&quot;')}"
-        data-sender="{report.get("sender", "").replace('"', '&quot;')}"
-        data-message-id="{report.get("message_id", "")}"
-    >
-        View IOCs
-        </button>
-    </td>
-
-    <td>New</td>
-</tr>
-"""
+            <td>{report.get("created_at", "")}</td>
+            <td>{risk_level}</td>
+            <td>{score}</td>
+            <td>{sender}</td>
+            <td>{subject}</td>
+            <td>
+                <button onclick="showIocs(this)"
+                    data-subject="{subject}"
+                    data-sender="{sender}"
+                    data-message-id="{message_id}">
+                    View IOCs
+                </button>
+            </td>
+            <td>New</td>
+        </tr>
+        """
 
     risk_labels = list(stats.get("by_risk", {}).keys())
     risk_counts = list(stats.get("by_risk", {}).values())
@@ -169,50 +167,85 @@ def dashboard():
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Louisburg Phishing Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Louisburg Phishing Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-    body {{
-        font-family: Arial, sans-serif;
-        background-color: #0f172a;
-        color: #e5e7eb;
-        margin: 0;
-        padding: 30px;
-{{ }}
-    .modal {{
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.75);
-}}
-
-.modal-content {{
-    background-color: #111827;
-    margin: 8% auto;
-    padding: 25px;
-    border: 1px solid #374151;
-    width: 60%;
-    border-radius: 12px;
+<style>
+body {{
+    font-family: Arial, sans-serif;
+    background-color: #0f172a;
     color: #e5e7eb;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    margin: 0;
+    padding: 30px;
 }}
 
-.close {{
-    color: #f87171;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+h1, h2 {{
+    color: #f8fafc;
 }}
 
-.close:hover {{
-    color: #ef4444;
+.cards {{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}}
+
+.card, .chart-card {{
+    background: #111827;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    border: 1px solid #1f2937;
+}}
+
+.card {{
+    flex: 1;
+}}
+
+.charts {{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}}
+
+table {{
+    width: 100%;
+    border-collapse: collapse;
+    background: #111827;
+    border: 1px solid #1f2937;
+}}
+
+th {{
+    background: #1e40af;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}}
+
+td {{
+    padding: 12px;
+    border-bottom: 1px solid #1f2937;
+    color: #d1d5db;
+}}
+
+.danger-row {{
+    background-color: rgba(127, 29, 29, 0.45);
+}}
+
+.suspicious-row {{
+    background-color: rgba(146, 64, 14, 0.35);
+}}
+
+.medium-row {{
+    background-color: rgba(133, 77, 14, 0.25);
+}}
+
+.low-row {{
+    background-color: rgba(20, 83, 45, 0.20);
+}}
+
+tr:hover {{
+    background-color: #1f2937;
 }}
 
 button {{
@@ -227,168 +260,77 @@ button {{
 button:hover {{
     background-color: #1d4ed8;
 }}
-    .danger-row {{
-        background-color: rgba(127, 29, 29, 0.45);
-    }}
 
-    .suspicious-row {{
-    background-color: rgba(146, 64, 14, 0.35);
-    }}
+.modal {{
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.75);
+}}
 
-    .medium-row {{
-    background-color: rgba(133, 77, 14, 0.25);
-    }}
-
-    .low-row {{
-    background-color: rgba(20, 83, 45, 0.20);
-    }}
-
-    .danger-row:hover,
-    .suspicious-row:hover,
-    .medium-row:hover,
-    .low-row:hover {{
-    background-color: #1f2937;
-    }}
-
-    }}
-    h1, h2 {{
-        color: #f8fafc;
-    }}
-
-    .cards {{
-        display: flex;
-        gap: 20px;
-        margin-bottom: 25px;
-    }}
-
-    .card, .chart-card {{
-        background: #111827;
-    padding: 20px;
+.modal-content {{
+    background-color: #111827;
+    margin: 8% auto;
+    padding: 25px;
+    border: 1px solid #374151;
+    width: 60%;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
-    border: 1px solid #1f2937;
-    max-height: 400px;
-    }}
-
-    .card {{
-        flex: 1;
-    }}
-
-    .charts {{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-        margin-bottom: 30px;
-    }}
-
-    table {{
-        width: 100%;
-        border-collapse: collapse;
-        background: #111827;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.35);
-        border: 1px solid #1f2937;
-    }}
-
-    th {{
-        background: #1e40af;
-        color: white;
-        padding: 12px;
-        text-align: left;
-    }}
-
-    td {{
-        padding: 12px;
-        border-bottom: 1px solid #1f2937;
-        color: #d1d5db;
-    }}
-
-    tr:hover {{
-        background-color: #1f2937;
-    }}
-
-    ul {{
-        padding-left: 20px;
-    }}
-
-    a {{
-        color: #60a5fa;
-    }}
-
-    function showIocs(subject, sender, messageId) {{
-    document.getElementById("iocSubject").innerText = subject;
-    document.getElementById("iocSender").innerText = sender;
-    document.getElementById("iocMessageId").innerText = messageId;
-
-    document.getElementById("iocModal").style.display = "block";
+    color: #e5e7eb;
 }}
 
-function closeIocModal() {{
-    document.getElementById("iocModal").style.display = "none";
-}}
-
-window.onclick = function(event) {{
-    const modal = document.getElementById("iocModal");
-
-    if (event.target === modal) {{
-        modal.style.display = "none";
-    }}
+.close {{
+    color: #f87171;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
 }}
 </style>
 </head>
 
 <body>
+<h1>Louisburg Phishing Dashboard</h1>
 
-    <h1>Louisburg Phishing Dashboard</h1>
+<div class="cards">
+    <div class="card">
+        <h2>Total Reports</h2>
+        <p style="font-size:32px;">{stats.get("total_reports", 0)}</p>
+    </div>
+    <div class="card">
+        <h2>Risk Types</h2>
+        <p>{len(risk_labels)}</p>
+    </div>
+    <div class="card">
+        <h2>Top Senders Tracked</h2>
+        <p>{len(sender_labels)}</p>
+    </div>
+</div>
 
-    <div class="cards">
-        <div class="card">
-            <h2>Total Reports</h2>
-            <p style="font-size:32px;">
-                {stats.get("total_reports", 0)}
-            </p>
-        </div>
-
-        <div class="card">
-            <h2>Risk Types</h2>
-            <p>{len(risk_labels)}</p>
-        </div>
-
-        <div class="card">
-            <h2>Top Senders Tracked</h2>
-            <p>{len(sender_labels)}</p>
+<div class="charts">
+    <div class="chart-card">
+        <h2>Reports by Risk</h2>
+        <div style="max-width:300px; height:300px; margin:auto;">
+            <canvas id="riskChart"></canvas>
         </div>
     </div>
 
-    <div class="charts">
-        <div class="chart-card">
-            <h2>Reports by Risk</h2>
-            <div style="max-width: 300px; margin: auto;">
-        <canvas id="riskChart"></canvas>
+    <div class="chart-card">
+        <h2>Top Senders</h2>
+        <canvas id="senderChart"></canvas>
     </div>
-        </div>
+</div>
 
-        <div class="chart-card">
-            <h2>Top Senders</h2>
-            <canvas id="senderChart"></canvas>
-        </div>
-    </div>
-
-    <h2>Recent Reports</h2>
+<h2>Recent Reports</h2>
 
 <div style="margin-bottom: 15px; display: flex; gap: 10px;">
-    <input
-        type="text"
-        id="searchInput"
-        placeholder="Search sender or subject..."
-        onkeyup="filterReports()"
-        style="padding: 10px; width: 300px;"
-    >
+    <input type="text" id="searchInput" placeholder="Search sender or subject..."
+        onkeyup="filterReports()" style="padding: 10px; width: 300px;">
 
-    <select
-        id="riskFilter"
-        onchange="filterReports()"
-        style="padding: 10px;"
-    >
+    <select id="riskFilter" onchange="filterReports()" style="padding: 10px;">
         <option value="">All Risks</option>
         <option value="Dangerous">Dangerous</option>
         <option value="Suspicious">Suspicious</option>
@@ -398,78 +340,115 @@ window.onclick = function(event) {{
 </div>
 
 <table id="reportsTable">
-        <tr>
+<tr>
+    <th>Time</th>
+    <th>Risk</th>
+    <th>Score</th>
+    <th>Sender</th>
+    <th>Subject</th>
+    <th>IOCs</th>
+    <th>Status</th>
+</tr>
+{rows_html}
+</table>
 
-            <th>Time</th>
-            <th>Risk</th>
-            <th>Score</th>
-            <th>Sender</th>
-            <th>Subject</th>
-            <th>IOCs</th>
-            <th>Status</th>
-        </tr>
-        {rows_html}
-    </table>
-
-    <script>
-        const riskLabels = {risk_labels};
-        const riskCounts = {risk_counts};
-
-        const senderLabels = {sender_labels};
-        const senderCounts = {sender_counts};
-
-        new Chart(document.getElementById("riskChart"), {{
-            type: "pie",
-            data: {{
-                labels: riskLabels,
-                datasets: [{{
-                    data: riskCounts
-                }}]
-            }},
-            options: {{
-                responsive: true,
-                maintainAspectRatio: false
-            }},
-        }});
-
-        new Chart(document.getElementById("senderChart"), {{
-            type: "bar",
-            data: {{
-                labels: senderLabels,
-                datasets: [{{
-                    label: "Reports",
-                    data: senderCounts
-                }}]
-            }},
-            options: {{
-                scales: {{
-                    y: {{
-                        beginAtZero: true,
-                        ticks: {{
-                            precision: 0
-                        }}
-                    }}
-                }}
-            }}
-        }});
-    </script>
 <div id="iocModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeIocModal()">&times;</span>
         <h2>IOC Details</h2>
-
         <p><strong>Subject:</strong> <span id="iocSubject"></span></p>
         <p><strong>Sender:</strong> <span id="iocSender"></span></p>
         <p><strong>Message ID:</strong> <span id="iocMessageId"></span></p>
-
-        <hr>
-
-        <p>
-            IOC extraction display is ready. Next we can connect this to stored URLs,
-            attachment names, and hashes from the database.
-        </p>
     </div>
 </div>
+
+<script>
+const riskLabels = {risk_labels};
+const riskCounts = {risk_counts};
+const senderLabels = {sender_labels};
+const senderCounts = {sender_counts};
+
+new Chart(document.getElementById("riskChart"), {{
+    type: "pie",
+    data: {{
+        labels: riskLabels,
+        datasets: [{{ data: riskCounts }}]
+    }},
+    options: {{
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {{
+            legend: {{
+                labels: {{ color: "white" }}
+            }}
+        }}
+    }}
+}});
+
+new Chart(document.getElementById("senderChart"), {{
+    type: "bar",
+    data: {{
+        labels: senderLabels,
+        datasets: [{{
+            label: "Reports",
+            data: senderCounts
+        }}]
+    }},
+    options: {{
+        plugins: {{
+            legend: {{
+                labels: {{ color: "white" }}
+            }}
+        }},
+        scales: {{
+            x: {{ ticks: {{ color: "white" }} }},
+            y: {{
+                beginAtZero: true,
+                ticks: {{ color: "white", precision: 0 }}
+            }}
+        }}
+    }}
+}});
+
+function showIocs(button) {{
+    document.getElementById("iocSubject").innerText = button.getAttribute("data-subject");
+    document.getElementById("iocSender").innerText = button.getAttribute("data-sender");
+    document.getElementById("iocMessageId").innerText = button.getAttribute("data-message-id");
+    document.getElementById("iocModal").style.display = "block";
+}}
+
+function closeIocModal() {{
+    document.getElementById("iocModal").style.display = "none";
+}}
+
+function filterReports() {{
+    const searchValue = document.getElementById("searchInput").value.toLowerCase();
+    const riskValue = document.getElementById("riskFilter").value;
+    const rows = document.getElementById("reportsTable").getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {{
+        const cells = rows[i].getElementsByTagName("td");
+        if (cells.length === 0) continue;
+
+        const risk = cells[1].innerText;
+        const sender = cells[3].innerText.toLowerCase();
+        const subject = cells[4].innerText.toLowerCase();
+
+        const matchesSearch = sender.includes(searchValue) || subject.includes(searchValue);
+        const matchesRisk = riskValue === "" || risk === riskValue;
+
+        rows[i].style.display = matchesSearch && matchesRisk ? "" : "none";
+    }}
+}}
+
+window.onclick = function(event) {{
+    const modal = document.getElementById("iocModal");
+    if (event.target === modal) {{
+        modal.style.display = "none";
+    }}
+}}
+</script>
+
 </body>
 </html>
 """
