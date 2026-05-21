@@ -427,14 +427,9 @@ new Chart(document.getElementById("senderChart"), {{
 async function showIocs(button) {{
     const reportId = button.getAttribute("data-report-id");
 
-    document.getElementById("iocSubject").innerText =
-        button.getAttribute("data-subject");
-
-    document.getElementById("iocSender").innerText =
-        button.getAttribute("data-sender");
-
-    document.getElementById("iocMessageId").innerText =
-        button.getAttribute("data-message-id");
+    document.getElementById("iocSubject").innerText = button.getAttribute("data-subject");
+    document.getElementById("iocSender").innerText = button.getAttribute("data-sender");
+    document.getElementById("iocMessageId").innerText = button.getAttribute("data-message-id");
 
     const urlList = document.getElementById("iocUrls");
     const attachmentList = document.getElementById("iocAttachments");
@@ -448,25 +443,13 @@ async function showIocs(button) {{
     const urls = iocs.urls || [];
     const attachments = iocs.attachments || [];
 
-    if (urls.length === 0) {{
-        urlList.innerHTML = "<li>No URLs captured.</li>";
-    }} else {{
-        urls.forEach(function(url) {{
-            const item = document.createElement("li");
-            item.innerText = url;
-            urlList.appendChild(item);
-        }});
-    }}
+    urlList.innerHTML = urls.length
+        ? urls.map(url => "<li>" + url + "</li>").join("")
+        : "<li>No URLs captured.</li>";
 
-    if (attachments.length === 0) {{
-        attachmentList.innerHTML = "<li>No attachments captured.</li>";
-    }} else {{
-        attachments.forEach(function(attachment) {{
-            const item = document.createElement("li");
-            item.innerText = attachment;
-            attachmentList.appendChild(item);
-        }});
-    }}
+    attachmentList.innerHTML = attachments.length
+        ? attachments.map(item => "<li>" + item + "</li>").join("")
+        : "<li>No attachments captured.</li>";
 
     document.getElementById("iocModal").style.display = "block";
 }}
