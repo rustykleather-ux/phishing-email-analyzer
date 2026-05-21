@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from datetime import datetime
 from pathlib import Path
 from fastapi.responses import HTMLResponse
-import json
 
 from database import save_report, get_recent_reports, get_report_stats, get_report_iocs
 from gmail_reader import get_gmail_message, send_report_email
@@ -21,15 +20,16 @@ class AnalyzeRequest(BaseModel):
 def analyze_email(request: AnalyzeRequest):
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
-    return analyze_phishing_email(email_data) or {}
 
+    results = analyze_phishing_email(email_data) or {}
+    return results
 
 @app.post("/report")
 def report_phishing(request: AnalyzeRequest):
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
 
-    results = analyze_phishing_email(email_data) or {}
+    results = analyze_phishing_email(email_data)
 
     findings_text = "\n".join(
         f"- {finding}" for finding in results.get("findings", [])
@@ -43,7 +43,9 @@ def report_phishing(request: AnalyzeRequest):
     email_body_preview = email_data.get("body", "")
 
     if len(email_body_preview) > 3000:
-        email_body_preview = email_body_preview[:3000] + "\n\n[Body truncated]"
+        email_body_preview = (
+            email_body_preview[:3000] + "\n\n[Body truncated]"
+        )
 
     report_body = f"""
 Phishing Report Submitted
@@ -83,8 +85,13 @@ Recommendation:
     reports_dir.mkdir(exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     report_file = reports_dir / f"phishing_report_{timestamp}.txt"
-    report_file.write_text(report_body, encoding="utf-8")
+
+    report_file.write_text(
+        report_body,
+        encoding="utf-8"
+    )
 
     save_report(
         message_id=request.messageId,
@@ -95,7 +102,7 @@ Recommendation:
         recommendation=results.get("recommendation", ""),
         iocs=results.get("iocs", {})
     )
-
+    print("Saved report:", request.messageId)
     send_report_email(
         to_email="rfolsom@louisburglibrary.org",
         subject=f"Phishing Report: {email_data.get('subject', '')}",
@@ -107,16 +114,14 @@ Recommendation:
         "message": "Phishing report emailed to IT."
     }
 
-
-@app.get("/api/report/{report_id}/iocs")
-def report_iocs(report_id: int):
-    return get_report_iocs(report_id)
-
-
 @app.get("/dashboard", response_class=HTMLResponse)
 def dashboard():
     reports = get_recent_reports()
     stats = get_report_stats()
+
+    print("Dashboard loaded")
+    print("Reports returned:", len(reports))
+    print("Latest report:", reports[0] if reports else "None")
 
     rows_html = ""
 
@@ -133,37 +138,35 @@ def dashboard():
         else:
             row_class = "low-row"
 
-        subject = str(report.get("subject", "")).replace('"', "&quot;")
-        sender = str(report.get("sender", "")).replace('"', "&quot;")
-        message_id = str(report.get("message_id", "")).replace('"', "&quot;")
-        report_id = str(report.get("id", ""))
+        subject = str(report.get("subject", "")).replace('"', '&quot;')
+        sender = str(report.get("sender", "")).replace('"', '&quot;')
+        message_id = str(report.get("message_id", "")).replace('"', '&quot;')
 
         rows_html += f"""
-<tr class="{row_class}">
-    <td>{report.get("created_at", "")}</td>
-    <td>{risk_level}</td>
-    <td>{score}</td>
-    <td>{sender}</td>
-    <td>{subject}</td>
-    <td>
-        <button
-            onclick="showIocs(this)"
-            data-report-id="{report_id}"
-            data-subject="{subject}"
-            data-sender="{sender}"
-            data-message-id="{message_id}">
-            View IOCs
-        </button>
-    </td>
-    <td>New</td>
-</tr>
-"""
+        <tr class="{row_class}">
+            <td>{report.get("created_at", "")}</td>
+            <td>{risk_level}</td>
+            <td>{score}</td>
+            <td>{sender}</td>
+            <td>{subject}</td>
+            <td>
+               <button onclick="showIocs(this)"
+    data-report-id="{report.get("id", "")}"
+    data-subject="{subject}"
+    data-sender="{sender}"
+    data-message-id="{message_id}">
+    View IOCs
+</button>
+            </td>
+            <td>New</td>
+        </tr>
+        """
 
-    risk_labels = json.dumps(list(stats.get("by_risk", {}).keys()))
-    risk_counts = json.dumps(list(stats.get("by_risk", {}).values()))
+    risk_labels = list(stats.get("by_risk", {}).keys())
+    risk_counts = list(stats.get("by_risk", {}).values())
 
-    sender_labels = json.dumps([sender for sender, count in stats.get("top_senders", [])])
-    sender_counts = json.dumps([count for sender, count in stats.get("top_senders", [])])
+    sender_labels = [sender for sender, count in stats.get("top_senders", [])]
+    sender_counts = [count for sender, count in stats.get("top_senders", [])]
 
     html = f"""
 <!DOCTYPE html>
@@ -263,13 +266,6 @@ button:hover {{
     background-color: #1d4ed8;
 }}
 
-input, select {{
-    background: #111827;
-    color: #e5e7eb;
-    border: 1px solid #374151;
-    border-radius: 6px;
-}}
-
 .modal {{
     display: none;
     position: fixed;
@@ -289,8 +285,6 @@ input, select {{
     width: 60%;
     border-radius: 12px;
     color: #e5e7eb;
-    max-height: 75vh;
-    overflow-y: auto;
 }}
 
 .close {{
@@ -299,13 +293,6 @@ input, select {{
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-}}
-
-.ioc-list {{
-    background: #0f172a;
-    border: 1px solid #1f2937;
-    border-radius: 8px;
-    padding: 12px;
 }}
 </style>
 </head>
@@ -318,15 +305,13 @@ input, select {{
         <h2>Total Reports</h2>
         <p style="font-size:32px;">{stats.get("total_reports", 0)}</p>
     </div>
-
     <div class="card">
         <h2>Risk Types</h2>
-        <p>{len(json.loads(risk_labels))}</p>
+        <p>{len(risk_labels)}</p>
     </div>
-
     <div class="card">
         <h2>Top Senders Tracked</h2>
-        <p>{len(json.loads(sender_labels))}</p>
+        <p>{len(sender_labels)}</p>
     </div>
 </div>
 
@@ -376,18 +361,17 @@ input, select {{
     <div class="modal-content">
         <span class="close" onclick="closeIocModal()">&times;</span>
         <h2>IOC Details</h2>
-
         <p><strong>Subject:</strong> <span id="iocSubject"></span></p>
         <p><strong>Sender:</strong> <span id="iocSender"></span></p>
         <p><strong>Message ID:</strong> <span id="iocMessageId"></span></p>
 
-        <hr>
+         <hr>
 
         <h3>URLs</h3>
-        <ul id="iocUrls" class="ioc-list"></ul>
+<ul id="iocUrls"></ul>
 
-        <h3>Attachments</h3>
-        <ul id="iocAttachments" class="ioc-list"></ul>
+<h3>Attachments</h3>
+<ul id="iocAttachments"></ul>
     </div>
 </div>
 
@@ -442,54 +426,35 @@ new Chart(document.getElementById("senderChart"), {{
 async function showIocs(button) {{
     const reportId = button.getAttribute("data-report-id");
 
-    document.getElementById("iocSubject").innerText =
-        button.getAttribute("data-subject") || "";
-
-    document.getElementById("iocSender").innerText =
-        button.getAttribute("data-sender") || "";
-
-    document.getElementById("iocMessageId").innerText =
-        button.getAttribute("data-message-id") || "";
+    document.getElementById("iocSubject").innerText = button.getAttribute("data-subject");
+    document.getElementById("iocSender").innerText = button.getAttribute("data-sender");
+    document.getElementById("iocMessageId").innerText = button.getAttribute("data-message-id");
 
     const urlList = document.getElementById("iocUrls");
     const attachmentList = document.getElementById("iocAttachments");
 
-    urlList.innerHTML = "<li>Loading...</li>";
-    attachmentList.innerHTML = "<li>Loading...</li>";
+    urlList.innerHTML = "";
+    attachmentList.innerHTML = "";
+
+    const response = await fetch("/api/report/" + reportId + "/iocs");
+    const iocs = await response.json();
+
+    const urls = iocs.urls || [];
+    const attachments = iocs.attachments || [];
+
+    urlList.innerHTML = urls.length
+        ? urls.map(url => "<li>" + url + "</li>").join("")
+        : "<li>No URLs captured.</li>";
+
+    attachmentList.innerHTML = attachments.length
+        ? attachments.map(item => "<li>" + item + "</li>").join("")
+        : "<li>No attachments captured.</li>";
 
     document.getElementById("iocModal").style.display = "block";
-
-    try {{
-        const response = await fetch("/api/report/" + reportId + "/iocs");
-        const iocs = await response.json();
-
-        const urls = iocs.urls || [];
-        const attachments = iocs.attachments || [];
-
-        urlList.innerHTML = urls.length
-            ? urls.map(url => "<li>" + escapeHtml(url) + "</li>").join("")
-            : "<li>No URLs captured.</li>";
-
-        attachmentList.innerHTML = attachments.length
-            ? attachments.map(item => "<li>" + escapeHtml(item) + "</li>").join("")
-            : "<li>No attachments captured.</li>";
-    }} catch (error) {{
-        urlList.innerHTML = "<li>Error loading IOC data.</li>";
-        attachmentList.innerHTML = "";
-    }}
 }}
 
 function closeIocModal() {{
     document.getElementById("iocModal").style.display = "none";
-}}
-
-function escapeHtml(value) {{
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }}
 
 function filterReports() {{
