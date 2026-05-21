@@ -424,7 +424,7 @@ new Chart(document.getElementById("senderChart"), {{
     }}
 }});
 
-fasync function showIocs(button) {{
+async function showIocs(button) {{
     const reportId = button.getAttribute("data-report-id");
 
     document.getElementById("iocSubject").innerText =
