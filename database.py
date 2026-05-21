@@ -142,6 +142,21 @@ def get_report_stats():
         "top_senders": top_senders
     }
 
+def update_report_status(report_id, new_status):
+    init_db()
+    add_iocs_column_if_missing()
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE reports
+        SET status = ?
+        WHERE id = ?
+    """, (new_status, report_id))
+
+    conn.commit()
+    conn.close()
 
 def get_report_iocs(report_id):
     init_db()

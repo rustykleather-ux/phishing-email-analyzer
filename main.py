@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from fastapi.responses import HTMLResponse
 
-from database import save_report, get_recent_reports, get_report_stats
+from database import save_report, get_recent_reports, get_report_stats, get_report_iocs, update_report_status
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 
@@ -113,7 +113,17 @@ Recommendation:
         "message": "Phishing report emailed to IT."
     }
 
+@app.post("/api/report/{report_id}/update_status")
+def set_report_status(report_id: int, payload: dict):
+        status = payload.get("status", "New")
+        update_report_status(report_id, status)
 
+
+        return{
+         "status": "updated",
+         "report_id": report_id,
+         "new_status": status
+    }
 @app.get("/dashboard", response_class=HTMLResponse)
 def dashboard():
     reports = get_recent_reports()
@@ -154,7 +164,15 @@ def dashboard():
     </button>
 </td>
 
-    <td>New</td>
+    <td>
+    <select onchange="updateStatus(this, '{report.get("id", "")}')">
+        <option value="New">New</option>
+        <option value="Reviewed">Reviewed</option>
+        <option value="False Positive">False Positive</option>
+        <option value="Confirmed Malicious">Confirmed Malicious</option>
+    </select>
+</td>
+    d>
 </tr>
 """
 
@@ -462,6 +480,21 @@ setInterval(() => {{
     window.location.reload();
 }}, 300000);
 </script>
+
+async function updateStatus(selectElement, reportId) {{
+    const newStatus = selectElement.value;
+
+    await fetch("/api/report/" + reportId + "/status", {{
+        method: "POST",
+        headers: {{
+            "Content-Type": "application/json"
+        }},
+        body: JSON.stringify({{
+            status: newStatus
+        }})
+    }});
+}}
+
 <div id="iocModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeIocModal()">&times;</span>
