@@ -144,15 +144,16 @@ def dashboard():
         <td>{report.get("sender", "")}</td>
         <td>{report.get("subject", "")}</td>
 
-        <td>
-    <button onclick="showIocs(
-        `{report.get("subject", "")}`,
-        `{report.get("sender", "")}`,
-        `{report.get("message_id", "")}`
-    )">
+    <td>
+    <button
+        onclick="showIocs(this)"
+        data-subject="{report.get("subject", "").replace('"', '&quot;')}"
+        data-sender="{report.get("sender", "").replace('"', '&quot;')}"
+        data-message-id="{report.get("message_id", "")}"
+    >
         View IOCs
-    </button>
-</td>
+        </button>
+    </td>
 
     <td>New</td>
 </tr>
