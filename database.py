@@ -112,19 +112,17 @@ def save_report(message_id, sender, subject, risk_level, score, recommendation, 
         recommendation
     ))
 def add_iocs_column_if_missing():
-    init_db()
-
-
     conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()  
-
+    cursor = conn.cursor()
 
     cursor.execute("PRAGMA table_info(reports)")
-    columns = [col[1] for col in cursor.fetchall()] 
+    columns = [column[1] for column in cursor.fetchall()]
 
-    if "iocs" not in columns:
+    if "iocs_json" not in columns:
         cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '[]'")
+        conn.commit()
 
+    conn.close()
 def get_report_iocs(report_id):
     init_db()
     add_iocs_column_if_missing()
