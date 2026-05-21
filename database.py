@@ -42,12 +42,15 @@ def get_recent_reports(limit=25):
     cursor.execute("""
         SELECT *
         FROM reports
-        ORDER BY created_at DESC
+        ORDER BY id DESC
         LIMIT ?
     """, (limit,))
 
     rows = cursor.fetchall()
     conn.close()
+
+    print("Dashboard DB_PATH:", DB_PATH)
+    print("Dashboard rows found:", len(rows))
 
     return [dict(row) for row in rows]
 
