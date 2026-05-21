@@ -1,0 +1,241 @@
+
+Phishing Report Submitted
+
+Reported by: unknown
+Message ID: msg-f:1865803932632611871
+
+Sender: Account Payable <schicht.v@goodcon.de>
+Reply-To: 
+Return-Path: <askus+bncBC6OVCUATUORBSEKXTIAMGQEDJRXX2Y@louisburglibrary.org>
+Subject: INV388: Payment Scheduled for 05/21/2026
+Date: Thu, 21 May 2026 13:14:39 +0000
+
+Risk Level: Dangerous
+Score: 240
+
+Findings:
+- SPF soft fail detected.
+- DKIM passed.
+- DMARC authentication failed.
+- Sender: Account Payable <schicht.v@goodcon.de>
+- Subject: INV388: Payment Scheduled for 05/21/2026
+- URLs detected: 15
+- Non-HTTPS URL detected: http://www.oregon.gov/
+- VirusTotal URL reputation: no malicious detections.
+- Non-HTTPS URL detected: http://www.oregon.gov/odot/dmv
+- VirusTotal URL reputation: no malicious detections.
+- Non-HTTPS URL detected: http://twitter.com/oregondot
+- VirusTotal URL reputation: no malicious detections.
+- Non-HTTPS URL detected: http://facebook.com/oregondot
+- VirusTotal URL reputation: no malicious detections.
+- Non-HTTPS URL detected: http://flickr.com/photos/oregondot
+- VirusTotal URL reputation: no malicious detections.
+- VirusTotal URL reputation: no malicious detections.
+- Non-HTTPS URL detected: http://schemas.microsoft.com/office/2004/12/omml
+- VirusTotal URL reputation: no malicious detections.
+- Non-HTTPS URL detected: http://www.w3.org/TR/REC-html40
+- VirusTotal URL reputation: no malicious detections.
+- VirusTotal URL reputation: no malicious detections.
+- VirusTotal URL reputation: no malicious detections.
+- VirusTotal URL reputation: no malicious detections.
+- VirusTotal URL reputation: no malicious detections.
+- VirusTotal URL reputation: no malicious detections.
+- VirusTotal URL reputation: no malicious detections.
+
+Recommendation:
+Do not click links or open attachments. Report this email to IT.
+
+--- Email Body Preview ---
+
+
+
+
+[https://dmv2u.oregon.gov/eServices/WebFiles/EmailAssets/Header/OregonGov.png]<http://www.oregon.gov/>
+
+[Oregon Department of Transportation logo]
+RAMP PAY
+Funding Notification
+
+Your recent payment has been scheduled and your confirmation number is 0-017-241-615. This payment should be applied shortly,
+
+Partner Order Id
+221825918
+Payment Scheduled
+05/21/2026 2:32 PM
+Payment Total
+$39022.00
+Billing Name
+Account Payable
+Bank ending
+****3958
+
+Please view Payment Summary below.
+
+                                                                                         VIEW SUMMARY<turbofibratelecom.com.br>
+
+.
+
+Please do not reply to this email - this inbox is not monitored.
+Oregon Driver and Motor Vehicle Services, 1905 Lana Ave NE, Salem OR 97314 <http://www.oregon.gov/odot/dmv>
+[ODOT on Twitter]<http://twitter.com/oregondot>  [ODOT on Facebook] <http://facebook.com/oregondot>   [ODOT on Flickr] <http://flickr.com/photos/oregondot>   [ODOT on YouTube] <https://www.youtube.com/user/oregondot>
+
+
+
+
+
+
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<meta name="Generator" content="Microsoft Word 15 (filtered medium)">
+<!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+@font-face
+	{font-family:"Source Sans Pro";}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",serif;}
+h1
+	{mso-style-priority:9;
+	mso-style-link:"Heading 1 Char";
+	mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	font-size:24.0pt;
+	font-family:"Aptos",serif;
+	font-weight:bold;}
+h3
+	{mso-style-priority:9;
+	mso-style-link:"Heading 3 Char";
+	mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	font-size:13.5pt;
+	font-family:"Aptos",serif;
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#467886;
+	text-decoration:underline;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-priority:9;
+	mso-style-link:"Heading 1";
+	font-family:"Aptos",serif;
+	mso-ligatures:none;
+	font-weight:bold;}
+span.Heading3Char
+	{mso-style-name:"Heading 3 Char";
+	mso-style-priority:9;
+	mso-style-link:"Heading 3";
+	font-family:"Aptos",serif;
+	mso-ligatures:none;
+	font-weight:bold;}
+span.EmailStyle20
+	{mso-style-type:personal-compose;
+	font-family:"Aptos",serif;
+	color:windowtext;}
+span.m783545291
+
+[Body truncated]
+
+--- Authentication Results ---
+mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=ndHRwl5U;       arc=fail (signature failed);       spf=softfail (google.com: domain of transitioning askus+bncbc6ovcuatuorbsekxtiamgqedjrxx2y@louisburglibrary.org does not designate 209.85.220.69 as permitted sender) smtp.mailfrom=askus+bncBC6OVCUATUORBSEKXTIAMGQEDJRXX2Y@louisburglibrary.org;       dmarc=fail (p=NONE sp=NONE dis=NONE) header.from=goodcon.de
+
+--- Received-SPF ---
+softfail (google.com: domain of transitioning askus+bncbc6ovcuatuorbsekxtiamgqedjrxx2y@louisburglibrary.org does not designate 209.85.220.69 as permitted sender) client-ip=209.85.220.69;
+
+--- Raw Headers ---
+Delivered-To: rfolsom@louisburglibrary.org
+Received: by 2002:a05:7108:930b:b0:555:d38b:64cc with SMTP id ht11csp382085gdb;        Thu, 21 May 2026 06:14:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=2; AFNElJ9KHUIrKWTqN8peQssxnD3XLDfhZaian1Ua0CS2rS//9T3T6pY4ffHHvyEIOAfpVHcgpXu/0+Be@louisburglibrary.org
+X-Received: by 2002:a2e:bd87:0:b0:394:8fc:8c44 with SMTP id 38308e7fff4ca-395c9f44b02mr12204281fa.0.1779369289823;        Thu, 21 May 2026 06:14:49 -0700 (PDT)
+Return-Path: <askus+bncBC6OVCUATUORBSEKXTIAMGQEDJRXX2Y@louisburglibrary.org>
+Received: from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])        by mx.google.com with SMTPS id 38308e7fff4ca-395d0a7004csor1492981fa.13.2026.05.21.06.14.49        for <rfolsom@louisburglibrary.org>        (Google Transport Security);        Thu, 21 May 2026 06:14:49 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning askus+bncbc6ovcuatuorbsekxtiamgqedjrxx2y@louisburglibrary.org does not designate 209.85.220.69 as permitted sender) client-ip=209.85.220.69;
+Authentication-Results: mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=ndHRwl5U;       arc=fail (signature failed);       spf=softfail (google.com: domain of transitioning askus+bncbc6ovcuatuorbsekxtiamgqedjrxx2y@louisburglibrary.org does not designate 209.85.220.69 as permitted sender) smtp.mailfrom=askus+bncBC6OVCUATUORBSEKXTIAMGQEDJRXX2Y@louisburglibrary.org;       dmarc=fail (p=NONE sp=NONE dis=NONE) header.from=goodcon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;        d=louisburglibrary.org; s=google; t=1779369289; x=1779974089; darn=louisburglibrary.org;        h=list-unsubscribe:list-archive:list-help:list-post:list-id         :mailing-list:precedence:x-original-authentication-results         :x-original-sender:mime-version:content-language:accept-language         :message-id:date:thread-index:thread-topic:subject:to:from         :delivered-to:sender:from:to:cc:subject:date:message-id:reply-to;        bh=Tqk8nCzf2VDgtwWzOM76KCr4Cw+7cUF6IBB70ilg8Hg=;        b=ndHRwl5UgUnMNioe6n5Dr3XfpuVygmaUCXAw6bzj68fCo6oHTvcVyjxXBgGiYx9LvI         p/7Lc09hq7Faost8tgPlM+8WxDQTRNBZtl0kwMRKamSKBNa/77G1wQG3f2n9/ZnW+HH0         BUokYkZWm9OmgymsFTQ5gPhqtAFdIDcM8HevGK9KJ3quCL9hWXI2CuUx8CcrN6v5OSV8         49PFdWa0elFGyKvZ0N/xcfV06aSONWQR0jS3WdcxHjfN9tziWyhCMQAIHavQaMaefmNA         7mJMM2Vjdd2cp0dY44EF0WcU5KldTaVLIkRYWZhT5uVm8Vcr7F7j038tnG5Yj1y/0cwx         2Gcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;        d=1e100.net; s=20251104; t=1779369289; x=1779974089;        h=list-unsubscribe:list-archive:list-help:list-post         :x-spam-checked-in-group:list-id:mailing-list:precedence         :x-original-authentication-results:x-original-sender:mime-version         :content-language:accept-language:message-id:date:thread-index         :thread-topic:subject:to:from:delivered-to:x-forwarded-for         :x-forwarded-to:x-beenthere:x-gm-message-state:sender:from:to:cc         :subject:date:message-id:reply-to;        bh=Tqk8nCzf2VDgtwWzOM76KCr4Cw+7cUF6IBB70ilg8Hg=;        b=GxVkL5NOvJ8OsX1T1n7AKpmXcMTXSJR9hlXuez0Ty6X/qgrvksvlAuBfPOFa0s8AM7         mHZrJ0o8HShMHs0Np5zzreRkUt/Me48JgXxeTk6AGuAMi/o8fWl8pvZPPakB0aOsKQGf         LgsIPYHq3iIQKi9pL4UqfkNlfm3joTjYJmyhb23yo+Mpi1wIJKB3yys8vtAPshw2XiJY         2al6e7K/lY/9AKkponcEp+zWu3UMU8wfRXm0YD8Y+6wznnTx/C4wTi002T8z7+SjS0Y1         i14L1B7buXicndJx6ohbBRiph/3Hm4/obg1SNFe4CiMEHsysmzJvyLkIGFpJIZy6FS6+         T2KA==
+Sender: askus@louisburglibrary.org
+X-Forwarded-Encrypted: i=2; AFNElJ9Wl9AJC+ISYmI+0ZL/YUZiDkVt0u5cRZA/5CwmqznT/qU1QLm9FHBpzz8aejnZYJ6fzqR7XJpn@louisburglibrary.org
+X-Gm-Message-State: AOJu0Ywwi+lFrT10qScdLBPL2nQ3DwF8dF/vGnEgXokbePRjEb3RXC+O Kzoe/qGXo8YAlJGqMuVCeqEH/kxSAYWoRBfiCm0GwLmD47hPzIYISzTLn0PXxiG4e4CQNBQzUZF gow==
+X-Received: by 2002:a05:651c:888:b0:395:b670:71ce with SMTP id 38308e7fff4ca-395ca223373mr13103941fa.2.1779369289296;        Thu, 21 May 2026 06:14:49 -0700 (PDT)
+X-BeenThere: askus@louisburglibrary.org; h="AUV6zMNv2YcU05+1cXyTR2+Gvi7IriuHXRoMszgFVp8lfK/bmg=="
+Received: by 2002:a2e:9199:0:b0:38e:7b7b:ccfc with SMTP id 38308e7fff4ca-394938d8551ls25154311fa.2.-pod-prod-09-eu; Thu, 21 May 2026 06:14:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=2; AFNElJ8QtTBdlRYCWm5s2G2tgigFIF2K8SMqGAMQEo95vq/O1WvDJrWjCHs/XhsiH4BCr2/DIsr+dg==@louisburglibrary.org
+X-Received: by 2002:a2e:bd12:0:b0:393:4e44:63ba with SMTP id 38308e7fff4ca-395ca5e63b4mr13676221fa.29.1779369287094;        Thu, 21 May 2026 06:14:47 -0700 (PDT)
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])        by mx.google.com with SMTPS id 38308e7fff4ca-395d0a762d5sor1190891fa.1.2026.05.21.06.14.47        for <askus@louisburglibrary.org>        (Google Transport Security);        Thu, 21 May 2026 06:14:47 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning ask+caf_=askus=louisburglibrary.org@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+X-Forwarded-Encrypted: i=2; AFNElJ9TsmT5qJ08HDWzliBTtG/MR6AdJ7o5vss/oRBYCLC/8uDYwzS+XNAsqJl2dDjvjWCyZQJDtQ==@louisburglibrary.org
+X-Received: by 2002:a2e:bd06:0:b0:393:e5d8:1570 with SMTP id 38308e7fff4ca-395ca570fefmr4289451fa.8.1779369286746;        Thu, 21 May 2026 06:14:46 -0700 (PDT)
+X-Forwarded-To: askus@louisburglibrary.org
+X-Forwarded-For: ask@louisburglibrary.org askus@louisburglibrary.org
+Delivered-To: ask@louisburglibrary.org
+Received: by 2002:a2e:9114:0:b0:393:b021:cf3b with SMTP id m20csp304868ljg;        Thu, 21 May 2026 06:14:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=2; AFNElJ/h83MlMhbwYZmlxWsLhuQdyNMfJ6mnrzRxOF9lCBFeBNyaz6HghKQ3NUece7tqNAPpI1A=@louisburglibrary.org
+X-Received: by 2002:a05:6a21:10b:b0:3a2:ea40:c93c with SMTP id adf61e73a8af0-3b308702b26mr1834651637.1.1779369284540;        Thu, 21 May 2026 06:14:44 -0700 (PDT)
+Received: from BEUP281CU002.outbound.protection.outlook.com (mail-germanynorthazlp170100001.outbound.protection.outlook.com. [2a01:111:f403:c20b::1])        by mx.google.com with ESMTPS id 41be03b00d2f7-c851999878fsi629251a12.399.2026.05.21.06.14.43        for <ask@louisburglibrary.org>        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);        Thu, 21 May 2026 06:14:44 -0700 (PDT)
+Received-SPF: pass (google.com: domain of schicht.v@goodcon.de designates 2a01:111:f403:c20b::1 as permitted sender) client-ip=2a01:111:f403:c20b::1;
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none; b=jRtlXxIrM0tS2G1d2sEIhYki839RaaCr21r5wk0y1v+RvFFP6w4gfG+XZV7QVw933auS4DSblaDMw/3NbQFNxLTIrx5TDR5dr/PWm8x5PDNAlxKI9QBaZGQCTxXnLdp7heKo73eZ1N1Sf7S1zCZEHY1jDk8pkAatZB4bnega52sjxVDE4icb89OL7RDQBt/XdZotv3e0AV1kRlgwOX/vTEOLCHd0FAkrOk3XeAWv89nOl/sdSR+H6jBcmTFJEZeEqMocVH0IQd7hCZ8LViCRTEBwTn8jj/owuSy481FK/HyPCyMt8rzSMk1hJWu2Nxe0MCRA/0DI5kw3tx17MHIbSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; s=arcselector10001; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1; bh=Tqk8nCzf2VDgtwWzOM76KCr4Cw+7cUF6IBB70ilg8Hg=; b=PWV7dbdGLMq6oA+ASf15aD7D5bN85Yv1EyW1dN/OwQ+U+6QIBFvjvuKR5AvcvlrkZ/W+JovAY2zB+ReHhFbCXIXBI4NbxMUy04K7cfUd0Sdpxw1e16Ey4P1xzsraSfYlWc794jr/Ncq019W+OJy+BWEwObhY6kbdnA9jZOP7DZqar1+cmdHpzf75/tIb582vC+xpQp7+QVSNlVzNqNmBAa6pGeIoLN08C13yGWV15vZpH3fnj0cA3LfaH2nr6GxcJmt12wK5e+RLUXIjTNxWxI04puoydWiarYi+tMEnAAY9cHSRFCWn0vAKccJuajB062rvDIgUvyqRsW1BrXFw0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass smtp.mailfrom=goodcon.de; dmarc=pass action=none header.from=goodcon.de; dkim=pass header.d=goodcon.de; arc=none
+Received: from FR6P281MB5852.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:1c0::15) by FR3PPFAF653D402.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d18:2::180) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Thu, 21 May 2026 13:14:39 +0000
+Received: from FR6P281MB5852.DEUP281.PROD.OUTLOOK.COM ([fe80::9cab:4c34:df9:edee]) by FR6P281MB5852.DEUP281.PROD.OUTLOOK.COM ([fe80::9cab:4c34:df9:edee%4]) with mapi id 15.21.0048.016; Thu, 21 May 2026 13:14:39 +0000
+From: Account Payable <schicht.v@goodcon.de>
+To: Account Payable <schicht.v@goodcon.de>
+Subject: INV388: Payment Scheduled for 05/21/2026
+Thread-Topic: INV388: Payment Scheduled for 05/21/2026
+Thread-Index: Adzo1AaCLMU5OTYOToKJg1itcv+oaAAQJ01w
+Date: Thu, 21 May 2026 13:14:39 +0000
+Message-ID: <FR6P281MB5852157D73EC114D1916920F820E2@FR6P281MB5852.DEUP281.PROD.OUTLOOK.COM>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FR6P281MB5852:EE_|FR3PPFAF653D402:EE_
+x-ms-office365-filtering-correlation-id: 5a66dd0f-7444-449b-bbce-08deb73ae9f4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7049299003|3109299003|7416014|376014|69100299015|38070700021|3613699012|8096899003|18002099003|56012099003;
+x-microsoft-antispam-message-info: VHl5H4LhXTerayuM1V1XfuVXMk2EuxxEiF6vjZjvV+OHKi1fRIyRLYPrDAO6MbBDlfzRx8LpoC+rwtdODxn54gQlhqKEBSDNhyHyKViizyed93f79cieSffdlj4iQoXXxWErEhJqKecrjZC5nLG36DKCBH7dkoeMTGR6srr5Zr4LRa/54IDfGGYwQP1rctUu9/YATUkESXF1uKJ4Fbxc242rro3+YJjhuHF2Ig/Gs0wy7xY+lSP1zWln6cZW8E2gKjCT6zp6a2QMUgjn9boq51iGZdwFAd3ZF5a/01WHU6KNyAtbm4WrgJ4wjkYtRg9J5AR32ldR+NYJjQE9TiL+EX2GAPVxP5MU6PUzJ4gUruFTZ6kzGniqXS1pRSK5gkb8Oajfpf4XjDHh3UCuNKROzPdRls5dTSVprg9lubPniQBV9LP63yf+gVTGPLTrMpXaFl8ahdZilFCcwEGHr3vxMWXO5K5NcmbSgw0DgSK9YSW7OzMqj8hf4vEUXlwSjgCnJfkfI7nRfL1+ON6hFBYMLbSveMzLMOb31N5LyFmOdKGa0oDmgR4OKJ8fVCjMem6g4Dxbwgq19BqepRE9Qaexrua1VnvZrck+lLaoNPXs/UCBfhbYynl2VVNW+A/z6TvQH3D0Ojyba344AfiZ10CR8iIB099UfLyWNBGfUi6YzGSxifD4CmXrSQvuS6gb71ZhrJaRngxVK3huS/PKX7wKRsSbrVMGFqMJTo/KzDCQWeE=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR6P281MB5852.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7049299003)(3109299003)(7416014)(376014)(69100299015)(38070700021)(3613699012)(8096899003)(18002099003)(56012099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: PFOW65wqcL1gOK6bH+nwcPdOXylMAdFFQx5JZCfqm1b32Y49aN0rx53T0exeFGCW5Z4ZIAhu+ZFuB6kJQgM526QFIj7n8B8B2T9D2i4Zub7HGmO+aUNBIXrVvhcDcz7UO0l2JOnrbcgltJubolf0Lx3IEj4uvREyYFyAgv1S/K/D8dLR23pYOhzmoKdqBEnZKIEZigluFGqIc6c9lg0L8LjR1lsKqQThmliBFZKEWEiClJoc7bjAnAmh87tbjKxgfAdWHn2dp3dx1uICdr0PP5eS5Wm5H8P0oNvKJdoFfmEo+wL0z/AcXr2ZYRpKiKnru6imZGyutAdxcy27hDyEjsBJyWbl7ww3z/SSS2c513S9haMdhTlqJ+ncQOMx8tnq1iTNi8bqjYSWZJBq/4g/He1j+zPMIjlTiqT13qivMpmsM4ls2yuJdcVRpoDPT7PutT/9NNuhV2LJpSCdSEdz4Hh5eMIwyPld6GeKGGM2XBb7vOmeTWL/QxTZWl7zHTgN9wzrAvqYgCs/HxmFL5fioihBOWKXKoMcDyzeAv3bNWENPhgicgn7ytJmpAv4z+REqmekCfXrK98rq+QMnZ5sPgukK/4MS718YQxZYjXVsNX0BjqqICRhJVdL773UxCedJVvjGW+N9UMxzWuBdkMaPncWkC01gscmNQh1twKYYYUa4LTS3vszEvEj5Frr8uz9p7Y5szpW2ALJ3Bt/BdwSSKqsQNXl5SUjNxTlfV0ofOeL3qReZJgeJcnPYpmBklPWor0PE2MnCWZZdj3Mtf5dpuR8ikPPFZOSTJs10RsduiCw+0V2kXiEoNzMMpiL6wv+bKlkgLt6mnk++IzwpvVunP2ousKehahDtVBzxDoElfug3/+U+KCV7H8HGLC1VlxpsqaXOl9Ckj60FdMDHD4JHX/nYQTntcRlCSDmMHxEIrCCVVNq459iIbg6X4tg/sBpkA56uR5RC45Q5xojgNWXCDv0XEdwXbUOuye7oyjUUm1M8TjqYYRHb8tP8YyF5oDXgSut5v+pZwW7hQtRfiUBtMq6BzsdHg7OuujV/TpIVaIvAb45Qu7+I/hG5hrjHXvPqLiEL5iTP/47RWg1FlNFpofUFMS+P51dKi+NyZrfYs9eHLCcCiy96mcQSWGtXbfEYOHdoAv/rOL8dMx5AVNAxKqydcNHMt8eonrBQe5gc3lL6eC3BQF4E2RTlDQ5KCNbsPkapz98O7UU736drX8viVH5/s5aNPc7r/bSp1tQ5h4mT9D6S3h2UOdZ8pkMxxreWynDLwsIToyd77FSnyu7+wgkvKfS8Mwbsy9HFnl/+ocNfRBlNNbaXq+ya0FQony5Th6qTx6YuCVVzc8oLqy3s0eoUeDuMOLWex4sKNyGsQ3VBoLr4gaDLg8XwUacUDv6ZfE/tR7FPdlw1kk63HJZ4mSfmAEeAieqcb7gtUKhcP9ux6S+CNQ7/WERh/8sS0rGZR0BR6baD3KVtIbP+VE5jhcQlWtKXKAMMORliL2+8L1dd1UiEeYeOoxBEN90aa4X+up4sIXqWxxd/GiOk1Pl9dugCW/xY8e6a3YSa4xHx8XmngLzWouRXux8OEXlTuvUmeOFW+J9evj4FdHedaXOq54GAlQ9FOPoDm49JsaXoCy031KphSwLuI758BvmmKU5972vyLer029qPfbZsbOfNw064BCrgZAtT2GhX+RyFJZMaW6lVEZCFF3BdDE0WlUb
+Content-Type: multipart/alternative; boundary="_000_FR6P281MB5852157D73EC114D1916920F820E2FR6P281MB5852DEUP_"
+MIME-Version: 1.0
+X-OriginatorOrg: goodcon.de
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: FR6P281MB5852.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a66dd0f-7444-449b-bbce-08deb73ae9f4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2026 13:14:39.4206 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4789b195-46a6-41a9-836a-39fca4f91d3f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Kba9SNG138pUDy3715sho8aKjadAg7N9+tqtCMWziS81xzxhScd7gTSDFx3bY/ry0xwRkRrhJhSaAiTd3AubDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR3PPFAF653D402
+X-Removed-Original-Auth: Dkim didn't pass.
+X-Original-Sender: ask@louisburglibrary.org
+X-Original-Authentication-Results: mx.google.com;       arc=fail (signature failed);       spf=softfail (google.com: domain of transitioning ask+caf_=askus=louisburglibrary.org@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) smtp.mailfrom="ask+caf_=askus=louisburglibrary.org@louisburglibrary.org";       dmarc=fail (p=NONE sp=NONE dis=NONE xoar=pass) header.from=goodcon.de
+Precedence: list
+Mailing-list: list askus@louisburglibrary.org; contact askus+owners@louisburglibrary.org
+List-ID: <askus.louisburglibrary.org>
+X-Spam-Checked-In-Group: askus@louisburglibrary.org
+X-Google-Group-Id: 183883384659
+List-Post: <https://groups.google.com/a/louisburglibrary.org/group/askus/post>, <mailto:askus@louisburglibrary.org>
+List-Help: <https://support.google.com/a/louisburglibrary.org/bin/topic.py?topic=25838>, <mailto:askus+help@louisburglibrary.org>
+List-Archive: <https://groups.google.com/a/louisburglibrary.org/group/askus/>
+List-Unsubscribe: <mailto:googlegroups-manage+183883384659+unsubscribe@googlegroups.com>, <https://groups.google.com/a/louisburglibrary.org/group/askus/subscribe>

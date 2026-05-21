@@ -3,8 +3,8 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-
-DB_PATH = Path("reports") / "phishing_reports.db"
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "reports" / "phishing_reports.db"
 
 
 def init_db():
