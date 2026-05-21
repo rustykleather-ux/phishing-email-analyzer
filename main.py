@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from fastapi.responses import HTMLResponse
 
-from database import save_report, get_recent_reports, get_report_stats
+from database import save_report, get_recent_reports, get_report_stats, get_report_iocs
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 
@@ -99,7 +99,8 @@ Recommendation:
         subject=email_data.get("subject", ""),
         risk_level=results.get("risk_level", ""),
         score=results.get("score", 0),
-        recommendation=results.get("recommendation", "")
+        recommendation=results.get("recommendation", ""),
+        iocs=results.get("iocs", {})
     )
 
     send_report_email(
@@ -112,6 +113,10 @@ Recommendation:
         "status": "reported",
         "message": "Phishing report emailed to IT."
     }
+
+@app.get("/api/report/{report_id}/iocs")
+def report_iocs(report_id: int):
+    return get_report_iocs(report_id)
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
@@ -146,12 +151,13 @@ def dashboard():
             <td>{sender}</td>
             <td>{subject}</td>
             <td>
-                <button onclick="showIocs(this)"
-                    data-subject="{subject}"
-                    data-sender="{sender}"
-                    data-message-id="{message_id}">
-                    View IOCs
-                </button>
+               <button onclick="showIocs(this)"
+    data-report-id="{report.get("id", "")}"
+    data-subject="{subject}"
+    data-sender="{sender}"
+    data-message-id="{message_id}">
+    View IOCs
+</button>
             </td>
             <td>New</td>
         </tr>
@@ -359,6 +365,14 @@ button:hover {{
         <p><strong>Subject:</strong> <span id="iocSubject"></span></p>
         <p><strong>Sender:</strong> <span id="iocSender"></span></p>
         <p><strong>Message ID:</strong> <span id="iocMessageId"></span></p>
+
+         <hr>
+
+        <h3>URLs</h3>
+<ul id="iocUrls"></ul>
+
+<h3>Attachments</h3>
+<ul id="iocAttachments"></ul>
     </div>
 </div>
 
@@ -410,10 +424,50 @@ new Chart(document.getElementById("senderChart"), {{
     }}
 }});
 
-function showIocs(button) {{
-    document.getElementById("iocSubject").innerText = button.getAttribute("data-subject");
-    document.getElementById("iocSender").innerText = button.getAttribute("data-sender");
-    document.getElementById("iocMessageId").innerText = button.getAttribute("data-message-id");
+fasync function showIocs(button) {{
+    const reportId = button.getAttribute("data-report-id");
+
+    document.getElementById("iocSubject").innerText =
+        button.getAttribute("data-subject");
+
+    document.getElementById("iocSender").innerText =
+        button.getAttribute("data-sender");
+
+    document.getElementById("iocMessageId").innerText =
+        button.getAttribute("data-message-id");
+
+    const urlList = document.getElementById("iocUrls");
+    const attachmentList = document.getElementById("iocAttachments");
+
+    urlList.innerHTML = "";
+    attachmentList.innerHTML = "";
+
+    const response = await fetch("/api/report/" + reportId + "/iocs");
+    const iocs = await response.json();
+
+    const urls = iocs.urls || [];
+    const attachments = iocs.attachments || [];
+
+    if (urls.length === 0) {{
+        urlList.innerHTML = "<li>No URLs captured.</li>";
+    }} else {{
+        urls.forEach(function(url) {{
+            const item = document.createElement("li");
+            item.innerText = url;
+            urlList.appendChild(item);
+        }});
+    }}
+
+    if (attachments.length === 0) {{
+        attachmentList.innerHTML = "<li>No attachments captured.</li>";
+    }} else {{
+        attachments.forEach(function(attachment) {{
+            const item = document.createElement("li");
+            item.innerText = attachment;
+            attachmentList.appendChild(item);
+        }});
+    }}
+
     document.getElementById("iocModal").style.display = "block";
 }}
 

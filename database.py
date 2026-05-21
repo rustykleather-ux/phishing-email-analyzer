@@ -1,6 +1,8 @@
+import json
 import sqlite3
 from datetime import datetime
 from pathlib import Path
+
 
 DB_PATH = Path("reports") / "phishing_reports.db"
 
@@ -83,9 +85,9 @@ def get_report_stats():
         "top_senders": top_senders
     }
 
-def save_report(message_id, sender, subject, risk_level, score, recommendation):
+def save_report(message_id, sender, subject, risk_level, score, recommendation, iocs=None):
     init_db()
-
+    add_iocs_column_if_missing()
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -109,6 +111,41 @@ def save_report(message_id, sender, subject, risk_level, score, recommendation):
         score,
         recommendation
     ))
+def add_iocs_column_if_missing():
+    init_db()
+
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()  
+
+
+    cursor.execute("PRAGMA table_info(reports)")
+    columns = [col[1] for col in cursor.fetchall()] 
+
+    if "iocs" not in columns:
+        cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '[]'")
+
+def get_report_iocs(report_id):
+    init_db()
+    add_iocs_column_if_missing()
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT iocs_json FROM reports WHERE id = ?",
+        (report_id,)
+    )
+
+    row = cursor.fetchone()
+    conn.close()
+
+    if not row:
+        return {}
+
+    return json.loads(row["iocs_json"] or "{}")
+
 
     conn.commit()
     conn.close()
