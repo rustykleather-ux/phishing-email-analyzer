@@ -1,0 +1,160 @@
+
+Phishing Report Submitted
+
+Reported by: unknown
+Message ID: msg-f:1865915734999164873
+
+Sender: Holly McLain <hgillogly@louisburglibrary.org>
+Reply-To: 
+Return-Path: <hgillogly@louisburglibrary.org>
+Subject: Re: Adult SB Prizes
+Date: Fri, 22 May 2026 13:51:25 -0500
+
+Risk Level: Suspicious
+Score: 50
+
+Findings:
+- SPF soft fail detected.
+- DKIM passed.
+- Sender: Holly McLain <hgillogly@louisburglibrary.org>
+- Subject: Re: Adult SB Prizes
+- URLs detected: 5
+- VirusTotal URL reputation: no malicious detections.
+- Non-HTTPS URL detected: http://www.louisburglibrary.org
+- VirusTotal URL reputation: no malicious detections.
+
+Recommendation:
+This email appears suspicious. Verify the sender before interacting.
+
+--- Email Body Preview ---
+Website:
+
+The webpage listing prizes has been updated for adults.
+www.louisburglibrary.org/summerbash-prizes
+
+The links towards the top of the adult page work, except the video one.  I
+haven't made a video of the prize photos yet.
+
+On Fri, May 22, 2026 at 1:37 PM Holly McLain <hgillogly@louisburglibrary.org>
+wrote:
+
+> *Update:*
+>
+> Beanstack
+>
+>    - Adult Challenge Overview - now has links to the raffle prize list
+>    and the "tickets bought" document
+>       - The tickets bought document is mostly empty at this point, I
+>       still need to add all of the prizes
+>    - The prizes are all in Beanstack for adults to view photos and
+>    descriptions.
+>
+>
+> On Fri, May 22, 2026 at 10:25 AM Holly McLain <
+> hgillogly@louisburglibrary.org> wrote:
+>
+>> Hello!
+>>
+>> I'm still creating everything for the adult prizes, but here is what I
+>> have so far.
+>>
+>> The prizes are out for patrons to see.
+>> There are 2 larger prizes that just have a photo hanging from the ceiling.
+>> There are 2 prizes. I will add photos to the containers (the ones on the
+>> taller JF shelves), so patrons have a better idea of what the prize looks
+>> like.
+>> The descriptive list with photos at the end has just gone out.  I will
+>> post it in various places before Tuesday.
+>>
+>> That should update you for now.  I'll update you as I get things ready.
+>> Sorry, I'm running behind this year.
+>>
+>> Let me know if you have any questions.
+>>
+>>
+>> --
+>> Holly McLain
+>> Adult Services Coordinator
+>> Louisburg Library
+>> 206 S. Broadway
+>> Louisburg, KS 66053
+>> 913.837.2217 ext. 104
+>> www.louisburglibrary.org
+>>
+>> [image: https://www.louisburglibrary.org/]
+>> <https://www.louisburglibrary.org/>
+>>
+>>
+>>
+>
+>
+> --
+> Holly McLain
+> Adult Services Coordinator
+> Louisburg Library
+> 206 S. Broadway
+> Louisburg, KS 66053
+> 913.837.2217 ext. 104
+> www.louisburglibrary.org
+>
+> [image: https://www.louisburglibrary.org/]
+> <https://www.louisburglibrary.org/>
+>
+>
+>
+
+
+-- 
+Holly McLain
+Adult Services Coordinator
+Louisburg Library
+206 S. Broadway
+Louisburg, KS 66053
+913.837.2217 ext. 104
+www.louisburglibrary.org
+
+[image: https://www.louisburglibrary.org/]
+<https://www.louisburglibrary.org/>
+
+
+<div dir="ltr"><div class="gmail_default" style="font-family:verdana,sans-serif">Website:</div><div class="gmail_default" style="font-family:verdana,sans-serif"><br></div><div class="gmail_default" style="font-family:verdana,sans-serif">The webpage listing prizes has been updated for adults.</div><div class="gmail_default" style="font-family:verdana,sans-serif"><a href="https://www.louisburglibrary.org/summerbash-prizes">www.louisburglibrary.org/summerbash-prizes</a></div><div class="gmail_default" style="font-family:verdana,sans-serif"><br></div><div class="gmail_default" style="font-family:verdana,sans-serif">The links towards the top of the adult page work, except the video one.  I haven&#39;t made a video of the pri
+
+[Body truncated]
+
+--- Authentication Results ---
+mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=KSrblm5N;       arc=pass (i=1);       spf=softfail (google.com: domain of transitioning hgillogly@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=hgillogly@louisburglibrary.org;       dara=neutral header.i=@louisburglibrary.org
+
+--- Received-SPF ---
+softfail (google.com: domain of transitioning hgillogly@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+
+--- Raw Headers ---
+Delivered-To: rfolsom@louisburglibrary.org
+Received: by 2002:a05:7108:72af:b0:558:e174:7cd7 with SMTP id g15csp1301284gdq;        Fri, 22 May 2026 11:51:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=3; AFNElJ8X2F3PtNC86oIq7Rv4dfY8bYfTGHBI8WB/mQcTa42NtYo6qLw52ufobxt+CcSRyrIkx78tCjkz@louisburglibrary.org
+X-Received: by 2002:a05:7301:6096:b0:2ed:2942:34ab with SMTP id 5a478bee46e88-3044904df37mr2425641eec.3.1779475912956;        Fri, 22 May 2026 11:51:52 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1779475912; cv=pass;        d=google.com; s=arc-20240605;        b=ldbR/M+3EcnfsmgGAHFfUgouGz2XhjVgepiU9udR5kCynRRrc3tjH5TprtHJCs6ZF5         BbXgXrOypOA2O+gAAWc56ZGc3vdK3Z+Yyry6YZ9a7T9BsCPuFW8xpisbTYHnhimlIR/W         rYOk+up6aM0hfYxurUX+vulLr5SgWbXImDWJU1YG0tYwSYFC4dQoxc8Jd/mq/aXJZOdT         68QzFq0HEjt6jRp8pLcBvcd0OEfY+fhtOOWvGEv2WInxiQLb8MLQKh1dQKFCQwIlVAiy         AEkxStkzkZZSK6z0sepPYaxuEHce2E/uNNXFqUjEInZjNT8Q41w/p6I9AU95/CA4nNBj         zCkw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :dkim-signature;        bh=+aNaiPqLJhetfkXCf2FQ0ZtGRoRerBViXdqLH2DiSFE=;        fh=NTGO04bGktOLZsfKqVW4xrZ4SjT6Et5mVFYCnW/0iYQ=;        b=UZ2duyL30xEVFUmBuIOrQV1k6ibawKUm20epVEbezN0jg1RupF9jkOq2xjDOfxe+KM         IvhUdRzf4zL/HAx30Lv6psaoOGGnw8fUjJV+Oo4Y8FWHeEGAsgHjsymYk9f+46sGn5D9         H+8vbPaYVgWUW999QV8gz/FcCPNc4tKyTG3AsZ30Mw1pSLTrPTcKHHhWsK6YD+FcnGZN         /kP6bdfzeCPtzQ7pS/axjJ4RoUadd7jQLQF1fSNM56FDc7qH9grtcdGAJ8t5w+XpGTU0         zJ40T+tujRGLvsF3RnXoJXw3gsXmsgF24x8mmYiTPU3e9wlQ+NJ1Uq9bVqfW3sLTSf/x         GYXg==;        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=KSrblm5N;       arc=pass (i=1);       spf=softfail (google.com: domain of transitioning hgillogly@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=hgillogly@louisburglibrary.org;       dara=neutral header.i=@louisburglibrary.org
+Return-Path: <hgillogly@louisburglibrary.org>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])        by mx.google.com with SMTPS id 5a478bee46e88-304604058aasor40334eec.16.2026.05.22.11.51.52        for <rfolsom@louisburglibrary.org>        (Google Transport Security);        Fri, 22 May 2026 11:51:52 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning hgillogly@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;       dkim=pass header.i=@louisburglibrary.org header.s=google header.b=KSrblm5N;       arc=pass (i=1);       spf=softfail (google.com: domain of transitioning hgillogly@louisburglibrary.org does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=hgillogly@louisburglibrary.org;       dara=neutral header.i=@louisburglibrary.org
+ARC-Seal: i=1; a=rsa-sha256; t=1779475912; cv=none;        d=google.com; s=arc-20240605;        b=CKy8o2kxI+sdAVcdvZrwmBO2dXACFpxMYoOkGjYFNn6GdjMKP36OofERZkr5ZhEQ1V         6CfNi+0dP7sKo8qvWlI/zk17xGLn0yelf7Pzw6Gx0IpmmDyU9/4YeFtq1jRhemLB8I8N         fNS+6OO++k5aB7jvwKVh7Ot+IjY1WB3wfoCogEvjUNU97x6CKB0AzZELJarpEfIVPoE0         4LTW4ZwBUjKdC4yNUkjTpaaN1jBveBFGotLnCr0vv+rMIfkgdOamFITxh+92T0PYlb21         5v4XEVo7LriED/KXZZBw0IjV+GtNXqoaziQ/WyHj8MXe9e7UfMZWMRfAjVc6EmBZ3WJZ         mh+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :dkim-signature;        bh=+aNaiPqLJhetfkXCf2FQ0ZtGRoRerBViXdqLH2DiSFE=;        fh=NTGO04bGktOLZsfKqVW4xrZ4SjT6Et5mVFYCnW/0iYQ=;        b=IbefZOle5QNjhYI/uOiTW2jf7Z5uqFAoQc02VciGhXZ1SkaPO8QYrjHRjOXWtWibKL         a3HIvOisxGhdhKydTzBYPcobahZ3vPvGV5E1XW6sd45QTdEFEZ16qbswi9W+hePxOvbz         jsvcRHrBXrGUhjystUDepC8lWu74e1rXPlh7oHVy+yYvwVXxaLWkl7EMqjntnCbjajPE         zkq3nClyFyWDWSGwcNN/VNVtCXxZTsdHQV20O2vYwXsuZSdKsej6GtS4QtN1C2s6aSNt         zYb8beWv8+ADbZCk47KWxNXARf64xlA8fXKEO8vYdsBWw8xeC9ns9paRv1XupfxNmPt5         FwTQ==;        darn=louisburglibrary.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;        d=louisburglibrary.org; s=google; t=1779475912; x=1780080712; darn=louisburglibrary.org;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :from:to:cc:subject:date:message-id:reply-to;        bh=+aNaiPqLJhetfkXCf2FQ0ZtGRoRerBViXdqLH2DiSFE=;        b=KSrblm5NXAbWZZE9nXS/dVUFSP8ZGvZ/jxgf/tuCQxNUg1qkvBkU8qIIBbJivYZD2X         TmCCuMhTf/bdwQQzeZrBFl2yY/fb2CXBXUE9bzwP9u0g4M8ajSuFbYiR3lJT49zS1ORj         /NYtzjYOzRo5cJIquScrZY0jrn2A7oBsP6v3i5hTuC8lZ9JL1+B7Z1yRqEqMltbvejpv         Q9bAL9bSekeTFT9oCgE13HbGFQhitiPGIxlS3HZRdxnpo7gT/nFepBZXZDDF5ACMUgt0         Pw70nemd/9L3tQlfmhV5arD3MZe3uWB76FH0KfplLTgexCGMSWrQpaShRRQfpy3knc+g         QV5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;        d=1e100.net; s=20251104; t=1779475912; x=1780080712;        h=to:subject:message-id:date:from:in-reply-to:references:mime-version         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id         :reply-to;        bh=+aNaiPqLJhetfkXCf2FQ0ZtGRoRerBViXdqLH2DiSFE=;        b=rWpHFAfCweZoiAqJav+etiKdmaCSnSgyzEA/JHF15H7EcR+MSEWUOngUbeOCK3D0My         taWlc0GXG6YQrKtjxkTTT057CDoAoKY8Fe0dUWXOPjXzdtZgDg13U3PNsNEV4RfYhVRh         2+Gnv976BC31o/yVj7jApGBzGMEbDQqoheV8/kC8NbmxHLS7pdx3ssU8VXbS2RIw5hjl         aPadVojSuJxBznk+Y1TTvoVScBwT9sz8jlqF+malAnNRhBEQTQQLFA+qtuQd1D3J9M0O         XcqMxcX4Qj7WjU9VxJofFSADJUE+FMzwGSAqBtpb89zzSmoa4FPxXy1CambVNsQjf10p         4gcw==
+X-Forwarded-Encrypted: i=1; AFNElJ9KsxWPYoKDmV5xUUzB0Fe8pY7u+hT+lkEkT5SANs+jAAwM7z5P3NEUaG8plyECn85SsDYo6Dht@louisburglibrary.org
+X-Gm-Message-State: AOJu0YyDCosp+J8fZkzlN6z4DL9wjXCJLAgpB3QTWD4KB6RPfplZ9kA5 lVW1g62X9zX4ogkOsFxK6CaUb9t7mFzUJknfThIsu/BZKm8ETg81bB1TVBV+gbawTChkYd8sp8R HSuWTnxvJXebu9eVQ6TZWBr17Irj5KDqweE5PUQ3/LCU7
+X-Gm-Gg: Acq92OH7TY4q6OiA+0aQiUhxgwQWGFEwdKjqJVpiJdgKcM1w9Mr1ihmU5i/Cot/sqgH ecKyzZiuz5OvdikdDs23Cpr3CMtjZY2sgSkma3q1hKs0RGdzJ2MK+j9FWP/pa4rKIm96iGkISLA qNMqSE3P9iOKggoxDk8au1Mfunhal45lvtHvTdiwIGzQWZ2lSbSQ8iWkl7emeoQWGyVLLyoYfBS Af485wrpJIWcGpFMG6DUiy2HUPdtW7w9eYrOYmKLww3KX6RdOu3DvVWzcPVy2gSELaxBWs/bbmw STrDedv+Nlf+Bx+pjyEuZ3NRTaJYeAUFhBWQJoEf1cJQ1moRkAsjoaXeB7Y8ySRYOI1A9ajs2cL DxCTBCbUCdCJFaw2wUAHBsG8E4x3qepYKfXc=
+X-Received: by 2002:a05:7022:661f:b0:135:f2aa:46da with SMTP id a92af1059eb24-1365f812eefmr1826528c88.16.1779475912012; Fri, 22 May 2026 11:51:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAHjSTsSFDVaN-P0PMPYR5fVoO_JkuBH+G1jXzdYUMU5eyURikw@mail.gmail.com> <CAHjSTsT9HRgddxgzPrf9kah1iCUzH=PGtw5FCevTH5D62vGH1A@mail.gmail.com>
+In-Reply-To: <CAHjSTsT9HRgddxgzPrf9kah1iCUzH=PGtw5FCevTH5D62vGH1A@mail.gmail.com>
+From: Holly McLain <hgillogly@louisburglibrary.org>
+Date: Fri, 22 May 2026 13:51:25 -0500
+X-Gm-Features: AVHnY4LogaMlywFPSp2VM7Y30sfsTXLw2ZISZTvdlAo6Eun3KEj3gUH6BvkYolI
+Message-ID: <CAHjSTsRxKoOrxcXVOxHvUmYTa0i-zsmnOAEQzioBeV1seFfPjQ@mail.gmail.com>
+Subject: Re: Adult SB Prizes
+To: Ana Bailey <abailey@louisburglibrary.org>, Tempe Smith <tsmith@louisburglibrary.org>, Joanne Seck <jseck@louisburglibrary.org>, Patty Hall <phall@louisburglibrary.org>, Connie Powell <cpowell@louisburglibrary.org>, Mary Richter <mrichter@louisburglibrary.org>, Ben Owens <bowens@louisburglibrary.org>, Amanda Murphy <amurphy@louisburglibrary.org>, Angela Allen <aallen@louisburglibrary.org>, Danielle Folsom <dfolsom@louisburglibrary.org>, Brooke Honack <bhonack@louisburglibrary.org>, Jan Vohs <jvohs@louisburglibrary.org>, Rita Knop <rknop@louisburglibrary.org>, Rusty Folsom <rfolsom@louisburglibrary.org>, CircDesk Staff <circdeskstaff@louisburglibrary.org>, Lauren Bauer <lbauer@louisburglibrary.org>, Ginger Hawkinson <ghawkinson@louisburglibrary.org>, Nicole Girod <ngirod@louisburglibrary.org>, Rebecca Bowman <rbowman@louisburglibrary.org>
+Content-Type: multipart/alternative; boundary="0000000000009f481206526c85d3"
