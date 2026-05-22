@@ -20,7 +20,7 @@ from database import (
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 
-API_KEY = os.getenv("API_KEY")
+API_KEY = os.getenv("PHISHING_API_KEY", "dev-secret-key")
 
 def verify_api_key(x_api_key: str = Header(default="")):
     if x_api_key != API_KEY:
