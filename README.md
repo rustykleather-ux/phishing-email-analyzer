@@ -249,7 +249,6 @@ Displays:
 
 # Future Improvements
 
-- PostgreSQL migration
 - SIEM integration
 - YARA scanning
 - Attachment sandboxing
