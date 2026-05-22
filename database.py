@@ -297,5 +297,3 @@ def migrate_db():
 
     conn.commit()
     conn.close()
-    conn.commit()
-    conn.close()
