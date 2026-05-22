@@ -83,6 +83,7 @@ def save_report(
     iocs=None
 ):
     init_db()
+    migrate_db()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -276,6 +277,25 @@ def update_report_status(report_id, status):
             "UPDATE reports SET status = ? WHERE id = ?",
             (status, report_id)
         )
+def migrate_db():
+    init_db()
 
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("PRAGMA table_info(reports)")
+    columns = [column[1] for column in cursor.fetchall()]
+
+    if "status" not in columns:
+        cursor.execute("ALTER TABLE reports ADD COLUMN status TEXT DEFAULT 'New'")
+
+    if "analyst_notes" not in columns:
+        cursor.execute("ALTER TABLE reports ADD COLUMN analyst_notes TEXT DEFAULT ''")
+
+    if "iocs_json" not in columns:
+        cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
+
+    conn.commit()
+    conn.close()
     conn.commit()
     conn.close()
