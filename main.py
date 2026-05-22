@@ -45,8 +45,12 @@ def home():
 
 
 @app.post("/analyze")
-def analyze_email(request: AnalyzeRequest, api_key: str = Header(default="")):
-    verify_api_key(api_key)
+def analyze_email(
+    request: AnalyzeRequest,
+    x_api_key: str = Header(default="", alias="X-API-Key")
+):
+    verify_api_key(x_api_key)
+
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
 
@@ -55,8 +59,8 @@ def analyze_email(request: AnalyzeRequest, api_key: str = Header(default="")):
 
 
 @app.post("/report")
-def report_phishing(request: AnalyzeRequest, api_key: str = Header(default="")):
-    verify_api_key(api_key)
+def report_phishing(request: AnalyzeRequest, x_api_key: str = Header(default="", alias="X-API-Key")):
+    verify_api_key(x_api_key)
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
 
