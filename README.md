@@ -65,7 +65,7 @@ Track reports as:
 # Screenshots
 
 ![Dashboard](screenshots/Dashboard.jpg)
-Gmail add-on Screenshot(!screenshots/Gmailaddon.jpg)
+![Gmail add-on Screenshot](!screenshots/Gmailaddon.jpg)
 
 ```text
 /dashboard screenshot
