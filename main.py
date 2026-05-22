@@ -479,7 +479,6 @@ window.onclick = function(event) {{
 setInterval(() => {{
     window.location.reload();
 }}, 300000);
-</script>
 
 async function updateStatus(selectElement, reportId) {{
     const newStatus = selectElement.value;
@@ -494,6 +493,10 @@ async function updateStatus(selectElement, reportId) {{
         }})
     }});
 }}
+
+</script>
+
+
 
 <div id="iocModal" class="modal">
     <div class="modal-content">
