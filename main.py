@@ -3,8 +3,12 @@ from pydantic import BaseModel
 from datetime import datetime
 from pathlib import Path
 from fastapi.responses import HTMLResponse
+from fastapi import Header, HTTPException
 import json
 import html
+import os
+
+
 
 from database import (
     save_report,
@@ -16,6 +20,12 @@ from database import (
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 
+API_KEY = os.getenv("API_KEY")
+
+def verify_api_key(x_api_key: str = Header(default="")):
+    if x_api_key != API_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized") 
+    
 app = FastAPI(title="Louisburg Phishing Analyzer")
 
 
@@ -35,7 +45,8 @@ def home():
 
 
 @app.post("/analyze")
-def analyze_email(request: AnalyzeRequest):
+def analyze_email(request: AnalyzeRequest, api_key: str = Header(default="")):
+    verify_api_key(api_key)
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
 
@@ -44,7 +55,8 @@ def analyze_email(request: AnalyzeRequest):
 
 
 @app.post("/report")
-def report_phishing(request: AnalyzeRequest):
+def report_phishing(request: AnalyzeRequest, api_key: str = Header(default="")):
+    verify_api_key(api_key)
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
 
