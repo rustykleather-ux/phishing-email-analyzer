@@ -64,7 +64,7 @@ Track reports as:
 
 # Screenshots
 
-Add screenshots here later:
+![Dashboard](screenshots/dashboard.png)
 
 ```text
 /dashboard screenshot
