@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    container_name: phishing-postgres
+    environment:
+      POSTGRES_DB: phishing_db
+      POSTGRES_USER: phishing_user
+      POSTGRES_PASSWORD: phishing_password
+    volumes:
+      - phishing_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: phishing-email-analyzer
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://phishing_user:phishing_password@db:5432/phishing_db
+      PHISHING_API_KEY: dev-secret-key
+      VT_API_KEY: ${VT_API_KEY}
+    volumes:
+      - ./reports:/app/reports
+      - ./credentials.json:/app/credentials.json
+      - ./token.json:/app/token.json
+
+volumes:
+  phishing_postgres_data:

@@ -283,17 +283,35 @@ def migrate_db():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("PRAGMA table_info(reports)")
-    columns = [column[1] for column in cursor.fetchall()]
+    if using_postgres():
+        cursor.execute("""
+            SELECT column_name
+            FROM information_schema.columns
+            WHERE table_name = 'reports'
+        """)
+        columns = [row["column_name"] for row in cursor.fetchall()]
 
-    if "status" not in columns:
-        cursor.execute("ALTER TABLE reports ADD COLUMN status TEXT DEFAULT 'New'")
+        if "status" not in columns:
+            cursor.execute("ALTER TABLE reports ADD COLUMN status TEXT DEFAULT 'New'")
 
-    if "analyst_notes" not in columns:
-        cursor.execute("ALTER TABLE reports ADD COLUMN analyst_notes TEXT DEFAULT ''")
+        if "analyst_notes" not in columns:
+            cursor.execute("ALTER TABLE reports ADD COLUMN analyst_notes TEXT DEFAULT ''")
 
-    if "iocs_json" not in columns:
-        cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
+        if "iocs_json" not in columns:
+            cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
+
+    else:
+        cursor.execute("PRAGMA table_info(reports)")
+        columns = [column[1] for column in cursor.fetchall()]
+
+        if "status" not in columns:
+            cursor.execute("ALTER TABLE reports ADD COLUMN status TEXT DEFAULT 'New'")
+
+        if "analyst_notes" not in columns:
+            cursor.execute("ALTER TABLE reports ADD COLUMN analyst_notes TEXT DEFAULT ''")
+
+        if "iocs_json" not in columns:
+            cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
 
     conn.commit()
     conn.close()
