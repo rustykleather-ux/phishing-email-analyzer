@@ -64,7 +64,7 @@ Track reports as:
 
 # Screenshots
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/Dashboard.jpg)
 
 ```text
 /dashboard screenshot
@@ -249,7 +249,6 @@ Displays:
 
 # Future Improvements
 
-- PostgreSQL migration
 - SIEM integration
 - YARA scanning
 - Attachment sandboxing
