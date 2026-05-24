@@ -276,7 +276,37 @@ def update_report_status(report_id, status):
         cursor.execute(
             "UPDATE reports SET status = ? WHERE id = ?",
             (status, report_id)
+  
+  
         )
+
+def get_report_by_id(report_id):
+    init_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if using_postgres():
+        cursor.execute(
+            "SELECT * FROM reports WHERE id = %s",
+            (report_id,)
+        )
+        row = cursor.fetchone()
+    else:
+        cursor.execute(
+            "SELECT * FROM reports WHERE id = ?",
+            (report_id,)
+        )
+        row = cursor.fetchone()
+
+    conn.close()
+
+    if not row:
+        return None
+
+    return dict(row)
+
+
 def migrate_db():
     init_db()
 
@@ -313,5 +343,6 @@ def migrate_db():
         if "iocs_json" not in columns:
             cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
 
+    
     conn.commit()
     conn.close()

@@ -7,6 +7,10 @@ from fastapi import Header, HTTPException
 import json
 import html
 import os
+from fastapi.responses import FileResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import textwrap
 
 
 
@@ -15,6 +19,7 @@ from database import (
     get_recent_reports,
     get_report_stats,
     get_report_iocs,
+    get_report_by_id,
     update_report_status
 )
 from gmail_reader import get_gmail_message, send_report_email
@@ -158,6 +163,90 @@ def set_report_status(report_id: int, payload: dict):
         "report_id": report_id,
         "new_status": new_status
     }
+@app.get("/api/report/{report_id}/pdf")
+def export_report_pdf(report_id: int):
+    report = get_report_by_id(report_id)
+
+    if not report:
+        return {"error": "Report not found"}
+
+    iocs = get_report_iocs(report_id)
+
+    exports_dir = Path("reports") / "exports"
+    exports_dir.mkdir(parents=True, exist_ok=True)
+
+    pdf_path = exports_dir / f"phishing_report_{report_id}.pdf"
+
+    c = canvas.Canvas(str(pdf_path), pagesize=letter)
+    width, height = letter
+
+    y = height - 50
+
+    def write_line(text, size=10, bold=False):
+        nonlocal y
+
+        if y < 60:
+            c.showPage()
+            y = height - 50
+
+        font = "Helvetica-Bold" if bold else "Helvetica"
+        c.setFont(font, size)
+        c.drawString(50, y, str(text))
+        y -= 16
+
+    def write_wrapped(label, value):
+        nonlocal y
+        write_line(label, 11, True)
+
+        for line in textwrap.wrap(str(value or ""), width=90):
+            write_line(line, 9, False)
+
+        y -= 6
+
+    write_line("Louisburg Phishing Incident Report", 16, True)
+    y -= 10
+
+    write_wrapped("Created At", report.get("created_at", ""))
+    write_wrapped("Message ID", report.get("message_id", ""))
+    write_wrapped("Sender", report.get("sender", ""))
+    write_wrapped("Subject", report.get("subject", ""))
+    write_wrapped("Risk Level", report.get("risk_level", ""))
+    write_wrapped("Score", report.get("score", ""))
+    write_wrapped("Status", report.get("status", "New"))
+    write_wrapped("Recommendation", report.get("recommendation", ""))
+
+    write_line("Indicators of Compromise", 13, True)
+    y -= 6
+
+    write_line("URLs", 11, True)
+    urls = iocs.get("urls", [])
+
+    if urls:
+        for url in urls:
+            for line in textwrap.wrap(str(url), width=90):
+                write_line("- " + line, 8)
+    else:
+        write_line("No URLs captured.", 9)
+
+    y -= 8
+
+    write_line("Attachments", 11, True)
+    attachments = iocs.get("attachments", [])
+
+    if attachments:
+        for attachment in attachments:
+            for line in textwrap.wrap(str(attachment), width=90):
+                write_line("- " + line, 8)
+    else:
+        write_line("No attachments captured.", 9)
+
+    c.save()
+
+    return FileResponse(
+        path=str(pdf_path),
+        filename=f"phishing_report_{report_id}.pdf",
+        media_type="application/pdf"
+    )
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
@@ -215,6 +304,11 @@ def dashboard():
             <option value="Confirmed Malicious" {selected("Confirmed Malicious")}>Confirmed Malicious</option>
         </select>
     </td>
+    <td>
+    <a href="/api/report/{report_id}/pdf" target="_blank">
+        Export PDF
+    </a>
+</td>
 </tr>
 """
 
@@ -427,6 +521,7 @@ input, select {{
     <th>Subject</th>
     <th>IOCs</th>
     <th>Status</th>
+    <th>PDF</th>
 </tr>
 {rows_html}
 </table>
