@@ -73,6 +73,67 @@ def init_db():
     conn.close()
 
 
+def migrate_db():
+    init_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if using_postgres():
+        cursor.execute("""
+            SELECT column_name
+            FROM information_schema.columns
+            WHERE table_name = 'reports'
+        """)
+        columns = [row["column_name"] for row in cursor.fetchall()]
+    else:
+        cursor.execute("PRAGMA table_info(reports)")
+        columns = [column[1] for column in cursor.fetchall()]
+
+    if "status" not in columns:
+        cursor.execute("ALTER TABLE reports ADD COLUMN status TEXT DEFAULT 'New'")
+
+    if "analyst_notes" not in columns:
+        cursor.execute("ALTER TABLE reports ADD COLUMN analyst_notes TEXT DEFAULT ''")
+
+    if "iocs_json" not in columns:
+        cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
+
+    conn.commit()
+    conn.close()
+
+
+def init_audit_db():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if using_postgres():
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id SERIAL PRIMARY KEY,
+                created_at TEXT NOT NULL,
+                action TEXT NOT NULL,
+                actor TEXT,
+                report_id INTEGER,
+                details_json TEXT DEFAULT '{}'
+            )
+        """)
+    else:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                created_at TEXT NOT NULL,
+                action TEXT NOT NULL,
+                actor TEXT,
+                report_id INTEGER,
+                details_json TEXT DEFAULT '{}'
+            )
+        """)
+
+    conn.commit()
+    conn.close()
+
+
 def save_report(
     message_id,
     sender,
@@ -82,11 +143,13 @@ def save_report(
     recommendation,
     iocs=None
 ):
-    init_db()
     migrate_db()
 
     conn = get_connection()
     cursor = conn.cursor()
+
+    iocs_json = json.dumps(iocs or {})
+    created_at = datetime.now().isoformat(timespec="seconds")
 
     if using_postgres():
         cursor.execute("""
@@ -104,7 +167,7 @@ def save_report(
             )
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (
-            datetime.now().isoformat(timespec="seconds"),
+            created_at,
             message_id,
             sender,
             subject,
@@ -113,7 +176,7 @@ def save_report(
             recommendation,
             "New",
             "",
-            json.dumps(iocs or {})
+            iocs_json
         ))
     else:
         cursor.execute("""
@@ -131,7 +194,7 @@ def save_report(
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
-            datetime.now().isoformat(timespec="seconds"),
+            created_at,
             message_id,
             sender,
             subject,
@@ -140,7 +203,7 @@ def save_report(
             recommendation,
             "New",
             "",
-            json.dumps(iocs or {})
+            iocs_json
         ))
 
     conn.commit()
@@ -148,7 +211,7 @@ def save_report(
 
 
 def get_recent_reports(limit=25):
-    init_db()
+    migrate_db()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -175,7 +238,7 @@ def get_recent_reports(limit=25):
 
 
 def get_report_stats():
-    init_db()
+    migrate_db()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -183,10 +246,7 @@ def get_report_stats():
     cursor.execute("SELECT COUNT(*) AS count FROM reports")
     total_row = cursor.fetchone()
 
-    if using_postgres():
-        total_reports = total_row["count"]
-    else:
-        total_reports = total_row[0]
+    total_reports = total_row["count"] if using_postgres() else total_row[0]
 
     cursor.execute("""
         SELECT risk_level, COUNT(*) AS count
@@ -228,7 +288,7 @@ def get_report_stats():
 
 
 def get_report_iocs(report_id):
-    init_db()
+    migrate_db()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -239,19 +299,12 @@ def get_report_iocs(report_id):
             (report_id,)
         )
         row = cursor.fetchone()
-
-        conn.close()
-
-        if not row:
-            return {}
-
-        return json.loads(row["iocs_json"] or "{}")
-
-    cursor.execute(
-        "SELECT iocs_json FROM reports WHERE id = ?",
-        (report_id,)
-    )
-    row = cursor.fetchone()
+    else:
+        cursor.execute(
+            "SELECT iocs_json FROM reports WHERE id = ?",
+            (report_id,)
+        )
+        row = cursor.fetchone()
 
     conn.close()
 
@@ -261,94 +314,8 @@ def get_report_iocs(report_id):
     return json.loads(row["iocs_json"] or "{}")
 
 
-def update_report_status(report_id, status):
-    init_db()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    if using_postgres():
-        cursor.execute(
-            "UPDATE reports SET status = %s WHERE id = %s",
-            (status, report_id)
-        )
-    else:
-        cursor.execute(
-            "UPDATE reports SET status = ? WHERE id = ?",
-            (status, report_id)
-  
-  
-        )
-
-def save_audit_event(action, details=None, report_id=None, actor="system"):
-    init_db()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    if using_postgres():
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS audit_logs (
-                id SERIAL PRIMARY KEY,
-                created_at TEXT NOT NULL,
-                action TEXT NOT NULL,
-                actor TEXT,
-                report_id INTEGER,
-                details_json TEXT DEFAULT '{}'
-            )
-        """)
-
-        cursor.execute("""
-            INSERT INTO audit_logs (
-                created_at,
-                action,
-                actor,
-                report_id,
-                details_json
-            )
-            VALUES (%s, %s, %s, %s, %s)
-        """, (
-            datetime.now().isoformat(timespec="seconds"),
-            action,
-            actor,
-            report_id,
-            json.dumps(details or {})
-        ))
-
-    else:
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS audit_logs (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                created_at TEXT NOT NULL,
-                action TEXT NOT NULL,
-                actor TEXT,
-                report_id INTEGER,
-                details_json TEXT DEFAULT '{}'
-            )
-        """)
-
-        cursor.execute("""
-            INSERT INTO audit_logs (
-                created_at,
-                action,
-                actor,
-                report_id,
-                details_json
-            )
-            VALUES (?, ?, ?, ?, ?)
-        """, (
-            datetime.now().isoformat(timespec="seconds"),
-            action,
-            actor,
-            report_id,
-            json.dumps(details or {})
-        ))
-
-    conn.commit()
-    conn.close()
-
 def get_report_by_id(report_id):
-    init_db()
+    migrate_db()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -373,8 +340,78 @@ def get_report_by_id(report_id):
 
     return dict(row)
 
+
+def update_report_status(report_id, status):
+    migrate_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if using_postgres():
+        cursor.execute(
+            "UPDATE reports SET status = %s WHERE id = %s",
+            (status, report_id)
+        )
+    else:
+        cursor.execute(
+            "UPDATE reports SET status = ? WHERE id = ?",
+            (status, report_id)
+        )
+
+    conn.commit()
+    conn.close()
+
+
+def save_audit_event(action, details=None, report_id=None, actor="system"):
+    init_audit_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    details_json = json.dumps(details or {})
+    created_at = datetime.now().isoformat(timespec="seconds")
+
+    if using_postgres():
+        cursor.execute("""
+            INSERT INTO audit_logs (
+                created_at,
+                action,
+                actor,
+                report_id,
+                details_json
+            )
+            VALUES (%s, %s, %s, %s, %s)
+        """, (
+            created_at,
+            action,
+            actor,
+            report_id,
+            details_json
+        ))
+    else:
+        cursor.execute("""
+            INSERT INTO audit_logs (
+                created_at,
+                action,
+                actor,
+                report_id,
+                details_json
+            )
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            created_at,
+            action,
+            actor,
+            report_id,
+            details_json
+        ))
+
+    conn.commit()
+    conn.close()
+
+
 def get_recent_audit_logs(limit=25):
-    init_db()
+    init_audit_db()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -398,43 +435,3 @@ def get_recent_audit_logs(limit=25):
 
     conn.close()
     return rows
-
-def migrate_db():
-    init_db()
-
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    if using_postgres():
-        cursor.execute("""
-            SELECT column_name
-            FROM information_schema.columns
-            WHERE table_name = 'reports'
-        """)
-        columns = [row["column_name"] for row in cursor.fetchall()]
-
-        if "status" not in columns:
-            cursor.execute("ALTER TABLE reports ADD COLUMN status TEXT DEFAULT 'New'")
-
-        if "analyst_notes" not in columns:
-            cursor.execute("ALTER TABLE reports ADD COLUMN analyst_notes TEXT DEFAULT ''")
-
-        if "iocs_json" not in columns:
-            cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
-
-    else:
-        cursor.execute("PRAGMA table_info(reports)")
-        columns = [column[1] for column in cursor.fetchall()]
-
-        if "status" not in columns:
-            cursor.execute("ALTER TABLE reports ADD COLUMN status TEXT DEFAULT 'New'")
-
-        if "analyst_notes" not in columns:
-            cursor.execute("ALTER TABLE reports ADD COLUMN analyst_notes TEXT DEFAULT ''")
-
-        if "iocs_json" not in columns:
-            cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
-
-    
-    conn.commit()
-    conn.close()

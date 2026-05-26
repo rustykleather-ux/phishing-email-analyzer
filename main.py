@@ -1,37 +1,34 @@
-from fastapi import FastAPI
-from fastapi import Depends, status
-from pydantic import BaseModel
-from datetime import datetime
-from pathlib import Path
-from fastapi.responses import HTMLResponse
-from fastapi import Header, HTTPException
+import os
 import json
 import html
-import os
-from fastapi.responses import FileResponse
+import textwrap
+import secrets
+from pathlib import Path
+from datetime import datetime
+
+from fastapi import FastAPI, Header, HTTPException, Depends, status
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from pydantic import BaseModel
+
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-import textwrap
-from fastapi import Request, Form
-from fastapi.responses import RedirectResponse
-from itsdangerous import URLSafeSerializer, BadSignature
-import secrets
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from siem import send_to_splunk
 
 from database import (
-    get_recent_audit_logs,
     save_report,
     get_recent_reports,
     get_report_stats,
     get_report_iocs,
     get_report_by_id,
     update_report_status,
-    save_audit_event,
-    get_recent_audit_logs
+    save_audit_event
 )
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
+from siem import send_to_splunk
+
+
+app = FastAPI(title="Louisburg Phishing Analyzer")
 
 API_KEY = os.getenv("PHISHING_API_KEY", "dev-secret-key")
 
@@ -39,6 +36,16 @@ security = HTTPBasic()
 
 DASHBOARD_USERNAME = os.getenv("DASHBOARD_USERNAME", "admin")
 DASHBOARD_PASSWORD = os.getenv("DASHBOARD_PASSWORD", "ChangeThisPassword")
+
+
+class AnalyzeRequest(BaseModel):
+    messageId: str
+    userEmail: str = "unknown"
+
+
+def verify_api_key(x_api_key: str):
+    if x_api_key != API_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 def verify_dashboard_login(
@@ -62,17 +69,6 @@ def verify_dashboard_login(
         )
 
     return credentials.username
-
-def verify_api_key(x_api_key: str = Header(default="")):
-    if x_api_key != API_KEY:
-        raise HTTPException(status_code=401, detail="Unauthorized") 
-    
-app = FastAPI(title="Louisburg Phishing Analyzer")
-
-
-class AnalyzeRequest(BaseModel):
-    messageId: str
-    userEmail: str = "unknown"
 
 
 @app.get("/")
@@ -100,8 +96,12 @@ def analyze_email(
 
 
 @app.post("/report")
-def report_phishing(request: AnalyzeRequest, x_api_key: str = Header(default="", alias="X-API-Key")):
+def report_phishing(
+    request: AnalyzeRequest,
+    x_api_key: str = Header(default="", alias="X-API-Key")
+):
     verify_api_key(x_api_key)
+
     email_data = get_gmail_message(request.messageId)
     email_data["message_id"] = request.messageId
 
@@ -171,7 +171,7 @@ Recommendation:
         recommendation=results.get("recommendation", ""),
         iocs=results.get("iocs", {})
     )
-    
+
     save_audit_event(
         action="report_submitted",
         actor=request.userEmail,
@@ -183,6 +183,7 @@ Recommendation:
             "score": results.get("score", 0)
         }
     )
+
     send_to_splunk({
         "event_type": "phishing_report",
         "message_id": request.messageId,
@@ -247,17 +248,19 @@ def set_report_status(
         "report_id": report_id,
         "new_status": new_status
     }
+
+
 @app.get("/api/report/{report_id}/pdf")
 def export_report_pdf(
     report_id: int,
     username: str = Depends(verify_dashboard_login)
 ):
     report = get_report_by_id(report_id)
-    
+
     if not report:
         return {"error": "Report not found"}
-    
-        save_audit_event(
+
+    save_audit_event(
         action="pdf_exported",
         actor=username,
         report_id=report_id,
@@ -275,7 +278,6 @@ def export_report_pdf(
 
     c = canvas.Canvas(str(pdf_path), pagesize=letter)
     width, height = letter
-
     y = height - 50
 
     def write_line(text, size=10, bold=False):
@@ -292,6 +294,7 @@ def export_report_pdf(
 
     def write_wrapped(label, value):
         nonlocal y
+
         write_line(label, 11, True)
 
         for line in textwrap.wrap(str(value or ""), width=90):
@@ -345,20 +348,15 @@ def export_report_pdf(
     )
 
 
-@app.get("/dashboard", response_class=HTMLResponse, dependencies=[Depends(verify_dashboard_login)])
+@app.get(
+    "/dashboard",
+    response_class=HTMLResponse,
+    dependencies=[Depends(verify_dashboard_login)]
+)
 def dashboard():
     reports = get_recent_reports()
     stats = get_report_stats()
-    audit_logs = get_recent_audit_logs()
-    audit_html = ""
-    for event in audit_logs:
-        audit_html += f"""
-           <td>{html.escape(str(event.get("created_at", "")))}</td>
-        <td>{html.escape(str(event.get("action", "")))}</td>
-        <td>{html.escape(str(event.get("actor", "")))}</td>
-        <td>{html.escape(str(event.get("report_id", "")))}</td>
-    </tr>
-    """
+
     rows_html = ""
 
     for report in reports:
@@ -410,18 +408,17 @@ def dashboard():
         </select>
     </td>
     <td>
-    <a class="pdf-link"
-       href="/api/report/{report_id}/pdf"
-       target="_blank">
-       Export PDF
-    </a>
-</td>
+        <a class="pdf-link"
+           href="/api/report/{report_id}/pdf"
+           target="_blank">
+           Export PDF
+        </a>
+    </td>
 </tr>
 """
 
     risk_labels = json.dumps(list(stats.get("by_risk", {}).keys()))
     risk_counts = json.dumps(list(stats.get("by_risk", {}).values()))
-
     sender_labels = json.dumps([sender for sender, count in stats.get("top_senders", [])])
     sender_counts = json.dumps([count for sender, count in stats.get("top_senders", [])])
 
@@ -444,6 +441,7 @@ body {{
 h1, h2 {{
     color: #f8fafc;
 }}
+
 .pdf-link {{
     color: white !important;
     text-decoration: none;
@@ -458,6 +456,7 @@ h1, h2 {{
     color: #d1d5db !important;
     text-decoration: underline;
 }}
+
 .cards {{
     display: flex;
     gap: 20px;
@@ -770,6 +769,7 @@ async function showIocs(button) {{
         attachmentList.innerHTML = "";
     }}
 }}
+
 function closeIocModal() {{
     document.getElementById("iocModal").style.display = "none";
 }}
