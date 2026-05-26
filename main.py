@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi import Depends, status
 from pydantic import BaseModel
 from datetime import datetime
 from pathlib import Path
@@ -11,8 +12,11 @@ from fastapi.responses import FileResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import textwrap
-
-
+from fastapi import Request, Form
+from fastapi.responses import RedirectResponse
+from itsdangerous import URLSafeSerializer, BadSignature
+import secrets
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from database import (
     save_report,
@@ -26,6 +30,34 @@ from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 
 API_KEY = os.getenv("PHISHING_API_KEY", "dev-secret-key")
+
+security = HTTPBasic()
+
+DASHBOARD_USERNAME = os.getenv("DASHBOARD_USERNAME", "admin")
+DASHBOARD_PASSWORD = os.getenv("DASHBOARD_PASSWORD", "ChangeThisPassword")
+
+
+def verify_dashboard_login(
+    credentials: HTTPBasicCredentials = Depends(security)
+):
+    username_ok = secrets.compare_digest(
+        credentials.username,
+        DASHBOARD_USERNAME
+    )
+
+    password_ok = secrets.compare_digest(
+        credentials.password,
+        DASHBOARD_PASSWORD
+    )
+
+    if not (username_ok and password_ok):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid dashboard login",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
+    return credentials.username
 
 def verify_api_key(x_api_key: str = Header(default="")):
     if x_api_key != API_KEY:
@@ -149,12 +181,19 @@ Recommendation:
 
 
 @app.get("/api/report/{report_id}/iocs")
-def report_iocs(report_id: int):
+def report_iocs(
+    report_id: int,
+    username: str = Depends(verify_dashboard_login)
+):
     return get_report_iocs(report_id)
 
 
 @app.post("/api/report/{report_id}/status")
-def set_report_status(report_id: int, payload: dict):
+def set_report_status(
+    report_id: int,
+    payload: dict,
+    username: str = Depends(verify_dashboard_login)
+):
     new_status = payload.get("status", "New")
     update_report_status(report_id, new_status)
 
@@ -164,7 +203,10 @@ def set_report_status(report_id: int, payload: dict):
         "new_status": new_status
     }
 @app.get("/api/report/{report_id}/pdf")
-def export_report_pdf(report_id: int):
+def export_report_pdf(
+    report_id: int,
+    username: str = Depends(verify_dashboard_login)
+):
     report = get_report_by_id(report_id)
 
     if not report:
@@ -249,7 +291,7 @@ def export_report_pdf(report_id: int):
     )
 
 
-@app.get("/dashboard", response_class=HTMLResponse)
+@app.get("/dashboard", response_class=HTMLResponse, dependencies=[Depends(verify_dashboard_login)])
 def dashboard():
     reports = get_recent_reports()
     stats = get_report_stats()
