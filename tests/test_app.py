@@ -33,6 +33,17 @@ def test_splunk_disabled_when_not_configured():
 
     assert result["enabled"] is False
 
+from siem import send_to_splunk
+
+
+def test_splunk_disabled_when_not_configured():
+    result = send_to_splunk({
+        "event_type": "test"
+    })
+
+    assert result["enabled"] is False
+
+
 def test_analyze_requires_api_key():
     response = client.post(
         "/analyze",
