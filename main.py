@@ -17,6 +17,7 @@ from fastapi.responses import RedirectResponse
 from itsdangerous import URLSafeSerializer, BadSignature
 import secrets
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from siem import send_to_splunk
 
 from database import (
     save_report,
@@ -167,6 +168,19 @@ Recommendation:
         recommendation=results.get("recommendation", ""),
         iocs=results.get("iocs", {})
     )
+
+    send_to_splunk({
+        "event_type": "phishing_report",
+        "message_id": request.messageId,
+        "reported_by": request.userEmail,
+        "sender": email_data.get("from", ""),
+        "subject": email_data.get("subject", ""),
+        "risk_level": results.get("risk_level", ""),
+        "score": results.get("score", 0),
+        "findings": results.get("findings", []),
+        "iocs": results.get("iocs", {}),
+        "recommendation": results.get("recommendation", "")
+    })
 
     send_report_email(
         to_email="rfolsom@louisburglibrary.org",
