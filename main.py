@@ -454,21 +454,6 @@ input, select {{
     cursor: pointer;
 }}
 
-.pdf-link {
-    color: #ffffff !important;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.pdf-link:visited {
-    color: #ffffff !important;
-}
-
-.pdf-link:hover {
-    color: #f3f4f6 !important;
-    text-decoration: underline;
-}
-
 .ioc-list {{
     background: #0f172a;
     border: 1px solid #1f2937;
