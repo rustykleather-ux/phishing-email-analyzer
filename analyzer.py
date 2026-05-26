@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 from gmail_reader import get_attachment_sha256
 from virustotal_client import check_file_hash_reputation
 from virustotal_client import check_url_reputation
+from urllib.parse import urlparse
 
 EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
 
@@ -359,13 +360,40 @@ def analyze_phishing_email(email_data):
         risk_level = "Low Risk"
         recommendation = "No major phishing indicators found, but continue to use caution."
 
+    enriched_urls = []
+
+    for url in urls:
+        parsed = urlparse(url)
+        domain = parsed.netloc.lower()
+
+        url_info = {
+            "url": url,
+            "domain": domain,
+            "uses_https": url.lower().startswith("https://"),
+            "is_shortener": domain in [
+                "bit.ly",
+                "tinyurl.com",
+                "t.co",
+                "goo.gl",
+                "ow.ly",
+                "is.gd",
+                "buff.ly",
+                "rebrand.ly"
+            ]
+        }
+
+        enriched_urls.append(url_info)
+
     iocs = {
         "urls": urls,
+        "enriched_urls": enriched_urls,
         "attachments": [
             attachment.get("filename", "")
             for attachment in attachments
         ]
     }
+        
+    
 
     return {
         "risk_level": risk_level,

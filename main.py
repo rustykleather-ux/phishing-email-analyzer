@@ -662,8 +662,9 @@ async function showIocs(button) {{
     document.getElementById("iocMessageId").innerText =
         button.getAttribute("data-message-id") || "";
 
-    const urlList = document.getElementById("iocUrls");
-    const attachmentList = document.getElementById("iocAttachments");
+    const urls = iocs.urls || [];
+const enrichedUrls = iocs.enriched_urls || [];
+const attachments = iocs.attachments || [];
 
     urlList.innerHTML = "<li>Loading...</li>";
     attachmentList.innerHTML = "<li>Loading...</li>";
@@ -677,9 +678,20 @@ async function showIocs(button) {{
         const urls = iocs.urls || [];
         const attachments = iocs.attachments || [];
 
-        urlList.innerHTML = urls.length
-            ? urls.map(url => "<li>" + escapeHtml(url) + "</li>").join("")
-            : "<li>No URLs captured.</li>";
+        urlList.innerHTML = enrichedUrls.length
+    ? enrichedUrls.map(item =>
+        "<li>" +
+        "<strong>URL:</strong> " + escapeHtml(item.url || "") + "<br>" +
+        "<strong>Domain:</strong> " + escapeHtml(item.domain || "") + "<br>" +
+        "<strong>HTTPS:</strong> " + (item.uses_https ? "Yes" : "No") + "<br>" +
+        "<strong>Shortener:</strong> " + (item.is_shortener ? "Yes" : "No") +
+        "</li><br>"
+    ).join("")
+    : (
+        urls.length
+        ? urls.map(url => "<li>" + escapeHtml(url) + "</li>").join("")
+        : "<li>No URLs captured.</li>"
+    );
 
         attachmentList.innerHTML = attachments.length
             ? attachments.map(item => "<li>" + escapeHtml(item) + "</li>").join("")
