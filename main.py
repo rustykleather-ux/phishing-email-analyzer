@@ -1,3 +1,5 @@
+from turtle import color
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import datetime
@@ -305,8 +307,11 @@ def dashboard():
         </select>
     </td>
     <td>
-    <a href="/api/report/{report_id}/pdf" target="_blank">
-        Export PDF
+   <td>
+    <a class="pdf-link"
+       href="/api/report/{report_id}/pdf"
+       target="_blank">
+       Export PDF
     </a>
 </td>
 </tr>
@@ -453,6 +458,21 @@ input, select {{
     font-weight: bold;
     cursor: pointer;
 }}
+
+.pdf-link {
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.pdf-link:visited {
+    color: #ffffff !important;
+}
+
+.pdf-link:hover {
+    color: #f3f4f6 !important;
+    text-decoration: underline;
+}
 
 .ioc-list {{
     background: #0f172a;
