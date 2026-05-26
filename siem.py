@@ -1,8 +1,8 @@
 import os
 import requests
 
-SPLUNK_HEC_URL = os.getenv("SPLUNK_HEC_URL").strip()
-SPLUNK_HEC_TOKEN = os.getenv("SPLUNK_HEC_TOKEN").strip()
+SPLUNK_HEC_URL = os.getenv("SPLUNK_HEC_URL", "").strip()
+SPLUNK_HEC_TOKEN = os.getenv("SPLUNK_HEC_TOKEN", "").strip()
 
 
 def send_to_splunk(event):
