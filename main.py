@@ -333,7 +333,28 @@ body {{
     margin: 0;
     padding: 30px;
 }}
+<style>
 
+body {{
+    font-family: Arial, sans-serif;
+}}
+
+.pdf-link {{
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: bold;
+}}
+
+.pdf-link:visited {{
+    color: #ffffff !important;
+}}
+
+.pdf-link:hover {{
+    color: #f3f4f6 !important;
+    text-decoration: underline;
+}}
+
+</style>
 h1, h2 {{
     color: #f8fafc;
 }}
