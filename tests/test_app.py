@@ -1,7 +1,10 @@
 from fastapi.testclient import TestClient
 from main import app
+from siem import send_to_splunk
+
 
 client = TestClient(app)
+
 
 
 def test_home_page():
@@ -23,6 +26,12 @@ def test_dashboard_with_login():
     assert response.status_code == 200
     assert "Louisburg Phishing Dashboard" in response.text
 
+def test_splunk_disabled_when_not_configured():
+    result = send_to_splunk({
+        "event_type": "test"
+    })
+
+    assert result["enabled"] is False
 
 def test_analyze_requires_api_key():
     response = client.post(
