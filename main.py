@@ -662,9 +662,8 @@ async function showIocs(button) {{
     document.getElementById("iocMessageId").innerText =
         button.getAttribute("data-message-id") || "";
 
-    const urls = iocs.urls || [];
-const enrichedUrls = iocs.enriched_urls || [];
-const attachments = iocs.attachments || [];
+    const urlList = document.getElementById("iocUrls");
+    const attachmentList = document.getElementById("iocAttachments");
 
     urlList.innerHTML = "<li>Loading...</li>";
     attachmentList.innerHTML = "<li>Loading...</li>";
@@ -676,32 +675,38 @@ const attachments = iocs.attachments || [];
         const iocs = await response.json();
 
         const urls = iocs.urls || [];
+        const enrichedUrls = iocs.enriched_urls || [];
         const attachments = iocs.attachments || [];
 
-        urlList.innerHTML = enrichedUrls.length
-    ? enrichedUrls.map(item =>
-        "<li>" +
-        "<strong>URL:</strong> " + escapeHtml(item.url || "") + "<br>" +
-        "<strong>Domain:</strong> " + escapeHtml(item.domain || "") + "<br>" +
-        "<strong>HTTPS:</strong> " + (item.uses_https ? "Yes" : "No") + "<br>" +
-        "<strong>Shortener:</strong> " + (item.is_shortener ? "Yes" : "No") +
-        "</li><br>"
-    ).join("")
-    : (
-        urls.length
-        ? urls.map(url => "<li>" + escapeHtml(url) + "</li>").join("")
-        : "<li>No URLs captured.</li>"
-    );
+        if (enrichedUrls.length > 0) {{
+            urlList.innerHTML = enrichedUrls.map(function(item) {{
+                return "<li>" +
+                    "<strong>URL:</strong> " + escapeHtml(item.url || "") + "<br>" +
+                    "<strong>Domain:</strong> " + escapeHtml(item.domain || "") + "<br>" +
+                    "<strong>HTTPS:</strong> " + (item.uses_https ? "Yes" : "No") + "<br>" +
+                    "<strong>Shortener:</strong> " + (item.is_shortener ? "Yes" : "No") +
+                    "</li><br>";
+            }}).join("");
+        }} else if (urls.length > 0) {{
+            urlList.innerHTML = urls.map(function(url) {{
+                return "<li>" + escapeHtml(url) + "</li>";
+            }}).join("");
+        }} else {{
+            urlList.innerHTML = "<li>No URLs captured.</li>";
+        }}
 
-        attachmentList.innerHTML = attachments.length
-            ? attachments.map(item => "<li>" + escapeHtml(item) + "</li>").join("")
-            : "<li>No attachments captured.</li>";
+        if (attachments.length > 0) {{
+            attachmentList.innerHTML = attachments.map(function(item) {{
+                return "<li>" + escapeHtml(item) + "</li>";
+            }}).join("");
+        }} else {{
+            attachmentList.innerHTML = "<li>No attachments captured.</li>";
+        }}
     }} catch (error) {{
         urlList.innerHTML = "<li>Error loading IOC data.</li>";
         attachmentList.innerHTML = "";
     }}
 }}
-
 function closeIocModal() {{
     document.getElementById("iocModal").style.display = "none";
 }}
