@@ -305,8 +305,10 @@ def dashboard():
         </select>
     </td>
     <td>
-    <a href="/api/report/{report_id}/pdf" target="_blank">
-        Export PDF
+    <a class="pdf-link"
+       href="/api/report/{report_id}/pdf"
+       target="_blank">
+       Export PDF
     </a>
 </td>
 </tr>
@@ -333,32 +335,24 @@ body {{
     margin: 0;
     padding: 30px;
 }}
-<style>
 
-body {{
-    font-family: Arial, sans-serif;
+h1, h2 {{
+    color: #f8fafc;
 }}
-
 .pdf-link {{
-    color: #ffffff !important;
+    color: white !important;
     text-decoration: none;
     font-weight: bold;
 }}
 
 .pdf-link:visited {{
-    color: #ffffff !important;
+    color: white !important;
 }}
 
 .pdf-link:hover {{
-    color: #f3f4f6 !important;
+    color: #d1d5db !important;
     text-decoration: underline;
 }}
-
-</style>
-h1, h2 {{
-    color: #f8fafc;
-}}
-
 .cards {{
     display: flex;
     gap: 20px;
