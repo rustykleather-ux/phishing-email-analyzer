@@ -18,7 +18,7 @@ def test_dashboard_requires_login():
 def test_dashboard_with_login():
     response = client.get(
         "/dashboard",
-        auth=("admin", "yourStrongPasswordHere")
+        auth=("admin", "ChangeThisPassword")
     )
     assert response.status_code == 200
     assert "Louisburg Phishing Dashboard" in response.text
