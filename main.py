@@ -20,12 +20,15 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from siem import send_to_splunk
 
 from database import (
+    get_recent_audit_logs,
     save_report,
     get_recent_reports,
     get_report_stats,
     get_report_iocs,
     get_report_by_id,
-    update_report_status
+    update_report_status,
+    save_audit_event,
+    get_recent_audit_logs
 )
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
@@ -168,7 +171,18 @@ Recommendation:
         recommendation=results.get("recommendation", ""),
         iocs=results.get("iocs", {})
     )
-
+    
+    save_audit_event(
+        action="report_submitted",
+        actor=request.userEmail,
+        details={
+            "message_id": request.messageId,
+            "sender": email_data.get("from", ""),
+            "subject": email_data.get("subject", ""),
+            "risk_level": results.get("risk_level", ""),
+            "score": results.get("score", 0)
+        }
+    )
     send_to_splunk({
         "event_type": "phishing_report",
         "message_id": request.messageId,
@@ -199,7 +213,15 @@ def report_iocs(
     report_id: int,
     username: str = Depends(verify_dashboard_login)
 ):
-    return get_report_iocs(report_id)
+    iocs = get_report_iocs(report_id)
+
+    save_audit_event(
+        action="ioc_viewed",
+        actor=username,
+        report_id=report_id
+    )
+
+    return iocs
 
 
 @app.post("/api/report/{report_id}/status")
@@ -210,6 +232,15 @@ def set_report_status(
 ):
     new_status = payload.get("status", "New")
     update_report_status(report_id, new_status)
+
+    save_audit_event(
+        action="status_changed",
+        actor=username,
+        report_id=report_id,
+        details={
+            "new_status": new_status
+        }
+    )
 
     return {
         "status": "updated",
@@ -222,9 +253,18 @@ def export_report_pdf(
     username: str = Depends(verify_dashboard_login)
 ):
     report = get_report_by_id(report_id)
-
+    
     if not report:
         return {"error": "Report not found"}
+    
+        save_audit_event(
+        action="pdf_exported",
+        actor=username,
+        report_id=report_id,
+        details={
+            "subject": report.get("subject", "")
+        }
+    )
 
     iocs = get_report_iocs(report_id)
 
@@ -309,7 +349,16 @@ def export_report_pdf(
 def dashboard():
     reports = get_recent_reports()
     stats = get_report_stats()
-
+    audit_logs = get_recent_audit_logs()
+    audit_html = ""
+    for event in audit_logs:
+        audit_html += f"""
+           <td>{html.escape(str(event.get("created_at", "")))}</td>
+        <td>{html.escape(str(event.get("action", "")))}</td>
+        <td>{html.escape(str(event.get("actor", "")))}</td>
+        <td>{html.escape(str(event.get("report_id", "")))}</td>
+    </tr>
+    """
     rows_html = ""
 
     for report in reports:

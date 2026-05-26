@@ -280,6 +280,73 @@ def update_report_status(report_id, status):
   
         )
 
+def save_audit_event(action, details=None, report_id=None, actor="system"):
+    init_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if using_postgres():
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id SERIAL PRIMARY KEY,
+                created_at TEXT NOT NULL,
+                action TEXT NOT NULL,
+                actor TEXT,
+                report_id INTEGER,
+                details_json TEXT DEFAULT '{}'
+            )
+        """)
+
+        cursor.execute("""
+            INSERT INTO audit_logs (
+                created_at,
+                action,
+                actor,
+                report_id,
+                details_json
+            )
+            VALUES (%s, %s, %s, %s, %s)
+        """, (
+            datetime.now().isoformat(timespec="seconds"),
+            action,
+            actor,
+            report_id,
+            json.dumps(details or {})
+        ))
+
+    else:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                created_at TEXT NOT NULL,
+                action TEXT NOT NULL,
+                actor TEXT,
+                report_id INTEGER,
+                details_json TEXT DEFAULT '{}'
+            )
+        """)
+
+        cursor.execute("""
+            INSERT INTO audit_logs (
+                created_at,
+                action,
+                actor,
+                report_id,
+                details_json
+            )
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            datetime.now().isoformat(timespec="seconds"),
+            action,
+            actor,
+            report_id,
+            json.dumps(details or {})
+        ))
+
+    conn.commit()
+    conn.close()
+
 def get_report_by_id(report_id):
     init_db()
 
@@ -306,6 +373,31 @@ def get_report_by_id(report_id):
 
     return dict(row)
 
+def get_recent_audit_logs(limit=25):
+    init_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if using_postgres():
+        cursor.execute("""
+            SELECT *
+            FROM audit_logs
+            ORDER BY created_at DESC
+            LIMIT %s
+        """, (limit,))
+        rows = cursor.fetchall()
+    else:
+        cursor.execute("""
+            SELECT *
+            FROM audit_logs
+            ORDER BY created_at DESC
+            LIMIT ?
+        """, (limit,))
+        rows = [dict(row) for row in cursor.fetchall()]
+
+    conn.close()
+    return rows
 
 def migrate_db():
     init_db()
