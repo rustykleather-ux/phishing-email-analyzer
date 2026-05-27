@@ -360,51 +360,93 @@ def vt_enrich(
     username: str = Depends(verify_dashboard_login),
 ):
     """Run VirusTotal enrichment on-demand for all IOCs in a report."""
-    from virustotal_client import check_url_reputation, check_file_hash_reputation
+    try:
+        from virustotal_client import (
+            check_url_reputation,
+            check_file_hash_reputation,
+        )
 
-    iocs = get_report_iocs(report_id)
-    urls = iocs.get("urls", [])
-    attachments = iocs.get("attachments", [])
+        iocs = get_report_iocs(report_id)
+        urls = iocs.get("urls", [])
+        attachments = iocs.get("attachments", [])
 
-    url_results = []
-    for url in urls:
-        try:
-            result = check_url_reputation(url)
-            result["url"] = url
-            url_results.append(result)
-        except Exception:
-            logger.exception("VT URL lookup failed for %s", url)
-            url_results.append({"url": url, "available": False, "score": 0, "findings": ["Lookup error."]})
+        url_results = []
 
-    attachment_results = []
-    for attachment in attachments:
-        # attachment may be a filename string or a dict with a hash key
-        file_hash = attachment.get("hash") if isinstance(attachment, dict) else None
-        name = attachment.get("name") if isinstance(attachment, dict) else attachment
-
-        if file_hash:
+        for url in urls:
             try:
-                result = check_file_hash_reputation(file_hash)
-                result["name"] = name
-                result["hash"] = file_hash
-                attachment_results.append(result)
+                result = check_url_reputation(url)
+                result["url"] = url
+                url_results.append(result)
             except Exception:
-                logger.exception("VT hash lookup failed for %s", file_hash)
-                attachment_results.append({"name": name, "hash": file_hash, "available": False, "score": 0, "findings": ["Lookup error."]})
-        else:
-            attachment_results.append({"name": name, "hash": None, "available": False, "score": 0, "findings": ["No hash available for VT lookup."]})
+                logger.exception("VT URL lookup failed for %s", url)
+                url_results.append(
+                    {
+                        "url": url,
+                        "available": False,
+                        "score": 0,
+                        "findings": ["Lookup error."],
+                    }
+                )
 
-    save_audit_event(
-        action="vt_enrichment_run",
-        actor=username,
-        report_id=report_id,
-        details={"urls_checked": len(url_results), "attachments_checked": len(attachment_results)},
-    )
+        attachment_results = []
 
-    return {
-        "urls": url_results,
-        "attachments": attachment_results,
-    }
+        for attachment in attachments:
+            file_hash = attachment.get("hash") if isinstance(attachment, dict) else None
+            name = attachment.get("name") if isinstance(attachment, dict) else attachment
+
+            if file_hash:
+                try:
+                    result = check_file_hash_reputation(file_hash)
+                    result["name"] = name
+                    result["hash"] = file_hash
+                    attachment_results.append(result)
+                except Exception:
+                    logger.exception("VT hash lookup failed for %s", file_hash)
+                    attachment_results.append(
+                        {
+                            "name": name,
+                            "hash": file_hash,
+                            "available": False,
+                            "score": 0,
+                            "findings": ["Lookup error."],
+                        }
+                    )
+            else:
+                attachment_results.append(
+                    {
+                        "name": name,
+                        "hash": None,
+                        "available": False,
+                        "score": 0,
+                        "findings": ["No hash available for VT lookup."],
+                    }
+                )
+
+        save_audit_event(
+            action="vt_enrichment_run",
+            actor=username,
+            report_id=report_id,
+            details={
+                "urls_checked": len(url_results),
+                "attachments_checked": len(attachment_results),
+            },
+        )
+
+        return {
+            "urls": url_results,
+            "attachments": attachment_results,
+            "available": True,
+        }
+
+    except Exception as e:
+        logger.exception("VT enrichment failed for report %s", report_id)
+
+        return {
+            "urls": [],
+            "attachments": [],
+            "available": False,
+            "error": str(e),
+        }
 
 
 @app.post("/api/report/{report_id}/status")
