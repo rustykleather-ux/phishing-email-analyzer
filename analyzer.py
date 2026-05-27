@@ -6,6 +6,7 @@ from gmail_reader import get_attachment_sha256
 from virustotal_client import check_file_hash_reputation
 from virustotal_client import check_url_reputation
 from urllib.parse import urlparse
+from threat_intel import check_virustotal_url
 
 EMAIL_FILE = Path(__file__).parent.parent / "samples" / "phishing_email.txt"
 
@@ -365,6 +366,7 @@ def analyze_phishing_email(email_data):
     for url in urls:
         parsed = urlparse(url)
         domain = parsed.netloc.lower()
+        vt_result = check_virustotal_url(url)
 
         url_info = {
             "url": url,
@@ -379,7 +381,9 @@ def analyze_phishing_email(email_data):
                 "is.gd",
                 "buff.ly",
                 "rebrand.ly"
-            ]
+
+            ],
+            "virustotal":  vt_result
         }
 
         enriched_urls.append(url_info)

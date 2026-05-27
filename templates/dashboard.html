@@ -97,13 +97,13 @@ input, select {
 
 .modal-content {
     background-color: #111827;
-    margin: 8% auto;
+    margin: 5% auto;
     padding: 25px;
     border: 1px solid #374151;
-    width: 60%;
+    width: 65%;
     border-radius: 12px;
     color: #e5e7eb;
-    max-height: 75vh;
+    max-height: 85vh;
     overflow-y: auto;
 }
 
@@ -120,7 +120,83 @@ input, select {
     border: 1px solid #1f2937;
     border-radius: 8px;
     padding: 12px 24px;
+    list-style: none;
 }
+
+.ioc-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #1f2937;
+}
+
+.ioc-list li:last-child { border-bottom: none; }
+
+/* VT badge colours */
+.vt-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 6px;
+}
+.vt-clean     { background: #14532d; color: #86efac; }
+.vt-malicious { background: #7f1d1d; color: #fca5a5; }
+.vt-suspicious{ background: #78350f; color: #fcd34d; }
+.vt-unknown   { background: #1f2937; color: #9ca3af; }
+
+/* VT enrichment section */
+.vt-section {
+    margin-top: 20px;
+    border-top: 1px solid #374151;
+    padding-top: 16px;
+}
+
+.vt-run-btn {
+    background-color: #7c3aed;
+    margin-bottom: 14px;
+}
+.vt-run-btn:hover { background-color: #6d28d9; }
+.vt-run-btn:disabled {
+    background-color: #374151;
+    cursor: not-allowed;
+}
+
+.vt-result-card {
+    background: #0f172a;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+.vt-result-card .vt-url {
+    word-break: break-all;
+    font-size: 13px;
+    color: #93c5fd;
+    margin-bottom: 6px;
+}
+
+.vt-finding {
+    font-size: 12px;
+    color: #9ca3af;
+    margin: 2px 0;
+}
+
+.vt-score-bar-wrap {
+    background: #1f2937;
+    border-radius: 4px;
+    height: 6px;
+    margin: 6px 0 4px;
+    overflow: hidden;
+}
+
+.vt-score-bar {
+    height: 6px;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+#vtResults { margin-top: 6px; }
 </style>
 </head>
 
@@ -216,6 +292,7 @@ input, select {
 {% endfor %}
 </table>
 
+<!-- IOC + VT Modal -->
 <div id="iocModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeIocModal()">&times;</span>
@@ -224,10 +301,21 @@ input, select {
         <p><strong>Sender:</strong> <span id="iocSender"></span></p>
         <p><strong>Message ID:</strong> <span id="iocMessageId"></span></p>
         <hr>
+
         <h3>URLs</h3>
         <ul id="iocUrls" class="ioc-list"></ul>
+
         <h3>Attachments</h3>
         <ul id="iocAttachments" class="ioc-list"></ul>
+
+        <!-- VirusTotal Enrichment Section -->
+        <div class="vt-section">
+            <h3>&#128737; VirusTotal Enrichment</h3>
+            <button id="vtRunBtn" class="vt-run-btn" onclick="runVtEnrichment()">
+                Run VirusTotal Scan
+            </button>
+            <div id="vtResults"></div>
+        </div>
     </div>
 </div>
 
@@ -236,6 +324,8 @@ const riskLabels   = {{ risk_labels | safe }};
 const riskCounts   = {{ risk_counts | safe }};
 const senderLabels = {{ sender_labels | safe }};
 const senderCounts = {{ sender_counts | safe }};
+
+let currentReportId = null;
 
 new Chart(document.getElementById("riskChart"), {
     type: "pie",
@@ -266,7 +356,7 @@ new Chart(document.getElementById("senderChart"), {
 });
 
 async function showIocs(button) {
-    const reportId = button.getAttribute("data-report-id");
+    currentReportId = button.getAttribute("data-report-id");
 
     document.getElementById("iocSubject").innerText   = button.getAttribute("data-subject")    || "";
     document.getElementById("iocSender").innerText    = button.getAttribute("data-sender")     || "";
@@ -277,10 +367,16 @@ async function showIocs(button) {
     urlList.innerHTML        = "<li>Loading...</li>";
     attachmentList.innerHTML = "<li>Loading...</li>";
 
+    // Reset VT section
+    document.getElementById("vtResults").innerHTML = "";
+    const vtBtn = document.getElementById("vtRunBtn");
+    vtBtn.disabled    = false;
+    vtBtn.innerText   = "Run VirusTotal Scan";
+
     document.getElementById("iocModal").style.display = "block";
 
     try {
-        const response = await fetch("/api/report/" + reportId + "/iocs");
+        const response = await fetch("/api/report/" + currentReportId + "/iocs");
         const iocs = await response.json();
 
         const urls         = iocs.urls          || [];
@@ -294,7 +390,7 @@ async function showIocs(button) {
                 "<strong>Domain:</strong> "    + escapeHtml(item.domain || "") + "<br>" +
                 "<strong>HTTPS:</strong> "     + (item.uses_https   ? "Yes" : "No") + "<br>" +
                 "<strong>Shortener:</strong> " + (item.is_shortener ? "Yes" : "No") +
-                "</li><br>"
+                "</li>"
             ).join("");
         } else if (urls.length > 0) {
             urlList.innerHTML = urls.map(url => "<li>" + escapeHtml(url) + "</li>").join("");
@@ -302,9 +398,11 @@ async function showIocs(button) {
             urlList.innerHTML = "<li>No URLs captured.</li>";
         }
 
-        attachmentList.innerHTML = attachments.length > 0
-            ? attachments.map(item => "<li>" + escapeHtml(item) + "</li>").join("")
-            : "<li>No attachments captured.</li>";
+        if (attachments.length > 0) {
+            attachmentList.innerHTML = attachments.map(item => "<li>" + escapeHtml(item) + "</li>").join("");
+        } else {
+            attachmentList.innerHTML = "<li>No attachments captured.</li>";
+        }
 
     } catch (error) {
         urlList.innerHTML        = "<li>Error loading IOC data.</li>";
@@ -312,8 +410,129 @@ async function showIocs(button) {
     }
 }
 
+async function runVtEnrichment() {
+    if (!currentReportId) return;
+
+    const vtBtn = document.getElementById("vtRunBtn");
+    const vtResults = document.getElementById("vtResults");
+
+    vtBtn.disabled  = true;
+    vtBtn.innerText = "Scanning...";
+    vtResults.innerHTML = "<p style='color:#9ca3af;font-size:13px;'>Querying VirusTotal, please wait...</p>";
+
+    try {
+        const response = await fetch("/api/report/" + currentReportId + "/vt-enrich");
+
+        if (!response.ok) {
+            vtResults.innerHTML = "<p style='color:#f87171;'>Enrichment request failed (HTTP " + response.status + ").</p>";
+            vtBtn.disabled  = false;
+            vtBtn.innerText = "Retry VirusTotal Scan";
+            return;
+        }
+
+        const data = await response.json();
+        renderVtResults(data);
+        vtBtn.innerText = "Re-run VirusTotal Scan";
+        vtBtn.disabled  = false;
+
+    } catch (err) {
+        vtResults.innerHTML = "<p style='color:#f87171;'>Network error during enrichment.</p>";
+        vtBtn.disabled  = false;
+        vtBtn.innerText = "Retry VirusTotal Scan";
+    }
+}
+
+function renderVtResults(data) {
+    const vtResults = document.getElementById("vtResults");
+    let html = "";
+
+    // --- URLs ---
+    const urlRows = data.urls || [];
+    html += "<h4 style='margin:12px 0 8px;color:#f8fafc;'>URL Results (" + urlRows.length + ")</h4>";
+
+    if (urlRows.length === 0) {
+        html += "<p style='color:#9ca3af;font-size:13px;'>No URLs to scan.</p>";
+    } else {
+        urlRows.forEach(item => {
+            const badge    = vtBadge(item);
+            const barColor = vtBarColor(item);
+            const cappedScore = Math.min(item.score || 0, 100);
+
+            html += "<div class='vt-result-card'>";
+            html += "<div class='vt-url'>" + escapeHtml(item.url || "") + badge + "</div>";
+
+            if (item.available) {
+                html += "<div class='vt-score-bar-wrap'><div class='vt-score-bar' style='width:" + cappedScore + "%;background:" + barColor + ";'></div></div>";
+                html += "<div style='font-size:11px;color:#6b7280;margin-bottom:4px;'>VT Score: " + (item.score || 0) + "</div>";
+            }
+
+            (item.findings || []).forEach(f => {
+                html += "<div class='vt-finding'>&#8226; " + escapeHtml(f) + "</div>";
+            });
+            html += "</div>";
+        });
+    }
+
+    // --- Attachments ---
+    const attRows = data.attachments || [];
+    html += "<h4 style='margin:16px 0 8px;color:#f8fafc;'>Attachment Results (" + attRows.length + ")</h4>";
+
+    if (attRows.length === 0) {
+        html += "<p style='color:#9ca3af;font-size:13px;'>No attachments to scan.</p>";
+    } else {
+        attRows.forEach(item => {
+            const badge    = vtBadge(item);
+            const barColor = vtBarColor(item);
+            const cappedScore = Math.min(item.score || 0, 100);
+
+            html += "<div class='vt-result-card'>";
+            html += "<div class='vt-url'>" + escapeHtml(item.name || "Unknown file") + badge + "</div>";
+
+            if (item.hash) {
+                html += "<div style='font-size:11px;color:#6b7280;margin-bottom:4px;'>Hash: " + escapeHtml(item.hash) + "</div>";
+            }
+
+            if (item.available && item.hash) {
+                html += "<div class='vt-score-bar-wrap'><div class='vt-score-bar' style='width:" + cappedScore + "%;background:" + barColor + ";'></div></div>";
+                html += "<div style='font-size:11px;color:#6b7280;margin-bottom:4px;'>VT Score: " + (item.score || 0) + "</div>";
+            }
+
+            (item.findings || []).forEach(f => {
+                html += "<div class='vt-finding'>&#8226; " + escapeHtml(f) + "</div>";
+            });
+            html += "</div>";
+        });
+    }
+
+    vtResults.innerHTML = html;
+}
+
+function vtBadge(item) {
+    if (!item.available) {
+        return "<span class='vt-badge vt-unknown'>Unavailable</span>";
+    }
+    const score = item.score || 0;
+    const findings = (item.findings || []).join(" ").toLowerCase();
+
+    if (findings.includes("malicious") && score > 0) {
+        return "<span class='vt-badge vt-malicious'>Malicious</span>";
+    } else if (findings.includes("suspicious") && score > 0) {
+        return "<span class='vt-badge vt-suspicious'>Suspicious</span>";
+    } else {
+        return "<span class='vt-badge vt-clean'>Clean</span>";
+    }
+}
+
+function vtBarColor(item) {
+    const score = item.score || 0;
+    if (score >= 60)  return "#ef4444";
+    if (score >= 20)  return "#f59e0b";
+    return "#22c55e";
+}
+
 function closeIocModal() {
     document.getElementById("iocModal").style.display = "none";
+    currentReportId = null;
 }
 
 function escapeHtml(value) {
@@ -356,7 +575,10 @@ async function updateStatus(selectElement, reportId) {
 
 window.onclick = function(event) {
     const modal = document.getElementById("iocModal");
-    if (event.target === modal) modal.style.display = "none";
+    if (event.target === modal) {
+        modal.style.display = "none";
+        currentReportId = null;
+    }
 };
 
 setInterval(() => window.location.reload(), 300000);
