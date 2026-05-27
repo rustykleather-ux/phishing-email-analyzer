@@ -238,12 +238,20 @@ input, select {
         onkeyup="filterReports()" style="padding: 10px; width: 300px;">
 
     <select id="riskFilter" onchange="filterReports()" style="padding: 10px;">
-        <option value="">All Risks</option>
-        <option value="Dangerous">Dangerous</option>
-        <option value="Suspicious">Suspicious</option>
-        <option value="Medium Risk">Medium Risk</option>
-        <option value="Low Risk">Low Risk</option>
-    </select>
+    <option value="">All Risks</option>
+    <option value="Dangerous">Dangerous</option>
+    <option value="Suspicious">Suspicious</option>
+    <option value="Medium Risk">Medium Risk</option>
+    <option value="Low Risk">Low Risk</option>
+</select>
+
+<select id="statusFilter" onchange="filterReports()" style="padding: 10px;">
+    <option value="">All Statuses</option>
+    <option value="New">New</option>
+    <option value="Reviewed">Reviewed</option>
+    <option value="False Positive">False Positive</option>
+    <option value="Confirmed Malicious">Confirmed Malicious</option>
+</select>
 </div>
 
 <table id="reportsTable">
@@ -546,21 +554,39 @@ function escapeHtml(value) {
 
 function filterReports() {
     const searchValue = document.getElementById("searchInput").value.toLowerCase();
-    const riskValue   = document.getElementById("riskFilter").value;
+    const riskValue = document.getElementById("riskFilter").value;
+    const statusValue = document.getElementById("statusFilter").value;
+
     const rows = document.getElementById("reportsTable").getElementsByTagName("tr");
 
     for (let i = 1; i < rows.length; i++) {
         const cells = rows[i].getElementsByTagName("td");
+
         if (cells.length === 0) continue;
 
-        const risk    = cells[1].innerText;
-        const sender  = cells[3].innerText.toLowerCase();
+        const risk = cells[1].innerText.trim();
+        const sender = cells[3].innerText.toLowerCase();
         const subject = cells[4].innerText.toLowerCase();
 
-        const matchesSearch = sender.includes(searchValue) || subject.includes(searchValue);
-        const matchesRisk   = riskValue === "" || risk === riskValue;
+        const statusSelect = cells[6].querySelector("select");
+        const status = statusSelect ? statusSelect.value : "";
 
-        rows[i].style.display = matchesSearch && matchesRisk ? "" : "none";
+        const matchesSearch =
+            sender.includes(searchValue) ||
+            subject.includes(searchValue);
+
+        const matchesRisk =
+            riskValue === "" || risk === riskValue;
+
+        const matchesStatus =
+            statusValue === "" || status === statusValue;
+
+        rows[i].style.display =
+            matchesSearch &&
+            matchesRisk &&
+            matchesStatus
+                ? ""
+                : "none";
     }
 }
 
