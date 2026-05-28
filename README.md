@@ -248,15 +248,13 @@ Displays:
 ---
 
 # Future Improvements
-
-- SIEM integration
-- YARA scanning
-- Attachment sandboxing
-- Multi-user authentication
-- PDF export reports
-- Threat intelligence enrichment
 - Real-time alerting
-
+- SIEM integration-Complete
+- YARA scanning-Complete
+- Attachment sandboxing-Complete
+- Multi-user authentication-complete
+- PDF export reports-complete
+- Threat intelligence enrichment-complete
 ---
 
 # License
