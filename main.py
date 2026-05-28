@@ -6,12 +6,12 @@ import textwrap
 import secrets
 from pathlib import Path
 from datetime import datetime
+from typing import Optional
 
-from fastapi import FastAPI, Header, HTTPException, Depends, status
+from fastapi import FastAPI, Header, HTTPException, Depends, status, Request
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
 from pydantic import BaseModel, field_validator
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -29,9 +29,6 @@ from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
 from siem import send_to_splunk
 
-# ---------------------------------------------------------------------------
-# Logging
-# ---------------------------------------------------------------------------
 
 logging.basicConfig(
     level=logging.INFO,
@@ -39,32 +36,26 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# App & config
-# ---------------------------------------------------------------------------
-
 app = FastAPI(title="Louisburg Phishing Analyzer")
 templates = Jinja2Templates(directory="templates")
 
-API_KEY: str = os.environ.get("PHISHING_API_KEY", "dev-secret-key")
-DASHBOARD_USERNAME: str = os.environ.get("DASHBOARD_USERNAME", "admin")
-DASHBOARD_PASSWORD: str = os.environ.get("DASHBOARD_PASSWORD", "ChangeThisPassword")
-REPORT_RECIPIENT_EMAIL: str = os.environ.get(
-    "REPORT_RECIPIENT_EMAIL", "rfolsom@louisburglibrary.org"
+API_KEY = os.environ.get("PHISHING_API_KEY", "dev-secret-key")
+DASHBOARD_USERNAME = os.environ.get("DASHBOARD_USERNAME", "admin")
+DASHBOARD_PASSWORD = os.environ.get("DASHBOARD_PASSWORD", "ChangeThisPassword")
+REPORT_RECIPIENT_EMAIL = os.environ.get(
+    "REPORT_RECIPIENT_EMAIL",
+    "rfolsom@louisburglibrary.org"
 )
 
 VALID_STATUSES = {"New", "Reviewed", "False Positive", "Confirmed Malicious"}
 
 security = HTTPBasic()
 
-# ---------------------------------------------------------------------------
-# Pydantic models
-# ---------------------------------------------------------------------------
-
 
 class AnalyzeRequest(BaseModel):
-    messageId: str
+    messageId: str = ""
     userEmail: str = "unknown"
+    emailData: Optional[dict] = None
 
 
 class StatusUpdate(BaseModel):
@@ -78,11 +69,6 @@ class StatusUpdate(BaseModel):
                 f"Invalid status '{v}'. Must be one of: {', '.join(sorted(VALID_STATUSES))}"
             )
         return v
-
-
-# ---------------------------------------------------------------------------
-# Auth helpers
-# ---------------------------------------------------------------------------
 
 
 def verify_api_key(x_api_key: str = Header(default="", alias="X-API-Key")) -> None:
@@ -107,9 +93,31 @@ def verify_dashboard_login(
     return credentials.username
 
 
-# ---------------------------------------------------------------------------
-# Report helpers
-# ---------------------------------------------------------------------------
+def get_email_data_for_request(request: AnalyzeRequest) -> dict:
+    """
+    Staff-safe email loading.
+
+    If Apps Script sends emailData, use that directly.
+    Otherwise fall back to backend Gmail API token for single-user/local testing.
+    """
+    if request.emailData:
+        email_data = dict(request.emailData)
+        email_data["message_id"] = request.messageId
+        email_data["from_apps_script"] = True
+        return email_data
+
+    try:
+        email_data = get_gmail_message(request.messageId)
+    except Exception:
+        logger.exception("Failed to fetch Gmail message %s", request.messageId)
+        raise HTTPException(
+            status_code=502,
+            detail="Failed to retrieve email from Gmail."
+        )
+
+    email_data["message_id"] = request.messageId
+    email_data["from_apps_script"] = False
+    return email_data
 
 
 def build_report_body(
@@ -117,7 +125,6 @@ def build_report_body(
     email_data: dict,
     results: dict,
 ) -> str:
-    """Build the plain-text report body from email data and analysis results."""
     findings_text = "\n".join(
         f"- {finding}" for finding in results.get("findings", [])
     )
@@ -152,12 +159,11 @@ def build_report_body(
 
 
 def process_report(request: AnalyzeRequest, email_data: dict, results: dict) -> None:
-    """Persist, audit, forward to SIEM, and email a phishing report."""
     report_body = build_report_body(request, email_data, results)
 
-    # Save txt copy to disk
     reports_dir = Path("reports")
     reports_dir.mkdir(exist_ok=True)
+
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     report_file = reports_dir / f"phishing_report_{timestamp}.txt"
     report_file.write_text(report_body, encoding="utf-8")
@@ -212,13 +218,7 @@ def process_report(request: AnalyzeRequest, email_data: dict, results: dict) -> 
         logger.exception("Failed to send report email.")
 
 
-# ---------------------------------------------------------------------------
-# PDF export helper
-# ---------------------------------------------------------------------------
-
-
 def _write_line(c, y, height, text, size=10, bold=False):
-    """Write one line to the PDF canvas, adding a new page when needed."""
     if y < 60:
         c.showPage()
         y = height - 50
@@ -230,15 +230,15 @@ def _write_line(c, y, height, text, size=10, bold=False):
 
 
 def _write_wrapped(c, y, height, label, value):
-    """Write a bolded label followed by word-wrapped value lines."""
     y = _write_line(c, y, height, label, 11, bold=True)
+
     for line in textwrap.wrap(str(value or ""), width=90):
         y = _write_line(c, y, height, line, 9)
+
     return y - 6
 
 
 def generate_pdf(report: dict, iocs: dict, pdf_path: Path) -> None:
-    """Render a phishing incident report to a PDF file."""
     c = canvas.Canvas(str(pdf_path), pagesize=letter)
     width, height = letter
     y = height - 50
@@ -263,6 +263,7 @@ def generate_pdf(report: dict, iocs: dict, pdf_path: Path) -> None:
 
     y = _write_line(c, y, height, "URLs", 11, bold=True)
     urls = iocs.get("urls", [])
+
     if urls:
         for url in urls:
             for line in textwrap.wrap(str(url), width=90):
@@ -271,21 +272,18 @@ def generate_pdf(report: dict, iocs: dict, pdf_path: Path) -> None:
         y = _write_line(c, y, height, "No URLs captured.", 9)
 
     y -= 8
+
     y = _write_line(c, y, height, "Attachments", 11, bold=True)
     attachments = iocs.get("attachments", [])
+
     if attachments:
         for attachment in attachments:
             for line in textwrap.wrap(str(attachment), width=90):
                 y = _write_line(c, y, height, "- " + line, 8)
     else:
-        y = _write_line(c, y, height, "No attachments captured.", 9)  # noqa: F841
+        y = _write_line(c, y, height, "No attachments captured.", 9)
 
     c.save()
-
-
-# ---------------------------------------------------------------------------
-# Routes
-# ---------------------------------------------------------------------------
 
 
 @app.get("/")
@@ -303,13 +301,7 @@ def analyze_email(
     request: AnalyzeRequest,
     _: None = Depends(verify_api_key),
 ):
-    try:
-        email_data = get_gmail_message(request.messageId)
-    except Exception:
-        logger.exception("Failed to fetch Gmail message %s", request.messageId)
-        raise HTTPException(status_code=502, detail="Failed to retrieve email from Gmail.")
-
-    email_data["message_id"] = request.messageId
+    email_data = get_email_data_for_request(request)
 
     try:
         results = analyze_phishing_email(email_data) or {}
@@ -325,13 +317,7 @@ def report_phishing(
     request: AnalyzeRequest,
     _: None = Depends(verify_api_key),
 ):
-    try:
-        email_data = get_gmail_message(request.messageId)
-    except Exception:
-        logger.exception("Failed to fetch Gmail message %s", request.messageId)
-        raise HTTPException(status_code=502, detail="Failed to retrieve email from Gmail.")
-
-    email_data["message_id"] = request.messageId
+    email_data = get_email_data_for_request(request)
 
     try:
         results = analyze_phishing_email(email_data) or {}
@@ -341,7 +327,10 @@ def report_phishing(
 
     process_report(request, email_data, results)
 
-    return {"status": "reported", "message": "Phishing report emailed to IT."}
+    return {
+        "status": "reported",
+        "message": "Phishing report emailed to IT."
+    }
 
 
 @app.get("/api/report/{report_id}/iocs")
@@ -359,7 +348,6 @@ def vt_enrich(
     report_id: int,
     username: str = Depends(verify_dashboard_login),
 ):
-    """Run VirusTotal enrichment on-demand for all IOCs in a report."""
     try:
         from virustotal_client import (
             check_url_reputation,
@@ -456,13 +444,19 @@ def set_report_status(
     username: str = Depends(verify_dashboard_login),
 ):
     update_report_status(report_id, payload.status)
+
     save_audit_event(
         action="status_changed",
         actor=username,
         report_id=report_id,
         details={"new_status": payload.status},
     )
-    return {"status": "updated", "report_id": report_id, "new_status": payload.status}
+
+    return {
+        "status": "updated",
+        "report_id": report_id,
+        "new_status": payload.status
+    }
 
 
 @app.get("/api/report/{report_id}/pdf")
@@ -471,6 +465,7 @@ def export_report_pdf(
     username: str = Depends(verify_dashboard_login),
 ):
     report = get_report_by_id(report_id)
+
     if not report:
         raise HTTPException(status_code=404, detail="Report not found.")
 
@@ -485,6 +480,7 @@ def export_report_pdf(
 
     exports_dir = Path("reports") / "exports"
     exports_dir.mkdir(parents=True, exist_ok=True)
+
     pdf_path = exports_dir / f"phishing_report_{report_id}.pdf"
 
     try:
@@ -508,8 +504,8 @@ def dashboard(
     reports = get_recent_reports()
     stats = get_report_stats()
 
-    # Pre-escape report fields and compute row classes for the template
     rows = []
+
     for report in reports:
         risk_level = report.get("risk_level", "")
         score = report.get("score", 0)
@@ -540,7 +536,7 @@ def dashboard(
         )
 
     context = {
-        
+        "request": request,
         "rows": rows,
         "stats": stats,
         "valid_statuses": sorted(VALID_STATUSES),
@@ -555,8 +551,7 @@ def dashboard(
     }
 
     return templates.TemplateResponse(
-    request=request,
-    name="dashboard.html",
-    context=context
-)
-
+        name="dashboard.html",
+        context=context,
+        request=request,
+    )

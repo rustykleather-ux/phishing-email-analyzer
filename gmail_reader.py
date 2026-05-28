@@ -146,7 +146,9 @@ def get_attachment_bytes(message_id, attachment_id):
     return base64.urlsafe_b64decode(
         padded.encode("utf-8")
     )
-
+if __name__ == "__main__":
+    service = get_gmail_service()
+    print("Authentication successful.")
 
 def get_attachment_sha256(message_id, attachment_id):
     file_bytes = get_attachment_bytes(
