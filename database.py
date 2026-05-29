@@ -434,6 +434,34 @@ def update_report_notes(report_id, notes):
     conn.commit()
     conn.close()
 
+def get_reports_for_month(year, month):
+    migrate_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    month_prefix = f"{year}-{month:02d}"
+
+    if using_postgres():
+        cursor.execute("""
+            SELECT *
+            FROM reports
+            WHERE created_at LIKE %s
+            ORDER BY created_at DESC
+        """, (month_prefix + "%",))
+        rows = cursor.fetchall()
+    else:
+        cursor.execute("""
+            SELECT *
+            FROM reports
+            WHERE created_at LIKE ?
+            ORDER BY created_at DESC
+        """, (month_prefix + "%",))
+        rows = [dict(row) for row in cursor.fetchall()]
+
+    conn.close()
+    return rows
+
 def get_recent_audit_logs(limit=25):
     init_audit_db()
 

@@ -4,6 +4,7 @@ import html
 import logging
 import textwrap
 import secrets
+import calendar
 from pathlib import Path
 from datetime import datetime
 from typing import Optional
@@ -22,9 +23,11 @@ from database import (
     get_report_stats,
     get_report_iocs,
     get_report_by_id,
+    get_reports_for_month,
     update_report_status,
     save_audit_event,
     update_report_notes
+    
 )
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
@@ -498,6 +501,145 @@ def set_report_status(
         "new_status": payload.status
     }
 
+@app.get("/api/reports/monthly-summary/pdf")
+def export_monthly_summary_pdf(
+    username: str = Depends(verify_dashboard_login),
+):
+    now = datetime.now()
+    year = now.year
+    month = now.month
+    month_name = calendar.month_name[month]
+
+    reports = get_reports_for_month(year, month)
+
+    total_reports = len(reports)
+    dangerous = 0
+    suspicious = 0
+    medium = 0
+    low = 0
+    closed = 0
+    false_positive = 0
+    confirmed_malicious = 0
+
+    top_senders = {}
+
+    for report in reports:
+        risk = report.get("risk_level", "")
+        status_value = report.get("status", "")
+
+        if risk == "Dangerous":
+            dangerous += 1
+        elif risk == "Suspicious":
+            suspicious += 1
+        elif risk == "Medium Risk":
+            medium += 1
+        else:
+            low += 1
+
+        if status_value == "Closed":
+            closed += 1
+
+        if status_value == "False Positive":
+            false_positive += 1
+
+        if status_value == "Confirmed Malicious":
+            confirmed_malicious += 1
+
+        sender = report.get("sender", "Unknown")
+        top_senders[sender] = top_senders.get(sender, 0) + 1
+
+    top_sender_list = sorted(
+        top_senders.items(),
+        key=lambda item: item[1],
+        reverse=True
+    )[:5]
+
+    exports_dir = Path("reports") / "exports"
+    exports_dir.mkdir(parents=True, exist_ok=True)
+
+    pdf_path = exports_dir / f"monthly_phishing_summary_{year}_{month:02d}.pdf"
+
+    c = canvas.Canvas(str(pdf_path), pagesize=letter)
+    width, height = letter
+    y = height - 50
+
+    def line(text, size=10, bold=False):
+        nonlocal y
+
+        if y < 60:
+            c.showPage()
+            y = height - 50
+
+        font = "Helvetica-Bold" if bold else "Helvetica"
+        c.setFont(font, size)
+        c.drawString(50, y, str(text))
+        y -= 16
+
+    line(f"Louisburg Monthly Phishing Summary - {month_name} {year}", 16, True)
+    y -= 10
+
+    line("Executive Summary", 13, True)
+    line(f"Total phishing reports: {total_reports}")
+    line(f"Dangerous reports: {dangerous}")
+    line(f"Suspicious reports: {suspicious}")
+    line(f"Medium risk reports: {medium}")
+    line(f"Low risk reports: {low}")
+    line(f"Confirmed malicious: {confirmed_malicious}")
+    line(f"False positives: {false_positive}")
+    line(f"Closed alerts: {closed}")
+
+    y -= 10
+
+    line("Top Reported Senders", 13, True)
+
+    if top_sender_list:
+        for sender, count in top_sender_list:
+            wrapped_sender = textwrap.wrap(str(sender), width=75)
+
+            if wrapped_sender:
+                line(f"{count} report(s): {wrapped_sender[0]}")
+                for extra_line in wrapped_sender[1:]:
+                    line(f"    {extra_line}")
+    else:
+        line("No sender data available.")
+
+    y -= 10
+
+    line("Recent Reports", 13, True)
+
+    for report in reports[:15]:
+        subject = report.get("subject", "")
+        risk = report.get("risk_level", "")
+        status_value = report.get("status", "")
+        sender = report.get("sender", "")
+
+        line(f"{report.get('created_at', '')} | {risk} | {status_value}", 9, True)
+
+        for wrapped in textwrap.wrap(f"Sender: {sender}", width=90):
+            line(wrapped, 8)
+
+        for wrapped in textwrap.wrap(f"Subject: {subject}", width=90):
+            line(wrapped, 8)
+
+        y -= 4
+
+    c.save()
+
+    save_audit_event(
+        action="monthly_summary_exported",
+        actor=username,
+        details={
+            "year": year,
+            "month": month,
+            "total_reports": total_reports
+        }
+    )
+
+    return FileResponse(
+        path=str(pdf_path),
+        filename=f"monthly_phishing_summary_{year}_{month:02d}.pdf",
+        media_type="application/pdf"
+    )
 
 @app.get("/api/report/{report_id}/pdf")
 def export_report_pdf(
