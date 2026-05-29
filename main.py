@@ -47,7 +47,13 @@ REPORT_RECIPIENT_EMAIL = os.environ.get(
     "rfolsom@louisburglibrary.org"
 )
 
-VALID_STATUSES = {"New", "Reviewed", "False Positive", "Confirmed Malicious"}
+VALID_STATUSES = {
+    "New",
+    "Reviewed", 
+    "False Positive", 
+    "Confirmed Malicious",
+    "Closed"
+    }
 
 security = HTTPBasic()
 

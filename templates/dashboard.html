@@ -251,6 +251,7 @@ input, select {
     <option value="Reviewed">Reviewed</option>
     <option value="False Positive">False Positive</option>
     <option value="Confirmed Malicious">Confirmed Malicious</option>
+    <option value="Closed">Closed</option>
 </select>
 </div>
 
@@ -556,6 +557,7 @@ function filterReports() {
     const searchValue = document.getElementById("searchInput").value.toLowerCase();
     const riskValue = document.getElementById("riskFilter").value;
     const statusValue = document.getElementById("statusFilter").value;
+    const hideClosed = statusValue === "";
 
     const rows = document.getElementById("reportsTable").getElementsByTagName("tr");
 
@@ -579,7 +581,7 @@ function filterReports() {
             riskValue === "" || risk === riskValue;
 
         const matchesStatus =
-            statusValue === "" || status === statusValue;
+            hideClosed ? status !== "Closed" : (statusValue === "" || status === statusValue);
 
         rows[i].style.display =
             matchesSearch &&
@@ -606,7 +608,7 @@ window.onclick = function(event) {
         currentReportId = null;
     }
 };
-
+filterReports(); // Apply initial filters (e.g. hide Closed)
 setInterval(() => window.location.reload(), 300000);
 </script>
 
