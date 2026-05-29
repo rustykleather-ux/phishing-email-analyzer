@@ -177,6 +177,7 @@ def process_report(request: AnalyzeRequest, email_data: dict, results: dict) -> 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     report_file = reports_dir / f"phishing_report_{timestamp}.txt"
     report_file.write_text(report_body, encoding="utf-8")
+    
 
     save_report(
         message_id=request.messageId,
@@ -186,11 +187,19 @@ def process_report(request: AnalyzeRequest, email_data: dict, results: dict) -> 
         score=results.get("score", 0),
         recommendation=results.get("recommendation", ""),
         iocs=results.get("iocs", {}),
+        reported_by=("staff-user"
+        if not request.userEmail or str(request.userEmail).lower() == "none"
+        else request.userEmail
+),
     )
 
     save_audit_event(
         action="report_submitted",
-        actor=request.userEmail,
+        actor=(
+    "staff-user"
+    if not request.userEmail or str(request.userEmail).lower() == "none"
+    else request.userEmail
+),
         details={
             "message_id": request.messageId,
             "sender": email_data.get("from", ""),
@@ -559,6 +568,7 @@ def dashboard(
                 "risk_level": html.escape(str(risk_level)),
                 "score": score,
                 "sender": html.escape(str(report.get("sender", ""))),
+                "reported_by": html.escape(str(report.get("reported_by") or "staff-user")),
                 "subject": html.escape(str(report.get("subject", ""))),
                 "message_id": html.escape(str(report.get("message_id", ""))),
                 "status": status_value,

@@ -75,9 +75,10 @@ def init_db():
 
 def migrate_db():
     init_db()
-
+    
     conn = get_connection()
     cursor = conn.cursor()
+    
 
     if using_postgres():
         cursor.execute("""
@@ -99,6 +100,10 @@ def migrate_db():
     if "iocs_json" not in columns:
         cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
 
+    try:
+        cursor.execute("ALTER TABLE reports ADD COLUMN reported_by TEXT")
+    except Exception:
+        pass
     conn.commit()
     conn.close()
 
