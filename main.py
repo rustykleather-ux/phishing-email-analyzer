@@ -24,6 +24,7 @@ from database import (
     get_report_iocs,
     get_report_by_id,
     get_reports_for_month,
+    get_monthly_report_stats,
     update_report_status,
     save_audit_event,
     update_report_notes
@@ -685,6 +686,9 @@ def dashboard(
 ):
     reports = get_recent_reports()
     stats = get_report_stats()
+    now = datetime.now()
+    monthly_stats = get_monthly_report_stats(now.year, now.month)
+    monthly_label = f"{calendar.month_name[now.month]} {now.year}"
 
     rows = []
 
@@ -723,6 +727,8 @@ def dashboard(
         "request": request,
         "rows": rows,
         "stats": stats,
+        "monthly_stats": monthly_stats,
+        "monthly_label": monthly_label,
         "valid_statuses": sorted(VALID_STATUSES),
         "risk_labels": json.dumps(list(stats.get("by_risk", {}).keys())),
         "risk_counts": json.dumps(list(stats.get("by_risk", {}).values())),

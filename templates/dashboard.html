@@ -226,6 +226,36 @@ input, select {
     </div>
 </div>
 
+<h2>Monthly Summary - {{ monthly_label }}</h2>
+
+<div class="cards">
+    <div class="card">
+        <h2>This Month</h2>
+        <p style="font-size:32px;">{{ monthly_stats.total }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Dangerous</h2>
+        <p style="font-size:32px;">{{ monthly_stats.dangerous }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Confirmed Malicious</h2>
+        <p style="font-size:32px;">{{ monthly_stats.confirmed_malicious }}</p>
+    </div>
+
+    <div class="card">
+        <h2>False Positives</h2>
+        <p style="font-size:32px;">{{ monthly_stats.false_positive }}</p>
+    </div>
+
+    <div class="card">
+        <h2>Closed</h2>
+        <p style="font-size:32px;">{{ monthly_stats.closed }}</p>
+    </div>
+</div>
+
+
 <div class="charts">
     <div class="chart-card">
         <h2>Reports by Risk</h2>

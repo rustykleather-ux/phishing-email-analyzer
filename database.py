@@ -462,6 +462,42 @@ def get_reports_for_month(year, month):
     conn.close()
     return rows
 
+def get_monthly_report_stats(year, month):
+    reports = get_reports_for_month(year, month)
+
+    stats = {
+        "total": len(reports),
+        "dangerous": 0,
+        "suspicious": 0,
+        "medium": 0,
+        "low": 0,
+        "confirmed_malicious": 0,
+        "false_positive": 0,
+        "closed": 0
+    }
+
+    for report in reports:
+        risk = report.get("risk_level", "")
+        status = report.get("status", "")
+
+        if risk == "Dangerous":
+            stats["dangerous"] += 1
+        elif risk == "Suspicious":
+            stats["suspicious"] += 1
+        elif risk == "Medium Risk":
+            stats["medium"] += 1
+        else:
+            stats["low"] += 1
+
+        if status == "Confirmed Malicious":
+            stats["confirmed_malicious"] += 1
+        elif status == "False Positive":
+            stats["false_positive"] += 1
+        elif status == "Closed":
+            stats["closed"] += 1
+
+    return stats
+
 def get_recent_audit_logs(limit=25):
     init_audit_db()
 
