@@ -264,6 +264,7 @@ input, select {
     <th>Subject</th>
     <th>IOCs</th>
     <th>Status</th>
+    <th>Notes</th>
     <th>PDF</th>
 </tr>
 {% for row in rows %}
@@ -283,13 +284,26 @@ input, select {
             View IOCs
         </button>
     </td>
-    <td>
-        <select onchange="updateStatus(this, '{{ row.id }}')">
-            {% for s in valid_statuses %}
-            <option value="{{ s }}" {% if s == row.status %}selected{% endif %}>{{ s }}</option>
-            {% endfor %}
-        </select>
-    </td>
+   <td>
+    <select onchange="updateStatus(this, '{{ row.id }}')">
+        {% for s in valid_statuses %}
+        <option value="{{ s }}" {% if s == row.status %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+    </select>
+</td>
+
+<td>
+    <textarea
+        id="notes-{{ row.id }}"
+        style="width:220px;height:60px;padding:8px;"
+        placeholder="Add analyst notes...">{{ row.analyst_notes }}</textarea>
+
+    <br>
+
+    <button onclick="saveNotes('{{ row.id }}')" style="margin-top:6px;">
+        Save Notes
+    </button>
+</td>
     <td>
         <a class="pdf-link"
            href="/api/report/{{ row.id }}/pdf"
@@ -591,7 +605,18 @@ function filterReports() {
                 : "none";
     }
 }
+async function saveNotes(reportId) {
+    const notesBox = document.getElementById("notes-" + reportId);
+    const notes = notesBox.value;
 
+    await fetch("/api/report/" + reportId + "/notes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notes: notes })
+    });
+
+    alert("Analyst notes saved.");
+}
 async function updateStatus(selectElement, reportId) {
     const newStatus = selectElement.value;
     await fetch("/api/report/" + reportId + "/status", {

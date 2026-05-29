@@ -24,6 +24,7 @@ from database import (
     get_report_by_id,
     update_report_status,
     save_audit_event,
+    update_report_notes
 )
 from gmail_reader import get_gmail_message, send_report_email
 from analyzer import analyze_phishing_email
@@ -62,6 +63,9 @@ class AnalyzeRequest(BaseModel):
     messageId: str = ""
     userEmail: str = "unknown"
     emailData: Optional[dict] = None
+
+class NotesUpdate(BaseModel):
+    notes: str
 
 
 class StatusUpdate(BaseModel):
@@ -442,6 +446,27 @@ def vt_enrich(
             "error": str(e),
         }
 
+@app.post("/api/report/{report_id}/notes")
+def set_report_notes(
+    report_id: int,
+    payload: NotesUpdate,
+    username: str = Depends(verify_dashboard_login),
+):
+    update_report_notes(report_id, payload.notes)
+
+    save_audit_event(
+        action="notes_updated",
+        actor=username,
+        report_id=report_id,
+        details={
+            "notes_length": len(payload.notes)
+        },
+    )
+
+    return {
+        "status": "updated",
+        "report_id": report_id
+    }
 
 @app.post("/api/report/{report_id}/status")
 def set_report_status(
@@ -538,6 +563,7 @@ def dashboard(
                 "message_id": html.escape(str(report.get("message_id", ""))),
                 "status": status_value,
                 "row_class": row_class,
+                "analyst_notes": html.escape(str(report.get("analyst_notes", ""))),
             }
         )
 

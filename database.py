@@ -409,6 +409,25 @@ def save_audit_event(action, details=None, report_id=None, actor="system"):
     conn.commit()
     conn.close()
 
+def update_report_notes(report_id, notes):
+    migrate_db()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if using_postgres():
+        cursor.execute(
+            "UPDATE reports SET analyst_notes = %s WHERE id = %s",
+            (notes, report_id)
+        )
+    else:
+        cursor.execute(
+            "UPDATE reports SET analyst_notes = ? WHERE id = ?",
+            (notes, report_id)
+        )
+
+    conn.commit()
+    conn.close()
 
 def get_recent_audit_logs(limit=25):
     init_audit_db()
