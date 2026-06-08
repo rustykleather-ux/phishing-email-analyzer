@@ -181,7 +181,7 @@ def save_report(
                 iocs_json,
                 reported_by       
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (
             created_at,
             message_id,
@@ -192,7 +192,8 @@ def save_report(
             recommendation,
             "New",
             "",
-            iocs_json
+            iocs_json,
+            reported_by
         ))
     else:
         cursor.execute("""
@@ -206,9 +207,10 @@ def save_report(
                 recommendation,
                 status,
                 analyst_notes,
-                iocs_json
+                iocs_json,
+                reported_by
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             created_at,
             message_id,
@@ -219,7 +221,8 @@ def save_report(
             recommendation,
             "New",
             "",
-            iocs_json
+            iocs_json,
+            reported_by
         ))
 
     conn.commit()
