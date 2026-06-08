@@ -146,7 +146,9 @@ def save_report(
     risk_level,
     score,
     recommendation,
-    iocs=None
+    iocs=None,
+    reported_by="staff-user"
+    
 ):
     migrate_db()
 
@@ -155,6 +157,9 @@ def save_report(
 
     iocs_json = json.dumps(iocs or {})
     created_at = datetime.now().isoformat(timespec="seconds")
+
+    if not reported_by or str(reported_by).lower() == "none":
+        reported_by = "staff-user"
 
     if using_postgres():
         cursor.execute("""
@@ -168,7 +173,8 @@ def save_report(
                 recommendation,
                 status,
                 analyst_notes,
-                iocs_json
+                iocs_json,
+                reported_by       
             )
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (
@@ -220,6 +226,11 @@ def get_recent_reports(limit=25):
 
     conn = get_connection()
     cursor = conn.cursor()
+
+    if "reported_by" not in columns:
+        cursor.execute(
+            "ALTER TABLE reports ADD COLUMN reported_by TEXT DEFAULT 'staff-user'"
+        )
 
     if using_postgres():
         cursor.execute("""
