@@ -80,6 +80,7 @@ def migrate_db():
     cursor = conn.cursor()
     
 
+
     if using_postgres():
         cursor.execute("""
             SELECT column_name
@@ -99,7 +100,11 @@ def migrate_db():
 
     if "iocs_json" not in columns:
         cursor.execute("ALTER TABLE reports ADD COLUMN iocs_json TEXT DEFAULT '{}'")
-
+   
+    if "reported_by" not in columns:
+        cursor.execute(
+        "ALTER TABLE reports ADD COLUMN reported_by TEXT DEFAULT 'staff-user'"
+    )
     try:
         cursor.execute("ALTER TABLE reports ADD COLUMN reported_by TEXT")
     except Exception:
@@ -227,11 +232,7 @@ def get_recent_reports(limit=25):
     conn = get_connection()
     cursor = conn.cursor()
 
-    if "reported_by" not in columns:
-        cursor.execute(
-            "ALTER TABLE reports ADD COLUMN reported_by TEXT DEFAULT 'staff-user'"
-        )
-
+    
     if using_postgres():
         cursor.execute("""
             SELECT *
