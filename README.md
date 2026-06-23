@@ -85,7 +85,7 @@ Gmail add-on screenshot
 
 ---
 ## Architecture
-
+The Phishing Analyzer is built as a modular FastAPI application that receives suspicious email reports, analyzes message content, stores findings, and provides analyst review tools through a web dashboard.
 ```text
 Reported Email / Gmail
         |
