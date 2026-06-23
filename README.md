@@ -84,10 +84,6 @@ Gmail add-on screenshot
 ```
 
 ---
-
-# Architecture
-
-```text
 ## Architecture
 
 The Phishing Analyzer is built as a modular FastAPI application that receives suspicious email reports, analyzes message content, stores findings, and provides analyst review tools through a web dashboard.
@@ -122,9 +118,6 @@ Audit Logs / IOCs / Status Updates
 
 Optional:
 FastAPI -> SIEM Forwarder -> Splunk
-```
-
----
 
 # Tech Stack
 
