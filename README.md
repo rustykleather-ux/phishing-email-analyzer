@@ -122,7 +122,7 @@ FastAPI -> Gmail Notifications
 ---
 
 
-# Tech Stack
+## Tech Stack
 
 ## Backend
 - Python
