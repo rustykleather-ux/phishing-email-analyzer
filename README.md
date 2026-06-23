@@ -1,5 +1,14 @@
-# Louisburg Phishing Analyzer
-
+# Phishing Email Analyzer
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Web_API-green)
+![Phishing](https://img.shields.io/badge/Threat-Phishing_Detection-red)
+![IOC](https://img.shields.io/badge/IOC-Extraction-orange)
+![VirusTotal](https://img.shields.io/badge/VirusTotal-Enrichment-blue)
+![Dashboard](https://img.shields.io/badge/SOC-Analyst_Dashboard-purple)
+![Audit](https://img.shields.io/badge/Audit-Logging-yellow)
+![PDF](https://img.shields.io/badge/Export-PDF-red)
+![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-green)
 A Gmail-integrated phishing detection and incident response platform built with:
 
 - FastAPI
