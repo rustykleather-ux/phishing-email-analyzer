@@ -9,6 +9,8 @@
 ![PDF](https://img.shields.io/badge/Export-PDF-red)
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
+
 A Gmail-integrated phishing detection and incident response platform built with:
 
 - FastAPI
