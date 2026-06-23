@@ -119,6 +119,7 @@ Audit Logs / IOCs / Status Updates
 Optional:
 FastAPI -> SIEM Forwarder -> Splunk
 
+'''text
 # Tech Stack
 
 ## Backend
